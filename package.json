@@ -48,5 +48,10 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.18",
     "wrangler": "^4.60.0"
+  },
+  "overrides": {
+    "chokidar": "^5.0.0",
+    "lru-cache": "^11.2.4",
+    "readdirp": "^5.0.0"
   }
 }

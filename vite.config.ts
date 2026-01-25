@@ -20,6 +20,6 @@ export default defineConfig({
         nitro({
             preset: 'cloudflare-pages',
         }),
-        cloudflare({ viteEnvironment: { name: 'client' } }),
+        cloudflare({ viteEnvironment: { name: 'ssr' } }),
     ],
 })
