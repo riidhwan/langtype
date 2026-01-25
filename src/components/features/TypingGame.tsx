@@ -1,5 +1,3 @@
-'use client'
-
 import { useTypingEngine } from "@/hooks/useTypingEngine"
 import { SentenceDisplay } from "@/components/domain/SentenceDisplay"
 import { VisualTranslationInput } from "@/components/domain/VisualTranslationInput"

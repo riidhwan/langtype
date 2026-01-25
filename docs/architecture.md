@@ -7,49 +7,63 @@
 ### Core Goals
 - **Maintainability**: Clear separation of concerns via a Layer-First architecture.
 - **Reliability**: A strong focus on TDD (Test-Driven Development) covering logic, components, and user flows.
-- **Performance**: Leveraging Next.js Server Components for initial load and effective caching strategies.
+- **Performance**: Leveraging TanStack Start's SSR and Cloudflare Workers for global edge deployment.
 
 ## 2. Technology Stack
 
 | Category | Technology | Reasoning |
 | :--- | :--- | :--- |
-| **Framework** | Next.js 15 (App Router) | Standard for React apps, Server Components, SEO. |
+| **Framework** | TanStack Start (Vite) | Full-stack React framework with SSR, file-based routing, and edge deployment. |
 | **Language** | TypeScript | Type safety, self-documenting code. |
 | **Styling** | Tailwind CSS v4 | Utility-first, consistently fast development. |
 | **Global State** | Zustand | Lightweight, simple API for client-only state (e.g., game progress). |
 | **Server State** | TanStack Query v5 | Powerful caching, deduping, and background updates for API data. |
+| **Deployment** | Cloudflare Pages | Edge deployment via Nitro + Cloudflare Workers. |
 | **Unit Testing** | Vitest | Fast, Vite-native runner compatible with Jest API. |
 | **Component Testing** | React Testing Library | Testing implementation details (user behavior), not internals. |
 | **E2E Testing** | Playwright | Reliable end-to-end testing for critical user journeys. |
 
 ## 3. Directory Structure (Layer-First)
 
-We utilize a **Layer-First** architecture to group code by its technical role. This makes it easier to navigate the codebase as it grows.
+We utilize a **Layer-First** architecture to group code by its technical role.
 
 ```
 src/
-├── app/                 # Next.js App Router (Routing layer)
-│   ├── page.tsx         # Route handlers & Server Components
-│   └── layout.tsx       # Root layout & Providers
+├── routes/              # TanStack Router (Routing layer)
+│   ├── __root.tsx       # Root layout & HTML shell
+│   ├── index.tsx        # Home page route
+│   └── collections.$id.tsx  # Dynamic collection route
 │
 ├── components/          # Shared UI Components (Presentation layer)
-│   ├── ui/              # Dumb/Genetic components (Button, Input)
-│   └── domain/          # Business logic aware components (TypingArea)
+│   ├── ui/              # Dumb/Generic components (Button, Input)
+│   ├── domain/          # Business logic aware components (TypingGame)
+│   └── features/        # Feature-specific composite components
 │
 ├── hooks/               # Logic isolation (Logic layer)
 │   └── useGameEngine.ts # Example: core typing logic
 │
 ├── services/            # Data Access (Data layer)
-│   └── api.ts           # API clients
+│   └── challengeService.ts  # Collection data loading
 │
 ├── store/               # Global State (State layer)
 │   └── useStore.ts      # Zustand stores
 │
-└── lib/                 # Shared Utilities
-    └── utils.ts
+├── data/                # Static data files
+│   └── collections/     # JSON collection files
+│
+├── lib/                 # Shared Utilities
+│   └── utils.ts
+│
+└── router.tsx           # Router configuration
 ```
 
 ## 4. Key Concepts
+
+### Routing
+TanStack Router uses **file-based routing** with type-safe route definitions:
+- `src/routes/__root.tsx` - Root layout with `<HeadContent />` and `<Scripts />`
+- `src/routes/index.tsx` - Home page (`/`)
+- `src/routes/collections.$id.tsx` - Dynamic route (`/collections/:id`)
 
 ### State Management
 We separate state into two categories:
@@ -57,10 +71,32 @@ We separate state into two categories:
 2.  **Client State**: Ephemeral UI state (e.g., current wpm, typed characters). Managed by **Zustand**.
 
 ### Data Fetching
-- **Server Components**: Fetch initial data directly in `page.tsx`.
+- **Route Loaders**: Fetch data in `loader` functions that run server-side.
+- **Static Imports**: For build-time data, use static JSON imports bundled by Vite.
 - **Client Components**: Use `useQuery` hooks to fetch or revalidate data on interaction.
 
-## 5. Testing Strategy
+## 5. Build & Deployment
+
+### Development
+```bash
+npm run dev      # Start Vite dev server
+```
+
+### Production Build
+```bash
+npm run build    # Build for Cloudflare Pages
+```
+
+Output structure:
+- `dist/` - Static assets + Cloudflare worker
+- `dist/_worker.js/` - Edge worker bundle
+
+### Deployment
+```bash
+npx wrangler --cwd dist/ pages deploy
+```
+
+## 6. Testing Strategy
 
 We follow a TDD approach with three tiers:
 

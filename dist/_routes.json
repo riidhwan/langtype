@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/file.svg",
+    "/globe.svg",
+    "/next.svg",
+    "/vercel.svg",
+    "/window.svg",
+    "/assets/collections._id-DEvsIsfd.js",
+    "/assets/globals-DHPgPcup.css",
+    "/assets/index-CKM57X84.js",
+    "/assets/main-BWkafnua.js"
+  ]
+}

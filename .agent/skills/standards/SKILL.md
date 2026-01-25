@@ -16,15 +16,24 @@ This skill ensures that every technical decision and code implementation aligns 
     - [Code Style Guide](file:///home/dhani/project/langtype/docs/code_style.md)
 
 ### 2. Adhere to the Tech Stack
-- All state management must use **Zustand** or **TanStack Query** as prescribed.
-- All styles must use **Tailwind CSS**.
-- All logic must be tested using the **TDD workflow** (Vitest/Playwright).
+- **Framework**: TanStack Start (Vite-based) with TanStack Router for file-based routing.
+- **State Management**: Use **Zustand** for client state, **TanStack Query** for server state.
+- **Styling**: All styles must use **Tailwind CSS**.
+- **Testing**: Follow the **TDD workflow** (Vitest for unit/component, Playwright for E2E).
+- **Deployment**: Cloudflare Pages via Nitro.
 
 ### 3. Maintain Folder Structure
 - Respect the **Layer-First** directory structure.
-- Never add logic to the `app/` directory; keep business logic in `hooks/`, `services/`, or `store/`.
+- Routes go in `src/routes/` using TanStack Router file conventions.
+- Keep business logic in `hooks/`, `services/`, or `store/` — not in route files.
 
-### 4. Code Consistency
+### 4. Route File Conventions
+- `__root.tsx` - Root layout with `<HeadContent />` and `<Scripts />`
+- `index.tsx` - Index route for a path
+- `$param.tsx` - Dynamic route parameter (e.g., `collections.$id.tsx`)
+- Use `createFileRoute` with `loader` for server-side data fetching.
+
+### 5. Code Consistency
 - Follow the naming conventions defined in the [Code Style Guide](file:///home/dhani/project/langtype/docs/code_style.md).
 - Use the `cn()` utility for Tailwind class management.
 

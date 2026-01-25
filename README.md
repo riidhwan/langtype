@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LangType
+
+A typing application for language learners focused on **translation accuracy**. Unlike standard typing tests, users are presented with source text and must type the correct translation.
+
+## Tech Stack
+
+- **Framework**: [TanStack Start](https://tanstack.com/start) (Vite-based full-stack React)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand (client) + TanStack Query (server)
+- **Testing**: Vitest + React Testing Library + Playwright
+- **Deployment**: Cloudflare Pages via Nitro
 
 ## Getting Started
 
-First, run the development server:
+### Development Server
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Run unit/component tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run with coverage
+npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
+```
+
+## Project Structure
+
+This project follows a **Layer-First** architecture:
+
+```
+src/
+├── routes/          # TanStack Router file-based routing
+├── components/      # UI components (ui/, domain/, features/)
+├── hooks/           # Custom React hooks (logic isolation)
+├── services/        # Data access layer
+├── store/           # Zustand global state
+├── data/            # Static JSON data (collections)
+├── lib/             # Shared utilities
+└── types/           # TypeScript type definitions
+```
+
+For detailed architecture and code style guidelines, see:
+- [Architecture Documentation](./docs/architecture.md)
+- [Code Style Guide](./docs/code_style.md)
+
+## Build & Deployment
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Output will be in `dist/` directory with Cloudflare Worker bundle.
+
+### Deploy to Cloudflare Pages
+
+```bash
+npx wrangler --cwd dist/ pages deploy
+```
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [TanStack Start Documentation](https://tanstack.com/start)
+- [TanStack Router Documentation](https://tanstack.com/router)
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [Cloudflare Pages](https://pages.cloudflare.com)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Follow the established code style and testing practices. See [Code Style Guide](./docs/code_style.md) for conventions.

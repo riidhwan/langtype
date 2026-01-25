@@ -9,7 +9,7 @@
 - **Files/Directories**:
     - Components: `PascalCase` matches component name.
     - Utilities/hooks/etc: `camelCase` or `kebab-case` (be consistent within folder).
-    - Next.js Routes: `lower-case` (standard Next.js convention).
+    - TanStack Router routes: `lowercase` with `$` for params (e.g., `collections.$id.tsx`).
 
 ## 2. React Best Practices
 
@@ -21,9 +21,13 @@
     ```
 - **Props Interface**: Define a `Props` interface for each component.
 - **Hooks**: Extract complex logic into custom hooks. Keep components focused on presentation.
-- **Server vs Client**:
-    - Default to Server Components.
-    - Add `'use client'` at the top **only** when interactivty (hooks, event listeners) is needed.
+- **Route Components**: Define route using `createFileRoute` with loader for data fetching.
+    ```tsx
+    export const Route = createFileRoute('/path')({
+      component: MyComponent,
+      loader: async () => fetchData(),
+    })
+    ```
 
 ## 3. Tailwind CSS
 
@@ -32,7 +36,7 @@
     ```tsx
     <div className={cn("p-4 bg-white", isActive && "bg-blue-500")}>
     ```
-- Try to keep standard ordering (Layout -> Box Model -> Typography -> Visual). *Consider using the official Tailwind Prettier plugin.*
+- Try to keep standard ordering (Layout -> Box Model -> Typography -> Visual).
 
 ## 4. TypeScript
 
