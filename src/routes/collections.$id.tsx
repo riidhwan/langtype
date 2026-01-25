@@ -23,7 +23,7 @@ export function CollectionGamePage() {
     }, [collection.challenges])
 
     return (
-        <main className="relative flex min-h-screen flex-col items-center justify-center p-4 md:p-24 bg-background">
+        <main className="relative flex min-h-screen flex-col items-center justify-start md:justify-center px-4 pb-4 pt-20 md:p-24 bg-background">
             <Link
                 to="/"
                 className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
