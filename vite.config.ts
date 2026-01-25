@@ -15,7 +15,11 @@ export default defineConfig({
         tsConfigPaths({
             projects: ['./tsconfig.json'],
         }),
-        tanstackStart(),
+        tanstackStart({
+            router: {
+                routeFileIgnorePattern: '.+((-|.)test).(js|jsx|ts|tsx)',
+            }
+        }),
         viteReact(),
         cloudflare({ viteEnvironment: { name: 'ssr' } }),
     ],
