@@ -51,7 +51,6 @@
   },
   "overrides": {
     "chokidar": "^5.0.0",
-    "lru-cache": "^11.2.4",
     "readdirp": "^5.0.0"
   }
 }

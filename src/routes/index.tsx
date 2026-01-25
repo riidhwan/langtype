@@ -15,7 +15,6 @@ function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24 bg-background">
             <div className="w-full max-w-4xl">
                 <header className="text-center mb-12">
-                    <h1 className="text-4xl font-bold tracking-tight mb-4">LangType</h1>
                     <p className="text-xl text-muted-foreground">Select a collection to start practicing.</p>
                 </header>
 
