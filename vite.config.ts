@@ -18,7 +18,7 @@ export default defineConfig({
         tanstackStart(),
         viteReact(),
         nitro({
-            preset: 'cloudflare-pages',
+            preset: 'cloudflare-module',
         }),
         cloudflare({ viteEnvironment: { name: 'ssr' } }),
     ],

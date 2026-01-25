@@ -66,12 +66,12 @@ For detailed architecture and code style guidelines, see:
 npm run build
 ```
 
-Output will be in `dist/` directory with Cloudflare Worker bundle.
+Output will be in `.output/` directory with Cloudflare Worker bundle.
 
-### Deploy to Cloudflare Pages
+### Deploy to Cloudflare Workers
 
 ```bash
-npx wrangler --cwd dist/ pages deploy
+npx wrangler deploy --cwd .output/server
 ```
 
 ## Learn More
