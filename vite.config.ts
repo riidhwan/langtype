@@ -4,6 +4,7 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
+import { cloudflare } from "@cloudflare/vite-plugin"
 
 export default defineConfig({
     server: {
@@ -19,5 +20,6 @@ export default defineConfig({
         nitro({
             preset: 'cloudflare-pages',
         }),
+        cloudflare({ viteEnvironment: { name: 'client' } }),
     ],
 })
