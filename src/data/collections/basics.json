@@ -1,0 +1,12 @@
+{
+    "id": "basics",
+    "title": "German Basics",
+    "description": "Simple sentences to get you started.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "The quick brown fox jumps over the lazy dog.",
+            "translation": "Der schnelle braune Fuchs springt über den faulen Hund."
+        }
+    ]
+}

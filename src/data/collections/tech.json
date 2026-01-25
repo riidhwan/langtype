@@ -1,0 +1,17 @@
+{
+    "id": "tech",
+    "title": "Tech Talk",
+    "description": "Common programming phrases.",
+    "challenges": [
+        {
+            "id": "2",
+            "original": "I like to code in TypeScript.",
+            "translation": "Ich programmiere gerne in TypeScript."
+        },
+        {
+            "id": "3",
+            "original": "Next.js is a great framework.",
+            "translation": "Next.js ist ein tolles Framework."
+        }
+    ]
+}

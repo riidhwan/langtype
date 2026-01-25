@@ -1,0 +1,17 @@
+[
+    {
+        "id": "basics",
+        "title": "German Basics",
+        "description": "Simple sentences to get you started."
+    },
+    {
+        "id": "casual_german_a2",
+        "title": "Everyday German Conversations",
+        "description": "100 practical A2-level sentences for daily interactions, hobbies, and social life."
+    },
+    {
+        "id": "tech",
+        "title": "Tech Talk",
+        "description": "Common programming phrases."
+    }
+]
