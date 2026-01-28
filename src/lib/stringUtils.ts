@@ -6,27 +6,39 @@ export const AUTO_INSERT_CHARS = new Set([' ', ',', '.', '!', '?', ';', ':'])
  * Example: Input "HelloW", Target "Hello World" -> "Hello W"
  */
 export function autoMatchSpacing(rawInput: string, target: string): string {
-    // Remove spaces and common punctuation from input to treat it as a stream of meaningful characters
-    const cleanInput = rawInput.replace(/[\s,.!?;:]/g, '')
+    // Treat spaces as removable always. 
+    // We do NOT remove punctuation from input, because we want to allow the user to type it if they choose.
+    // If they strictly type punctuation, we match it. If they skip it (and it's auto-insert), we insert it.
+    const cleanInput = rawInput.replace(/\s/g, '') // Only strip spaces
     const inputChars = cleanInput.split('')
-
-
 
     let result = ''
     let inputIndex = 0
 
     for (let i = 0; i < target.length; i++) {
+        // If we ran out of input characters, stop immediately.
+        // This ensures backspace works (we don't "force" the next char).
+        if (inputIndex >= inputChars.length) break
+
         const targetChar = target[i]
+        const inputChar = inputChars[inputIndex]
 
         if (AUTO_INSERT_CHARS.has(targetChar)) {
-            // Include space or punctuation automatically
+            // It's an auto-insert char (space, comma, etc.)
+            // Always append it to result to ensure formatting.
             result += targetChar
-        } else {
-            // If we ran out of input characters, stop
-            if (inputIndex >= inputChars.length) break
 
-            // Otherwise use the next input character
-            result += inputChars[inputIndex]
+            // If the user actually TYPED this character, consume it from input.
+            // This allows "Hello," (typed) or "Hello" (skipped comma) -> both work.
+            if (inputChar === targetChar) {
+                inputIndex++
+            }
+            // If inputChar !== targetChar, we proceed (effectively inserting the punctuation)
+            // and will try to match inputChar against the NEXT targetChar in next iteration.
+        } else {
+            // Normal character.
+            // We just append input character.
+            result += inputChar
             inputIndex++
         }
     }
