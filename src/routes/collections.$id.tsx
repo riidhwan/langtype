@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, Link } from '@tanstack/react-router'
+import { createFileRoute, notFound, Link, useNavigate } from '@tanstack/react-router'
 import { getCollection } from '@/services/challengeService'
 import { TypingGame } from '@/components/features/TypingGame'
 import { useMemo } from 'react'
@@ -13,10 +13,36 @@ export const Route = createFileRoute('/collections/$id')({
         }
         return collection
     },
+    validateSearch: (search: Record<string, unknown>): { questionId?: string | number } => {
+        const raw = search.questionId
+
+        // If it's already a number (e.g. from JSON state or clean URL parsing if router supports it), return it.
+        if (typeof raw === 'number') {
+            return { questionId: raw }
+        }
+
+        if (typeof raw === 'string') {
+            let qId = raw
+            // Strip quotes if they exist (handling double-encoding or legacy format)
+            if (qId.startsWith('"') && qId.endsWith('"')) {
+                qId = qId.slice(1, -1)
+            }
+            // Try to parse as number to keep URL clean if possible
+            const num = Number(qId)
+            if (!isNaN(num) && qId.trim() !== '') {
+                return { questionId: num }
+            }
+            return { questionId: qId }
+        }
+
+        return { questionId: undefined }
+    },
 })
 
 export function CollectionGamePage() {
     const collection = Route.useLoaderData()
+    const { questionId } = Route.useSearch()
+    const navigate = useNavigate({ from: Route.fullPath })
 
     const challenges = useMemo(() => {
         return shuffleArray(collection.challenges || [])
@@ -48,7 +74,18 @@ export function CollectionGamePage() {
             <div className="mb-4 text-center">
                 <h2 className="text-xl text-muted-foreground">{collection.title}</h2>
             </div>
-            <TypingGame challenges={challenges} />
+            <TypingGame
+                challenges={challenges}
+                initialQuestionId={questionId ? String(questionId) : undefined}
+                onQuestionChange={(newId) => {
+                    const numericId = Number(newId)
+                    const isNumeric = !isNaN(numericId) && newId.trim() !== ''
+                    navigate({
+                        search: { questionId: isNumeric ? numericId : newId },
+                        replace: true,
+                    })
+                }}
+            />
         </main>
     )
 }

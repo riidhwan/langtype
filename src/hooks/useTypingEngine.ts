@@ -3,8 +3,8 @@ import { autoMatchSpacing } from '@/lib/stringUtils'
 
 type Status = 'typing' | 'submitted' | 'completed'
 
-export function useTypingEngine(sentences: string[]) {
-    const [currentIndex, setCurrentIndex] = useState(0)
+export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
+    const [currentIndex, setCurrentIndex] = useState(initialIndex)
     const [input, setInput] = useState('')
     const [status, setStatus] = useState<Status>('typing')
 
@@ -38,6 +38,8 @@ export function useTypingEngine(sentences: string[]) {
             // Timer finished, time to move on
             if (currentIndex < sentences.length - 1) {
                 setCurrentIndex(prev => prev + 1)
+                setStatus('typing')
+                setTimeLeft(0)
             }
         }
         return () => clearInterval(timer)
@@ -76,6 +78,7 @@ export function useTypingEngine(sentences: string[]) {
         isCorrect,
         status,
         submit,
-        timeLeft
+        timeLeft,
+        setCurrentIndex,
     }
 }

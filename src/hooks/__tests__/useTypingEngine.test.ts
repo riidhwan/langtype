@@ -90,4 +90,29 @@ describe('useTypingEngine', () => {
         // Should stay as 'Hello'
         expect(result.current.input).toBe('Hello')
     })
+
+    it('supports initialIndex', () => {
+        const { result } = renderHook(() => useTypingEngine(sentences, 1))
+        expect(result.current.currentSentence).toBe('World')
+    })
+
+    it('allows external index control via setCurrentIndex', () => {
+        const { result } = renderHook(() => useTypingEngine(sentences))
+        expect(result.current.currentSentence).toBe('Hello')
+
+        act(() => {
+            result.current.setCurrentIndex(1)
+        })
+
+        expect(result.current.currentSentence).toBe('World')
+
+        // Reset state checks (input should be cleared)
+        act(() => {
+            result.current.setInput('Some text')
+            result.current.setCurrentIndex(0)
+        })
+
+        expect(result.current.currentSentence).toBe('Hello')
+        expect(result.current.input).toBe('')
+    })
 })
