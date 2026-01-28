@@ -10,13 +10,12 @@ describe('autoMatchSpacing', () => {
     })
 
     it('handles exact partial match without space', () => {
-        expect(autoMatchSpacing('Hello', target)).toBe('Hello')
+        expect(autoMatchSpacing('Hello', target)).toBe('Hello ')
     })
 
     it('ignores manual spaces if they do not add new content', () => {
-        // User types "Hello ", we expect "Hello" because the space is auto-inserted only when needed by next char?
+        // User types "Hello ", we expect "Hello " because the space is auto-inserted only when needed by next char?
         // Actually, if target has space, we insert it ONLY if we have content AFTER it?
-        // Let's re-read the logic. 
         // Logic: iterates target. If target is space, add space. Else take input char. 
         // If input runs out, stop.
         // So "Hello" (input len 5). Target "Hello World".
@@ -26,7 +25,7 @@ describe('autoMatchSpacing', () => {
         // So if input is exhausted, we stop. "Hello" -> "Hello".
         // "Hello " -> clean "Hello" -> "Hello".
         // So expectation should be "Hello".
-        expect(autoMatchSpacing('Hello ', target)).toBe('Hello')
+        expect(autoMatchSpacing('Hello ', target)).toBe('Hello ')
     })
 
     it('handles user typing the space manually followed by char', () => {
@@ -36,13 +35,26 @@ describe('autoMatchSpacing', () => {
 
     it('handles multiple spaces', () => {
         const doubleTarget = 'A B C'
-        expect(autoMatchSpacing('AB', doubleTarget)).toBe('A B')
+        expect(autoMatchSpacing('AB', doubleTarget)).toBe('A B ')
         expect(autoMatchSpacing('ABC', doubleTarget)).toBe('A B C')
     })
+
 
     it('handles mismatching chars', () => {
         // If user types wrong char, we still respect target spacing if we reached a space slot
         // Target: "A B". User types "XY" -> "X Y"
         expect(autoMatchSpacing('XY', 'A B')).toBe('X Y')
+    })
+
+    it('inserts punctuation automatically', () => {
+        expect(autoMatchSpacing('Hello', 'Hello,')).toBe('Hello,')
+        expect(autoMatchSpacing('HelloW', 'Hello, World')).toBe('Hello, W')
+        expect(autoMatchSpacing('End', 'End.')).toBe('End.')
+        expect(autoMatchSpacing('Wow', 'Wow!')).toBe('Wow!')
+        expect(autoMatchSpacing('What', 'What?')).toBe('What?')
+    })
+
+    it('handles mixed space and punctuation', () => {
+        expect(autoMatchSpacing('Ohno', 'Oh, no!')).toBe('Oh, no!')
     })
 })

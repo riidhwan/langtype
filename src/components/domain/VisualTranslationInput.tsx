@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import { AUTO_INSERT_CHARS } from "@/lib/stringUtils"
 
 interface Props {
     value: string
@@ -91,6 +92,10 @@ export function VisualTranslationInput({
                             // Feedback logic
                             let statusColor = "border-muted-foreground/30 text-muted-foreground"
 
+                            // Determine if we should show a pre-filled hint (punctuation/spaces)
+                            const isPreFilled = !inputValue && AUTO_INSERT_CHARS.has(char)
+                            const displayChar = inputValue || (isPreFilled ? char : "")
+
                             if (status === 'submitted' || status === 'completed') {
                                 const isMatch = inputValue === char
                                 statusColor = isMatch
@@ -98,6 +103,10 @@ export function VisualTranslationInput({
                                     : "border-red-500 bg-red-500/20 text-red-600"
                             } else if (isTyped) {
                                 statusColor = "border-foreground text-foreground"
+                            } else if (isPreFilled) {
+                                // Keep it gray (muted) but maybe slightly different? 
+                                // Default muted is fine for pre-filled hints.
+                                statusColor = "border-muted-foreground/30 text-muted-foreground"
                             }
 
                             return (
@@ -111,7 +120,7 @@ export function VisualTranslationInput({
                                         isCurrent && "border-primary animate-pulse"
                                     )}
                                 >
-                                    {inputValue}
+                                    {displayChar}
                                 </div>
                             )
                         })}
