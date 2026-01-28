@@ -1,7 +1,17 @@
 [
     {
+        "id": "basics",
+        "title": "German Basics",
+        "description": "A2 Grammar structures using simple A1 vocabulary."
+    },
+    {
         "id": "casual_german_a2",
         "title": "Everyday German Conversations",
         "description": "100 practical A2-level sentences for daily interactions, hobbies, and social life."
+    },
+    {
+        "id": "shopping_restaurant",
+        "title": "Dining and Shopping",
+        "description": "A2 structures for ordering food and buying goods using A1 vocabulary."
     }
 ]

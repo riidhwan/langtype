@@ -1,0 +1,507 @@
+{
+    "id": "shopping_restaurant",
+    "title": "Dining and Shopping",
+    "description": "A2 structures for ordering food and buying goods using A1 vocabulary.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "I would like to have a cold juice.",
+            "translation": "Ich möchte einen kalten Saft haben."
+        },
+        {
+            "id": "2",
+            "original": "Can you bring me the menu, please?",
+            "translation": "Können Sie mir bitte die Speisekarte bringen?"
+        },
+        {
+            "id": "3",
+            "original": "We have already ordered our food.",
+            "translation": "Wir haben unser Essen schon bestellt."
+        },
+        {
+            "id": "4",
+            "original": "The soup is unfortunately too salty.",
+            "translation": "Die Suppe ist leider zu salzig."
+        },
+        {
+            "id": "5",
+            "original": "I am looking for a white shirt.",
+            "translation": "Ich suche ein weißes Hemd."
+        },
+        {
+            "id": "6",
+            "original": "Where can I find the milk?",
+            "translation": "Wo kann ich die Milch finden?"
+        },
+        {
+            "id": "7",
+            "original": "The red dress is more expensive than the blue one.",
+            "translation": "Das rote Kleid ist teurer als das blaue."
+        },
+        {
+            "id": "8",
+            "original": "I have forgotten my money at home.",
+            "translation": "Ich habe mein Geld zu Hause vergessen."
+        },
+        {
+            "id": "9",
+            "original": "Are you paying together or separately?",
+            "translation": "Zahlen Sie zusammen oder getrennt?"
+        },
+        {
+            "id": "10",
+            "original": "I would like to pay with a card.",
+            "translation": "Ich möchte mit Karte zahlen."
+        },
+        {
+            "id": "11",
+            "original": "The waiter has brought the water.",
+            "translation": "Der Kellner hat das Wasser gebracht."
+        },
+        {
+            "id": "12",
+            "original": "Does the shirt fit you well?",
+            "translation": "Passt Ihnen das Hemd gut?"
+        },
+        {
+            "id": "13",
+            "original": "I need a bigger size.",
+            "translation": "Ich brauche eine größere Größe."
+        },
+        {
+            "id": "14",
+            "original": "We want to sit outside today.",
+            "translation": "Wir wollen heute draußen sitzen."
+        },
+        {
+            "id": "15",
+            "original": "The bread is very fresh.",
+            "translation": "Das Brot ist sehr frisch."
+        },
+        {
+            "id": "16",
+            "original": "She is buying five red apples.",
+            "translation": "Sie kauft fünf rote Äpfel."
+        },
+        {
+            "id": "17",
+            "original": "I have seen a nice jacket here.",
+            "translation": "Ich habe hier eine schöne Jacke gesehen."
+        },
+        {
+            "id": "18",
+            "original": "Could you help me with the sizes?",
+            "translation": "Könnten Sie mir mit den Größen helfen?"
+        },
+        {
+            "id": "19",
+            "original": "The shop is closed on Sundays.",
+            "translation": "Das Geschäft ist am Sonntag geschlossen."
+        },
+        {
+            "id": "20",
+            "original": "I am eating a pizza with cheese.",
+            "translation": "Ich esse eine Pizza mit Käse."
+        },
+        {
+            "id": "21",
+            "original": "Where are the changing rooms?",
+            "translation": "Wo sind die Umkleidekabinen?"
+        },
+        {
+            "id": "22",
+            "original": "The coffee was very hot.",
+            "translation": "Der Kaffee war sehr heiß."
+        },
+        {
+            "id": "23",
+            "original": "We are looking for a table for four people.",
+            "translation": "Wir suchen einen Tisch für vier Personen."
+        },
+        {
+            "id": "24",
+            "original": "I have taken the small bag.",
+            "translation": "Ich habe die kleine Tasche genommen."
+        },
+        {
+            "id": "25",
+            "original": "The supermarket is next to the bank.",
+            "translation": "Der Supermarkt ist neben der Bank."
+        },
+        {
+            "id": "26",
+            "original": "Is the fish good today?",
+            "translation": "Ist der Fisch heute gut?"
+        },
+        {
+            "id": "27",
+            "original": "I don't eat meat because I am a vegetarian.",
+            "translation": "Ich esse kein Fleisch, weil ich Vegetarier bin."
+        },
+        {
+            "id": "28",
+            "original": "Can I try on these shoes?",
+            "translation": "Kann ich diese Schuhe anprobieren?"
+        },
+        {
+            "id": "29",
+            "original": "The pants are too long for me.",
+            "translation": "Die Hose ist mir zu lang."
+        },
+        {
+            "id": "30",
+            "original": "I would like a glass of red wine.",
+            "translation": "Ich möchte ein Glas Rotwein."
+        },
+        {
+            "id": "31",
+            "original": "Do you have this shirt in blue?",
+            "translation": "Haben Sie dieses Hemd in Blau?"
+        },
+        {
+            "id": "32",
+            "original": "The bill is thirty euros.",
+            "translation": "Die Rechnung macht dreißig Euro."
+        },
+        {
+            "id": "33",
+            "original": "He is paying the bill now.",
+            "translation": "Er bezahlt jetzt die Rechnung."
+        },
+        {
+            "id": "34",
+            "original": "We would like to order dessert.",
+            "translation": "Wir möchten einen Nachtisch bestellen."
+        },
+        {
+            "id": "35",
+            "original": "The tea is too sweet.",
+            "translation": "Der Tee ist zu süß."
+        },
+        {
+            "id": "36",
+            "original": "I have bought a bottle of water.",
+            "translation": "Ich habe eine Flasche Wasser gekauft."
+        },
+        {
+            "id": "37",
+            "original": "Where can I find the eggs?",
+            "translation": "Wo kann ich die Eier finden?"
+        },
+        {
+            "id": "38",
+            "original": "I need a kilo of tomatoes.",
+            "translation": "Ich brauche ein Kilo Tomaten."
+        },
+        {
+            "id": "39",
+            "original": "The cake tastes very good.",
+            "translation": "Der Kuchen schmeckt sehr gut."
+        },
+        {
+            "id": "40",
+            "original": "We have waited too long for the food.",
+            "translation": "Wir haben zu lange auf das Essen gewartet."
+        },
+        {
+            "id": "41",
+            "original": "I like the black shoes.",
+            "translation": "Ich mag die schwarzen Schuhe."
+        },
+        {
+            "id": "42",
+            "original": "Is there a toilet here?",
+            "translation": "Gibt es hier eine Toilette?"
+        },
+        {
+            "id": "43",
+            "original": "I am taking the bus to the mall.",
+            "translation": "Ich nehme den Bus zum Einkaufszentrum."
+        },
+        {
+            "id": "44",
+            "original": "The butter is in the fridge.",
+            "translation": "Die Butter ist im Kühlschrank."
+        },
+        {
+            "id": "45",
+            "original": "She has bought a new hat.",
+            "translation": "Sie hat einen neuen Hut gekauft."
+        },
+        {
+            "id": "46",
+            "original": "Can you give me a bag, please?",
+            "translation": "Können Sie mir bitte eine Tasche geben?"
+        },
+        {
+            "id": "47",
+            "original": "The oranges are very cheap.",
+            "translation": "Die Orangen sind sehr billig."
+        },
+        {
+            "id": "48",
+            "original": "We would like to sit by the window.",
+            "translation": "Wir möchten am Fenster sitzen."
+        },
+        {
+            "id": "49",
+            "original": "The beer is cold and good.",
+            "translation": "Das Bier ist kalt und gut."
+        },
+        {
+            "id": "50",
+            "original": "I have ordered a salad.",
+            "translation": "Ich habe einen Salat bestellt."
+        },
+        {
+            "id": "51",
+            "original": "Do you have fresh fruit?",
+            "translation": "Haben Sie frisches Obst?"
+        },
+        {
+            "id": "52",
+            "original": "I am buying chocolate for my sister.",
+            "translation": "Ich kaufe Schokolade für meine Schwester."
+        },
+        {
+            "id": "53",
+            "original": "The shop assistant is very friendly.",
+            "translation": "Der Verkäufer ist sehr freundlich."
+        },
+        {
+            "id": "54",
+            "original": "I don't need any help, thank you.",
+            "translation": "Ich brauche keine Hilfe, danke."
+        },
+        {
+            "id": "55",
+            "original": "The potatoes are in the bag.",
+            "translation": "Die Kartoffeln sind in der Tasche."
+        },
+        {
+            "id": "56",
+            "original": "I have found the salt.",
+            "translation": "Ich habe das Salz gefunden."
+        },
+        {
+            "id": "57",
+            "original": "We are drinking a bottle of wine.",
+            "translation": "Wir trinken eine Flasche Wein."
+        },
+        {
+            "id": "58",
+            "original": "The child wants an ice cream.",
+            "translation": "Das Kind möchte ein Eis."
+        },
+        {
+            "id": "59",
+            "original": "Is the chicken spicy?",
+            "translation": "Ist das Hähnchen scharf?"
+        },
+        {
+            "id": "60",
+            "original": "I am paying with cash.",
+            "translation": "Ich bezahle bar."
+        },
+        {
+            "id": "61",
+            "original": "She is looking for the pasta.",
+            "translation": "Sie sucht die Nudeln."
+        },
+        {
+            "id": "62",
+            "original": "We have eaten too much.",
+            "translation": "Wir haben zu viel gegessen."
+        },
+        {
+            "id": "63",
+            "original": "The shoes are very comfortable.",
+            "translation": "Die Schuhe sind sehr bequem."
+        },
+        {
+            "id": "64",
+            "original": "I am taking the green shirt.",
+            "translation": "Ich nehme das grüne Hemd."
+        },
+        {
+            "id": "65",
+            "original": "The salt is on the table.",
+            "translation": "Das Salz steht auf dem Tisch."
+        },
+        {
+            "id": "66",
+            "original": "I have forgotten my umbrella in the shop.",
+            "translation": "Ich habe meinen Regenschirm im Laden vergessen."
+        },
+        {
+            "id": "67",
+            "original": "Can I have another water?",
+            "translation": "Kann ich noch ein Wasser haben?"
+        },
+        {
+            "id": "68",
+            "original": "The juice is for the child.",
+            "translation": "Der Saft ist für das Kind."
+        },
+        {
+            "id": "69",
+            "original": "We are staying for dinner.",
+            "translation": "Wir bleiben zum Abendessen."
+        },
+        {
+            "id": "70",
+            "original": "The market is open until six.",
+            "translation": "Der Markt ist bis sechs Uhr offen."
+        },
+        {
+            "id": "71",
+            "original": "I am buying meat for the soup.",
+            "translation": "Ich kaufe Fleisch für die Suppe."
+        },
+        {
+            "id": "72",
+            "original": "The price is very high.",
+            "translation": "Der Preis ist sehr hoch."
+        },
+        {
+            "id": "73",
+            "original": "Do you have sugar for the coffee?",
+            "translation": "Haben Sie Zucker für den Kaffee?"
+        },
+        {
+            "id": "74",
+            "original": "I have paid for the bread.",
+            "translation": "Ich habe für das Brot bezahlt."
+        },
+        {
+            "id": "75",
+            "original": "The restaurant is very famous.",
+            "translation": "Das Restaurant ist sehr bekannt."
+        },
+        {
+            "id": "76",
+            "original": "We are sitting at the bar.",
+            "translation": "Wir sitzen an der Bar."
+        },
+        {
+            "id": "77",
+            "original": "I would like to have a cup of tea.",
+            "translation": "Ich möchte eine Tasse Tee haben."
+        },
+        {
+            "id": "78",
+            "original": "The milk is empty.",
+            "translation": "Die Milch ist leer."
+        },
+        {
+            "id": "79",
+            "original": "He is bringing the pizza to the table.",
+            "translation": "Er bringt die Pizza zum Tisch."
+        },
+        {
+            "id": "80",
+            "original": "I am buying a present for my friend.",
+            "translation": "Ich kaufe ein Geschenk für meinen Freund."
+        },
+        {
+            "id": "81",
+            "original": "The jacket is too small for him.",
+            "translation": "Die Jacke ist ihm zu klein."
+        },
+        {
+            "id": "82",
+            "original": "We have seen the menu already.",
+            "translation": "Wir haben die Karte schon gesehen."
+        },
+        {
+            "id": "83",
+            "original": "Is the coffee with or without milk?",
+            "translation": "Ist der Kaffee mit oder ohne Milch?"
+        },
+        {
+            "id": "84",
+            "original": "I am looking for the chocolate section.",
+            "translation": "Ich suche die Schokoladenabteilung."
+        },
+        {
+            "id": "85",
+            "original": "The rice is still hard.",
+            "translation": "Der Reis ist noch hart."
+        },
+        {
+            "id": "86",
+            "original": "I would like to buy a newspaper.",
+            "translation": "Ich möchte eine Zeitung kaufen."
+        },
+        {
+            "id": "87",
+            "original": "The supermarket is across from the pharmacy.",
+            "translation": "Der Supermarkt ist gegenüber der Apotheke."
+        },
+        {
+            "id": "88",
+            "original": "We are ordering two beers.",
+            "translation": "Wir bestellen zwei Bier."
+        },
+        {
+            "id": "89",
+            "original": "The waiter is coming now.",
+            "translation": "Der Kellner kommt jetzt."
+        },
+        {
+            "id": "90",
+            "original": "I have taken the wrong bag.",
+            "translation": "Ich habe die falsche Tasche genommen."
+        },
+        {
+            "id": "91",
+            "original": "The cheese is very expensive here.",
+            "translation": "Der Käse ist hier sehr teuer."
+        },
+        {
+            "id": "92",
+            "original": "Can you show me the yellow dress?",
+            "translation": "Können Sie mir das gelbe Kleid zeigen?"
+        },
+        {
+            "id": "93",
+            "original": "I have had a good day.",
+            "translation": "Ich habe einen guten Tag gehabt."
+        },
+        {
+            "id": "94",
+            "original": "The salad is very fresh and healthy.",
+            "translation": "Der Salat ist sehr frisch und gesund."
+        },
+        {
+            "id": "95",
+            "original": "Where can I pay?",
+            "translation": "Wo kann ich bezahlen?"
+        },
+        {
+            "id": "96",
+            "original": "I am buying flowers for my mother.",
+            "translation": "Ich kaufe Blumen für meine Mutter."
+        },
+        {
+            "id": "97",
+            "original": "The bread is in the oven.",
+            "translation": "Das Brot ist im Ofen."
+        },
+        {
+            "id": "98",
+            "original": "We are going to the mall.",
+            "translation": "Wir gehen ins Einkaufszentrum."
+        },
+        {
+            "id": "99",
+            "original": "I have lost my wallet in the restaurant.",
+            "translation": "Ich habe mein Portemonnaie im Restaurant verloren."
+        },
+        {
+            "id": "100",
+            "original": "The shopping list is on the table.",
+            "translation": "Die Einkaufsliste liegt auf dem Tisch."
+        }
+    ]
+}
