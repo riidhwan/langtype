@@ -1,41 +1,34 @@
-import { describe, it, expect, vi } from 'vitest'
-import { getCollections, getCollection } from '../challengeService'
-
-// Mock the JSON imports
-vi.mock('@/data/collections/index.json', () => ({
-    default: [{ id: 'basics', title: 'Basics' }]
-}))
-
-vi.mock('@/data/collections/basics.json', () => ({
-    default: { id: 'basics', title: 'Basics', challenges: [] }
-}))
-
-vi.mock('@/data/collections/casual_german_a2.json', () => ({
-    default: { id: 'casual_german_a2', title: 'Casual', challenges: [] }
-}))
-
-vi.mock('@/data/collections/tech.json', () => ({
-    default: { id: 'tech', title: 'Tech', challenges: [] }
-}))
+import { describe, it, expect } from 'vitest'
+import { getCollection, getCollections } from '../challengeService'
 
 describe('challengeService', () => {
     describe('getCollections', () => {
-        it('returns the index collection list', async () => {
+        it('returns all collection metadata from index.json', async () => {
             const collections = await getCollections()
-            expect(collections).toHaveLength(1)
-            expect(collections[0]).toEqual({ id: 'basics', title: 'Basics' })
+            expect(collections).toBeInstanceOf(Array)
+            expect(collections.length).toBeGreaterThan(0)
+            expect(collections.find(c => c.id === 'basics')).toBeDefined()
+            expect(collections.find(c => c.id === 'shopping_restaurant')).toBeDefined()
         })
     })
 
     describe('getCollection', () => {
-        it('returns the correct collection for a valid ID', async () => {
+        it('loads the basics collection correctly', async () => {
             const collection = await getCollection('basics')
             expect(collection).toBeDefined()
             expect(collection?.id).toBe('basics')
+            expect(collection?.challenges).toBeInstanceOf(Array)
         })
 
-        it('returns undefined for an invalid ID', async () => {
-            const collection = await getCollection('invalid-id')
+        it('loads the shopping_restaurant collection correctly', async () => {
+            const collection = await getCollection('shopping_restaurant')
+            expect(collection).toBeDefined()
+            expect(collection?.id).toBe('shopping_restaurant')
+            expect(collection?.challenges).toBeInstanceOf(Array)
+        })
+
+        it('returns undefined for non-existent collection', async () => {
+            const collection = await getCollection('non_existent')
             expect(collection).toBeUndefined()
         })
     })
