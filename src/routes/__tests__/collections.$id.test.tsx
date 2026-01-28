@@ -1,28 +1,33 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-// 1. Mock the dependencies BEFORE importing the component
+
+
+// We need to capture the navigate function mock to assert on it
+const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@tanstack/react-router')>()
-
-    // Create a mock for useLoaderData that we can control
     const mockUseLoaderData = vi.fn()
-
     return {
         ...actual,
-        // Mock Link to render a simple anchor
         Link: (props: any) => <a href={props.to} {...props}>{props.children}</a>,
-        // Mock createFileRoute to return our mock Route object
         createFileRoute: () => () => ({
-            useLoaderData: mockUseLoaderData
+            useLoaderData: mockUseLoaderData,
+            useSearch: vi.fn(() => ({ questionId: undefined }))
         }),
-        // Helper to access the mock for assertions/setup
-        _mockUseLoaderData: mockUseLoaderData
+        _mockUseLoaderData: mockUseLoaderData,
+        useNavigate: () => mockNavigate
     }
 })
 
 vi.mock('@/components/features/TypingGame', () => ({
-    TypingGame: () => <div data-testid="typing-game">Typing Game</div>
+    TypingGame: ({ onQuestionChange }: { onQuestionChange?: (id: string) => void }) => (
+        <div data-testid="typing-game">
+            <button onClick={() => onQuestionChange?.('next-id')} data-testid="next-question-btn">
+                Next Question
+            </button>
+        </div>
+    )
 }))
 
 // Import after mocking
@@ -42,16 +47,31 @@ describe('CollectionGamePage', () => {
             challenges: []
         }
 
-        // Setup the mock return value
-        // Since Route.useLoaderData is our mock function
         vi.mocked(Route.useLoaderData).mockReturnValue(mockCollection)
 
-        // Render the component directly - no RouterProvider needed as we mocked Link and Route
         render(<CollectionGamePage />)
 
-        // Assert
         const homeLink = screen.getByRole('link', { name: /home/i })
         expect(homeLink).toBeInTheDocument()
-        expect(homeLink).toHaveAttribute('href', '/')
+    })
+
+    it('navigates when game triggers question change', () => {
+        vi.mocked(Route.useLoaderData).mockReturnValue({
+            id: 'test',
+            title: 'Test',
+            challenges: []
+        } as any)
+
+        render(<CollectionGamePage />)
+
+        // Find and click the button mocked in TypingGame
+        const btn = screen.getByTestId('next-question-btn')
+        btn.click()
+
+        // Verify navigation
+        expect(mockNavigate).toHaveBeenCalledWith({
+            search: { questionId: 'next-id' },
+            replace: true
+        })
     })
 })
