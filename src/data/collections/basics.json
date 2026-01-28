@@ -1,87 +1,87 @@
 {
     "id": "basics",
     "title": "German Basics",
-    "description": "A2 Grammar structures using simple A1 vocabulary.",
+    "description": "A2 Grammar structures using simple A1 vocabulary",
     "challenges": [
         {
             "id": "1",
-            "original": "I have eaten a green apple.",
-            "translation": "Ich habe einen grünen Apfel gegessen."
+            "original": "I have eaten a green apple",
+            "translation": "Ich habe einen grünen Apfel gegessen"
         },
         {
             "id": "2",
-            "original": "He wants to drink a cold water.",
-            "translation": "Er will ein kaltes Wasser trinken."
+            "original": "He wants to drink a cold water",
+            "translation": "Er will ein kaltes Wasser trinken"
         },
         {
             "id": "3",
-            "original": "We are going to the small supermarket.",
-            "translation": "Wir gehen in den kleinen Supermarkt."
+            "original": "We are going to the small supermarket",
+            "translation": "Wir gehen in den kleinen Supermarkt"
         },
         {
             "id": "4",
-            "original": "She has called her mother.",
-            "translation": "Sie hat ihre Mutter angerufen."
+            "original": "She has called her mother",
+            "translation": "Sie hat ihre Mutter angerufen"
         },
         {
             "id": "5",
-            "original": "The man is buying a cheap bread.",
-            "translation": "Der Mann kauft ein billiges Brot."
+            "original": "The man is buying a cheap bread",
+            "translation": "Der Mann kauft ein billiges Brot"
         },
         {
             "id": "6",
-            "original": "I can see the tall tree.",
-            "translation": "Ich kann den hohen Baum sehen."
+            "original": "I can see the tall tree",
+            "translation": "Ich kann den hohen Baum sehen"
         },
         {
             "id": "7",
-            "original": "They have found the keys.",
-            "translation": "Sie haben die Schlüssel gefunden."
+            "original": "They have found the keys",
+            "translation": "Sie haben die Schlüssel gefunden"
         },
         {
             "id": "8",
-            "original": "The child is playing with a red ball.",
-            "translation": "Das Kind spielt mit einem roten Ball."
+            "original": "The child is playing with a red ball",
+            "translation": "Das Kind spielt mit einem roten Ball"
         },
         {
             "id": "9",
-            "original": "I am waiting for my friend.",
-            "translation": "Ich warte auf meinen Freund."
+            "original": "I am waiting for my friend",
+            "translation": "Ich warte auf meinen Freund"
         },
         {
             "id": "10",
-            "original": "Because it is raining, I am staying home.",
-            "translation": "Weil es regnet, bleibe ich zu Hause."
+            "original": "Because it is raining, I am staying home",
+            "translation": "Weil es regnet, bleibe ich zu Hause"
         },
         {
             "id": "11",
-            "original": "You must do your homework now.",
-            "translation": "Du musst jetzt deine Hausaufgaben machen."
+            "original": "You must do your homework now",
+            "translation": "Du musst jetzt deine Hausaufgaben machen"
         },
         {
             "id": "12",
-            "original": "We lived in a big city.",
-            "translation": "Wir haben in einer großen Stadt gewohnt."
+            "original": "We lived in a big city",
+            "translation": "Wir haben in einer großen Stadt gewohnt"
         },
         {
             "id": "13",
-            "original": "The coffee is hotter than the tea.",
-            "translation": "Der Kaffee ist heißer als der Tee."
+            "original": "The coffee is hotter than the tea",
+            "translation": "Der Kaffee ist heißer als der Tee"
         },
         {
             "id": "14",
-            "original": "I think that the teacher is nice.",
-            "translation": "Ich glaube, dass der Lehrer nett ist."
+            "original": "I think that the teacher is nice",
+            "translation": "Ich glaube, dass der Lehrer nett ist"
         },
         {
             "id": "15",
-            "original": "She is wearing a beautiful dress.",
-            "translation": "Sie trägt ein schönes Kleid."
+            "original": "She is wearing a beautiful dress",
+            "translation": "Sie trägt ein schönes Kleid"
         },
         {
             "id": "16",
-            "original": "He has learned many words.",
-            "translation": "Er hat viele Wörter gelernt."
+            "original": "He has learned many words",
+            "translation": "Er hat viele Wörter gelernt"
         },
         {
             "id": "17",
@@ -90,28 +90,28 @@
         },
         {
             "id": "18",
-            "original": "I don't have a fast car.",
-            "translation": "Ich habe kein schnelles Auto."
+            "original": "I don't have a fast car",
+            "translation": "Ich habe kein schnelles Auto"
         },
         {
             "id": "19",
-            "original": "The woman is talking to her father.",
-            "translation": "Die Frau spricht mit ihrem Vater."
+            "original": "The woman is talking to her father",
+            "translation": "Die Frau spricht mit ihrem Vater"
         },
         {
             "id": "20",
-            "original": "We are eating at a small table.",
-            "translation": "Wir essen an einem kleinen Tisch."
+            "original": "We are eating at a small table",
+            "translation": "Wir essen an einem kleinen Tisch"
         },
         {
             "id": "21",
-            "original": "I am going home after work.",
-            "translation": "Ich gehe nach der Arbeit nach Hause."
+            "original": "I am going home after work",
+            "translation": "Ich gehe nach der Arbeit nach Hause"
         },
         {
             "id": "22",
-            "original": "The house is very old.",
-            "translation": "Das Haus ist sehr alt."
+            "original": "The house is very old",
+            "translation": "Das Haus ist sehr alt"
         },
         {
             "id": "23",
@@ -120,33 +120,33 @@
         },
         {
             "id": "24",
-            "original": "I am taking the bus to the city.",
-            "translation": "Ich nehme den Bus in die Stadt."
+            "original": "I am taking the bus to the city",
+            "translation": "Ich nehme den Bus in die Stadt"
         },
         {
             "id": "25",
-            "original": "He is opening the big window.",
-            "translation": "Er macht das große Fenster auf."
+            "original": "He is opening the big window",
+            "translation": "Er macht das große Fenster auf"
         },
         {
             "id": "26",
-            "original": "She has written a long letter.",
-            "translation": "Sie hat einen langen Brief geschrieben."
+            "original": "She has written a long letter",
+            "translation": "Sie hat einen langen Brief geschrieben"
         },
         {
             "id": "27",
-            "original": "We should buy some milk.",
-            "translation": "Wir sollten Milch kaufen."
+            "original": "We should buy some milk",
+            "translation": "Wir sollten Milch kaufen"
         },
         {
             "id": "28",
-            "original": "The students are listening to the music.",
-            "translation": "Die Schüler hören die Musik."
+            "original": "The students are listening to the music",
+            "translation": "Die Schüler hören die Musik"
         },
         {
             "id": "29",
-            "original": "I slept for eight hours.",
-            "translation": "Ich habe acht Stunden geschlafen."
+            "original": "I slept for eight hours",
+            "translation": "Ich habe acht Stunden geschlafen"
         },
         {
             "id": "30",
@@ -155,23 +155,23 @@
         },
         {
             "id": "31",
-            "original": "The dog is sleeping under the table.",
-            "translation": "Der Hund schläft unter dem Tisch."
+            "original": "The dog is sleeping under the table",
+            "translation": "Der Hund schläft unter dem Tisch"
         },
         {
             "id": "32",
-            "original": "I like the blue shoes best.",
-            "translation": "Ich mag die blauen Schuhe am liebsten."
+            "original": "I like the blue shoes best",
+            "translation": "Ich mag die blauen Schuhe am liebsten"
         },
         {
             "id": "33",
-            "original": "He is coming tomorrow at ten.",
-            "translation": "Er kommt morgen um zehn."
+            "original": "He is coming tomorrow at ten",
+            "translation": "Er kommt morgen um zehn"
         },
         {
             "id": "34",
-            "original": "We drank a lot of juice.",
-            "translation": "Wir haben viel Saft getrunken."
+            "original": "We drank a lot of juice",
+            "translation": "Wir haben viel Saft getrunken"
         },
         {
             "id": "35",
@@ -180,18 +180,18 @@
         },
         {
             "id": "36",
-            "original": "They are going to the cinema together.",
-            "translation": "Sie gehen zusammen ins Kino."
+            "original": "They are going to the cinema together",
+            "translation": "Sie gehen zusammen ins Kino"
         },
         {
             "id": "37",
-            "original": "The kitchen is clean now.",
-            "translation": "Die Küche ist jetzt sauber."
+            "original": "The kitchen is clean now",
+            "translation": "Die Küche ist jetzt sauber"
         },
         {
             "id": "38",
-            "original": "I have seen the film already.",
-            "translation": "Ich habe den Film schon gesehen."
+            "original": "I have seen the film already",
+            "translation": "Ich habe den Film schon gesehen"
         },
         {
             "id": "39",
@@ -200,43 +200,43 @@
         },
         {
             "id": "40",
-            "original": "The cat is sitting on the chair.",
-            "translation": "Die Katze sitzt auf dem Stuhl."
+            "original": "The cat is sitting on the chair",
+            "translation": "Die Katze sitzt auf dem Stuhl"
         },
         {
             "id": "41",
-            "original": "I don't like the cold weather.",
-            "translation": "Ich mag das kalte Wetter nicht."
+            "original": "I don't like the cold weather",
+            "translation": "Ich mag das kalte Wetter nicht"
         },
         {
             "id": "42",
-            "original": "She has found a new job.",
-            "translation": "Sie hat einen neuen Job gefunden."
+            "original": "She has found a new job",
+            "translation": "Sie hat einen neuen Job gefunden"
         },
         {
             "id": "43",
-            "original": "We are visiting our grandparents.",
-            "translation": "Wir besuchen unsere Großeltern."
+            "original": "We are visiting our grandparents",
+            "translation": "Wir besuchen unsere Großeltern"
         },
         {
             "id": "44",
-            "original": "He is reading a difficult book.",
-            "translation": "Er liest ein schweres Buch."
+            "original": "He is reading a difficult book",
+            "translation": "Er liest ein schweres Buch"
         },
         {
             "id": "45",
-            "original": "I forgot my bag today.",
-            "translation": "Ich habe heute meine Tasche vergessen."
+            "original": "I forgot my bag today",
+            "translation": "Ich habe heute meine Tasche vergessen"
         },
         {
             "id": "46",
-            "original": "The flowers are very beautiful.",
-            "translation": "Die Blumen sind sehr schön."
+            "original": "The flowers are very beautiful",
+            "translation": "Die Blumen sind sehr schön"
         },
         {
             "id": "47",
-            "original": "I am going to the park now.",
-            "translation": "Ich gehe jetzt in den Park."
+            "original": "I am going to the park now",
+            "translation": "Ich gehe jetzt in den Park"
         },
         {
             "id": "48",
@@ -245,263 +245,263 @@
         },
         {
             "id": "49",
-            "original": "The sun is shining today.",
-            "translation": "Die Sonne scheint heute."
+            "original": "The sun is shining today",
+            "translation": "Die Sonne scheint heute"
         },
         {
             "id": "50",
-            "original": "I need to buy a ticket.",
-            "translation": "Ich muss ein Ticket kaufen."
+            "original": "I need to buy a ticket",
+            "translation": "Ich muss ein Ticket kaufen"
         },
         {
             "id": "51",
-            "original": "He has a very fast bicycle.",
-            "translation": "Er hat ein sehr schnelles Fahrrad."
+            "original": "He has a very fast bicycle",
+            "translation": "Er hat ein sehr schnelles Fahrrad"
         },
         {
             "id": "52",
-            "original": "We are walking through the forest.",
-            "translation": "Wir gehen durch den Wald."
+            "original": "We are walking through the forest",
+            "translation": "Wir gehen durch den Wald"
         },
         {
             "id": "53",
-            "original": "The children are playing outside.",
-            "translation": "Die Kinder spielen draußen."
+            "original": "The children are playing outside",
+            "translation": "Die Kinder spielen draußen"
         },
         {
             "id": "54",
-            "original": "I have lost my telephone.",
-            "translation": "Ich habe mein Telefon verloren."
+            "original": "I have lost my telephone",
+            "translation": "Ich habe mein Telefon verloren"
         },
         {
             "id": "55",
-            "original": "The water is too cold for me.",
-            "translation": "Das Wasser ist mir zu kalt."
+            "original": "The water is too cold for me",
+            "translation": "Das Wasser ist mir zu kalt"
         },
         {
             "id": "56",
-            "original": "She is dancing with her brother.",
-            "translation": "Sie tanzt mit ihrem Bruder."
+            "original": "She is dancing with her brother",
+            "translation": "Sie tanzt mit ihrem Bruder"
         },
         {
             "id": "57",
-            "original": "I have to get up early.",
-            "translation": "Ich muss früh aufstehen."
+            "original": "I have to get up early",
+            "translation": "Ich muss früh aufstehen"
         },
         {
             "id": "58",
-            "original": "The food tastes very good.",
-            "translation": "Das Essen schmeckt sehr gut."
+            "original": "The food tastes very good",
+            "translation": "Das Essen schmeckt sehr gut"
         },
         {
             "id": "59",
-            "original": "We are driving to the mountains.",
-            "translation": "Wir fahren in die Berge."
+            "original": "We are driving to the mountains",
+            "translation": "Wir fahren in die Berge"
         },
         {
             "id": "60",
-            "original": "He is wearing a black hat.",
-            "translation": "Er trägt einen schwarzen Hut."
+            "original": "He is wearing a black hat",
+            "translation": "Er trägt einen schwarzen Hut"
         },
         {
             "id": "61",
-            "original": "I have a big family.",
-            "translation": "Ich habe eine große Familie."
+            "original": "I have a big family",
+            "translation": "Ich habe eine große Familie"
         },
         {
             "id": "62",
-            "original": "The bag is too heavy.",
-            "translation": "Die Tasche ist zu schwer."
+            "original": "The bag is too heavy",
+            "translation": "Die Tasche ist zu schwer"
         },
         {
             "id": "63",
-            "original": "I am learning German every day.",
-            "translation": "Ich lerne jeden Tag Deutsch."
+            "original": "I am learning German every day",
+            "translation": "Ich lerne jeden Tag Deutsch"
         },
         {
             "id": "64",
-            "original": "They have a small apartment.",
-            "translation": "Sie haben eine kleine Wohnung."
+            "original": "They have a small apartment",
+            "translation": "Sie haben eine kleine Wohnung"
         },
         {
             "id": "65",
-            "original": "The tea is without sugar.",
-            "translation": "Der Tee ist ohne Zucker."
+            "original": "The tea is without sugar",
+            "translation": "Der Tee ist ohne Zucker"
         },
         {
             "id": "66",
-            "original": "He is closing the door.",
-            "translation": "Er macht die Tür zu."
+            "original": "He is closing the door",
+            "translation": "Er macht die Tür zu"
         },
         {
             "id": "67",
-            "original": "We have waited for an hour.",
-            "translation": "Wir haben eine Stunde gewartet."
+            "original": "We have waited for an hour",
+            "translation": "Wir haben eine Stunde gewartet"
         },
         {
             "id": "68",
-            "original": "I am looking for my glasses.",
-            "translation": "Ich suche meine Brille."
+            "original": "I am looking for my glasses",
+            "translation": "Ich suche meine Brille"
         },
         {
             "id": "69",
-            "original": "The girl is very happy.",
-            "translation": "Das Mädchen ist sehr glücklich."
+            "original": "The girl is very happy",
+            "translation": "Das Mädchen ist sehr glücklich"
         },
         {
             "id": "70",
-            "original": "I am visiting a friend.",
-            "translation": "Ich besuche einen Freund."
+            "original": "I am visiting a friend",
+            "translation": "Ich besuche einen Freund"
         },
         {
             "id": "71",
-            "original": "He is washing his hands.",
-            "translation": "Er wäscht seine Hände."
+            "original": "He is washing his hands",
+            "translation": "Er wäscht seine Hände"
         },
         {
             "id": "72",
-            "original": "The school is near the house.",
-            "translation": "Die Schule ist nah am Haus."
+            "original": "The school is near the house",
+            "translation": "Die Schule ist nah am Haus"
         },
         {
             "id": "73",
-            "original": "I have invited my sister.",
-            "translation": "Ich habe meine Schwester eingeladen."
+            "original": "I have invited my sister",
+            "translation": "Ich habe meine Schwester eingeladen"
         },
         {
             "id": "74",
-            "original": "They are eating a pizza.",
-            "translation": "Sie essen eine Pizza."
+            "original": "They are eating a pizza",
+            "translation": "Sie essen eine Pizza"
         },
         {
             "id": "75",
-            "original": "The weather is bad today.",
-            "translation": "Das Wetter ist heute schlecht."
+            "original": "The weather is bad today",
+            "translation": "Das Wetter ist heute schlecht"
         },
         {
             "id": "76",
-            "original": "I am tired after the trip.",
-            "translation": "Ich bin müde nach der Reise."
+            "original": "I am tired after the trip",
+            "translation": "Ich bin müde nach der Reise"
         },
         {
             "id": "77",
-            "original": "He is buying a new shirt.",
-            "translation": "Er kauft ein neues Hemd."
+            "original": "He is buying a new shirt",
+            "translation": "Er kauft ein neues Hemd"
         },
         {
             "id": "78",
-            "original": "We have a lot of time.",
-            "translation": "Wir haben viel Zeit."
+            "original": "We have a lot of time",
+            "translation": "Wir haben viel Zeit"
         },
         {
             "id": "79",
-            "original": "She is going to the doctor.",
-            "translation": "Sie geht zum Arzt."
+            "original": "She is going to the doctor",
+            "translation": "Sie geht zum Arzt"
         },
         {
             "id": "80",
-            "original": "I can play the guitar.",
-            "translation": "Ich kann Gitarre spielen."
+            "original": "I can play the guitar",
+            "translation": "Ich kann Gitarre spielen"
         },
         {
             "id": "81",
-            "original": "The street is very quiet.",
-            "translation": "Die Straße ist sehr ruhig."
+            "original": "The street is very quiet",
+            "translation": "Die Straße ist sehr ruhig"
         },
         {
             "id": "82",
-            "original": "I have bought a present.",
-            "translation": "Ich habe ein Geschenk gekauft."
+            "original": "I have bought a present",
+            "translation": "Ich habe ein Geschenk gekauft"
         },
         {
             "id": "83",
-            "original": "He is bringing the suitcase.",
-            "translation": "Er bringt den Koffer."
+            "original": "He is bringing the suitcase",
+            "translation": "Er bringt den Koffer"
         },
         {
             "id": "84",
-            "original": "We are drinking a beer.",
-            "translation": "Wir trinken ein Bier."
+            "original": "We are drinking a beer",
+            "translation": "Wir trinken ein Bier"
         },
         {
             "id": "85",
-            "original": "The baby is sleeping.",
-            "translation": "Das Baby schläft."
+            "original": "The baby is sleeping",
+            "translation": "Das Baby schläft"
         },
         {
             "id": "86",
-            "original": "I have a lot of work.",
-            "translation": "Ich habe viel Arbeit."
+            "original": "I have a lot of work",
+            "translation": "Ich habe viel Arbeit"
         },
         {
             "id": "87",
-            "original": "They are flying to Berlin.",
-            "translation": "Sie fliegen nach Berlin."
+            "original": "They are flying to Berlin",
+            "translation": "Sie fliegen nach Berlin"
         },
         {
             "id": "88",
-            "original": "The sky is blue.",
-            "translation": "Der Himmel ist blau."
+            "original": "The sky is blue",
+            "translation": "Der Himmel ist blau"
         },
         {
             "id": "89",
-            "original": "I am brushing my teeth.",
-            "translation": "Ich putze meine Zähne."
+            "original": "I am brushing my teeth",
+            "translation": "Ich putze meine Zähne"
         },
         {
             "id": "90",
-            "original": "She is helping her mother.",
-            "translation": "Sie hilft ihrer Mutter."
+            "original": "She is helping her mother",
+            "translation": "Sie hilft ihrer Mutter"
         },
         {
             "id": "91",
-            "original": "We are walking in the city.",
-            "translation": "Wir spazieren in der Stadt."
+            "original": "We are walking in the city",
+            "translation": "Wir spazieren in der Stadt"
         },
         {
             "id": "92",
-            "original": "I have understood the question.",
-            "translation": "Ich habe die Frage verstanden."
+            "original": "I have understood the question",
+            "translation": "Ich habe die Frage verstanden"
         },
         {
             "id": "93",
-            "original": "The meat is very good.",
-            "translation": "Das Fleisch ist sehr gut."
+            "original": "The meat is very good",
+            "translation": "Das Fleisch ist sehr gut"
         },
         {
             "id": "94",
-            "original": "He is taking a shower.",
-            "translation": "Er duscht sich."
+            "original": "He is taking a shower",
+            "translation": "Er duscht sich"
         },
         {
             "id": "95",
-            "original": "We are watching a movie.",
-            "translation": "Wir schauen einen Film."
+            "original": "We are watching a movie",
+            "translation": "Wir schauen einen Film"
         },
         {
             "id": "96",
-            "original": "I have a green pen.",
-            "translation": "Ich habe einen grünen Stift."
+            "original": "I have a green pen",
+            "translation": "Ich habe einen grünen Stift"
         },
         {
             "id": "97",
-            "original": "The night is very dark.",
-            "translation": "Die Nacht ist sehr dunkel."
+            "original": "The night is very dark",
+            "translation": "Die Nacht ist sehr dunkel"
         },
         {
             "id": "98",
-            "original": "I am cooking the dinner.",
-            "translation": "Ich koche das Abendessen."
+            "original": "I am cooking the dinner",
+            "translation": "Ich koche das Abendessen"
         },
         {
             "id": "99",
-            "original": "He is talking to the neighbor.",
-            "translation": "Er spricht mit dem Nachbarn."
+            "original": "He is talking to the neighbor",
+            "translation": "Er spricht mit dem Nachbarn"
         },
         {
             "id": "100",
-            "original": "We are finished with the list.",
-            "translation": "Wir sind fertig mit der Liste."
+            "original": "We are finished with the list",
+            "translation": "Wir sind fertig mit der Liste"
         }
     ]
 }
