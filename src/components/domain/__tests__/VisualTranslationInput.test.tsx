@@ -78,4 +78,14 @@ describe('VisualTranslationInput', () => {
         const slots = screen.getAllByTestId('char-slot')
         expect(slots).toHaveLength(2)
     })
+    it('disables input when status is not typing', () => {
+        const { rerender } = render(<VisualTranslationInput {...defaultProps} status="typing" />)
+        expect(screen.getByRole('textbox')).not.toBeDisabled()
+
+        rerender(<VisualTranslationInput {...defaultProps} status="submitted" />)
+        expect(screen.getByRole('textbox')).toBeDisabled()
+
+        rerender(<VisualTranslationInput {...defaultProps} status="completed" />)
+        expect(screen.getByRole('textbox')).toBeDisabled()
+    })
 })

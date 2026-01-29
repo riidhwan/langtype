@@ -76,7 +76,7 @@ export function VisualTranslationInput({
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={handleKeyDown}
                 autoFocus
-                disabled={status === 'completed'}
+                disabled={status !== 'typing'}
             />
 
             {/* Visual Render Layer */}

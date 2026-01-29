@@ -25,10 +25,6 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
             timer = setInterval(() => {
                 setTimeLeft((prev) => {
                     if (prev <= 1) {
-                        // Time is up, but handling this via effect dependency might be tricky due to state updates.
-                        // Let's rely on the submit logic to set the initial wait, and then this effect just decrements visually.
-                        // The actual navigation can still be a timeout or triggered here.
-                        // Let's use this effect to trigger navigation when 0 is reached.
                         return 0
                     }
                     return prev - 1
