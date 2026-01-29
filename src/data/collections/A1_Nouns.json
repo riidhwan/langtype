@@ -1,0 +1,1007 @@
+{
+    "id": "A1_Nouns",
+    "title": "200 German A1 Nouns",
+    "description": "Essential beginner nouns with their singular and plural forms.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Mann",
+            "translation": "der Mann, die Männer"
+        },
+        {
+            "id": "2",
+            "original": "Frau",
+            "translation": "die Frau, die Frauen"
+        },
+        {
+            "id": "3",
+            "original": "Kind",
+            "translation": "das Kind, die Kinder"
+        },
+        {
+            "id": "4",
+            "original": "Junge",
+            "translation": "der Junge, die Jungen"
+        },
+        {
+            "id": "5",
+            "original": "Mädchen",
+            "translation": "das Mädchen, die Mädchen"
+        },
+        {
+            "id": "6",
+            "original": "Vater",
+            "translation": "der Vater, die Väter"
+        },
+        {
+            "id": "7",
+            "original": "Mutter",
+            "translation": "die Mutter, die Mütter"
+        },
+        {
+            "id": "8",
+            "original": "Sohn",
+            "translation": "der Sohn, die Söhne"
+        },
+        {
+            "id": "9",
+            "original": "Tochter",
+            "translation": "die Tochter, die Töchter"
+        },
+        {
+            "id": "10",
+            "original": "Bruder",
+            "translation": "der Bruder, die Brüder"
+        },
+        {
+            "id": "11",
+            "original": "Schwester",
+            "translation": "die Schwester, die Schwestern"
+        },
+        {
+            "id": "12",
+            "original": "Großvater",
+            "translation": "der Großvater, die Großväter"
+        },
+        {
+            "id": "13",
+            "original": "Großmutter",
+            "translation": "die Großmutter, die Großmütter"
+        },
+        {
+            "id": "14",
+            "original": "Freund",
+            "translation": "der Freund, die Freunde"
+        },
+        {
+            "id": "15",
+            "original": "Freundin",
+            "translation": "die Freundin, die Freundinnen"
+        },
+        {
+            "id": "16",
+            "original": "Haus",
+            "translation": "das Haus, die Häuser"
+        },
+        {
+            "id": "17",
+            "original": "Wohnung",
+            "translation": "die Wohnung, die Wohnungen"
+        },
+        {
+            "id": "18",
+            "original": "Zimmer",
+            "translation": "das Zimmer, die Zimmer"
+        },
+        {
+            "id": "19",
+            "original": "Küche",
+            "translation": "die Küche, die Küchen"
+        },
+        {
+            "id": "20",
+            "original": "Bad",
+            "translation": "das Bad, die Bäder"
+        },
+        {
+            "id": "21",
+            "original": "Tisch",
+            "translation": "der Tisch, die Tische"
+        },
+        {
+            "id": "22",
+            "original": "Stuhl",
+            "translation": "der Stuhl, die Stühle"
+        },
+        {
+            "id": "23",
+            "original": "Bett",
+            "translation": "das Bett, die Betten"
+        },
+        {
+            "id": "24",
+            "original": "Schrank",
+            "translation": "der Schrank, die Schränke"
+        },
+        {
+            "id": "25",
+            "original": "Tür",
+            "translation": "die Tür, die Türen"
+        },
+        {
+            "id": "26",
+            "original": "Fenster",
+            "translation": "das Fenster, die Fenster"
+        },
+        {
+            "id": "27",
+            "original": "Schlüssel",
+            "translation": "der Schlüssel, die Schlüssel"
+        },
+        {
+            "id": "28",
+            "original": "Lampe",
+            "translation": "die Lampe, die Lampen"
+        },
+        {
+            "id": "29",
+            "original": "Fernseher",
+            "translation": "der Fernseher, die Fernseher"
+        },
+        {
+            "id": "30",
+            "original": "Telefon",
+            "translation": "das Telefon, die Telefone"
+        },
+        {
+            "id": "31",
+            "original": "Auto",
+            "translation": "das Auto, die Autos"
+        },
+        {
+            "id": "32",
+            "original": "Fahrrad",
+            "translation": "das Fahrrad, die Fahrräder"
+        },
+        {
+            "id": "33",
+            "original": "Bus",
+            "translation": "der Bus, die Busse"
+        },
+        {
+            "id": "34",
+            "original": "Zug",
+            "translation": "der Zug, die Züge"
+        },
+        {
+            "id": "35",
+            "original": "Bahn",
+            "translation": "die Bahn, die Bahnen"
+        },
+        {
+            "id": "36",
+            "original": "Flugzeug",
+            "translation": "das Flugzeug, die Flugzeuge"
+        },
+        {
+            "id": "37",
+            "original": "Bahnhof",
+            "translation": "der Bahnhof, die Bahnhöfe"
+        },
+        {
+            "id": "38",
+            "original": "Flughafen",
+            "translation": "der Flughafen, die Flughäfen"
+        },
+        {
+            "id": "39",
+            "original": "Straße",
+            "translation": "die Straße, die Straßen"
+        },
+        {
+            "id": "40",
+            "original": "Stadt",
+            "translation": "die Stadt, die Städte"
+        },
+        {
+            "id": "41",
+            "original": "Land",
+            "translation": "das Land, die Länder"
+        },
+        {
+            "id": "42",
+            "original": "Apfel",
+            "translation": "der Apfel, die Äpfel"
+        },
+        {
+            "id": "43",
+            "original": "Banane",
+            "translation": "die Banane, die Bananen"
+        },
+        {
+            "id": "44",
+            "original": "Brot",
+            "translation": "das Brot, die Brote"
+        },
+        {
+            "id": "45",
+            "original": "Brötchen",
+            "translation": "das Brötchen, die Brötchen"
+        },
+        {
+            "id": "46",
+            "original": "Ei",
+            "translation": "das Ei, die Eier"
+        },
+        {
+            "id": "47",
+            "original": "Fleisch",
+            "translation": "das Fleisch (Pl. selten)"
+        },
+        {
+            "id": "48",
+            "original": "Fisch",
+            "translation": "der Fisch, die Fische"
+        },
+        {
+            "id": "49",
+            "original": "Gemüse",
+            "translation": "das Gemüse, die Gemüse"
+        },
+        {
+            "id": "50",
+            "original": "Obst",
+            "translation": "das Obst"
+        },
+        {
+            "id": "51",
+            "original": "Käse",
+            "translation": "der Käse, die Käse"
+        },
+        {
+            "id": "52",
+            "original": "Wurst",
+            "translation": "die Wurst, die Würste"
+        },
+        {
+            "id": "53",
+            "original": "Milch",
+            "translation": "die Milch"
+        },
+        {
+            "id": "54",
+            "original": "Wasser",
+            "translation": "das Wasser, die Wasser"
+        },
+        {
+            "id": "55",
+            "original": "Kaffee",
+            "translation": "der Kaffee, die Kaffees"
+        },
+        {
+            "id": "56",
+            "original": "Tee",
+            "translation": "der Tee, die Tees"
+        },
+        {
+            "id": "57",
+            "original": "Saft",
+            "translation": "der Saft, die Säfte"
+        },
+        {
+            "id": "58",
+            "original": "Bier",
+            "translation": "das Bier, die Biere"
+        },
+        {
+            "id": "59",
+            "original": "Wein",
+            "translation": "der Wein, die Weine"
+        },
+        {
+            "id": "60",
+            "original": "Zucker",
+            "translation": "der Zucker"
+        },
+        {
+            "id": "61",
+            "original": "Salz",
+            "translation": "das Salz, die Salze"
+        },
+        {
+            "id": "62",
+            "original": "Schule",
+            "translation": "die Schule, die Schulen"
+        },
+        {
+            "id": "63",
+            "original": "Lehrer",
+            "translation": "der Lehrer, die Lehrer"
+        },
+        {
+            "id": "64",
+            "original": "Lehrerin",
+            "translation": "die Lehrerin, die Lehrerinnen"
+        },
+        {
+            "id": "65",
+            "original": "Schüler",
+            "translation": "der Schüler, die Schüler"
+        },
+        {
+            "id": "66",
+            "original": "Buch",
+            "translation": "das Buch, die Bücher"
+        },
+        {
+            "id": "67",
+            "original": "Heft",
+            "translation": "das Heft, die Hefte"
+        },
+        {
+            "id": "68",
+            "original": "Stift",
+            "translation": "der Stift, die Stifte"
+        },
+        {
+            "id": "69",
+            "original": "Kugelschreiber",
+            "translation": "der Kugelschreiber, die Kugelschreiber"
+        },
+        {
+            "id": "70",
+            "original": "Papier",
+            "translation": "das Papier, die Papiere"
+        },
+        {
+            "id": "71",
+            "original": "Frage",
+            "translation": "die Frage, die Fragen"
+        },
+        {
+            "id": "72",
+            "original": "Antwort",
+            "translation": "die Antwort, die Antworten"
+        },
+        {
+            "id": "73",
+            "original": "Beispiel",
+            "translation": "das Beispiel, die Beispiele"
+        },
+        {
+            "id": "74",
+            "original": "Hausaufgabe",
+            "translation": "die Hausaufgabe, die Hausaufgaben"
+        },
+        {
+            "id": "75",
+            "original": "Prüfung",
+            "translation": "die Prüfung, die Prüfungen"
+        },
+        {
+            "id": "76",
+            "original": "Arbeit",
+            "translation": "die Arbeit, die Arbeiten"
+        },
+        {
+            "id": "77",
+            "original": "Beruf",
+            "translation": "der Beruf, die Berufe"
+        },
+        {
+            "id": "78",
+            "original": "Chef",
+            "translation": "der Chef, die Chefs"
+        },
+        {
+            "id": "79",
+            "original": "Kollege",
+            "translation": "der Kollege, die Kollegen"
+        },
+        {
+            "id": "80",
+            "original": "Büro",
+            "translation": "das Büro, die Büros"
+        },
+        {
+            "id": "81",
+            "original": "Computer",
+            "translation": "der Computer, die Computer"
+        },
+        {
+            "id": "82",
+            "original": "E-Mail",
+            "translation": "die E-Mail, die E-Mails"
+        },
+        {
+            "id": "83",
+            "original": "Geld",
+            "translation": "das Geld, die Gelder"
+        },
+        {
+            "id": "84",
+            "original": "Euro",
+            "translation": "der Euro, die Euro"
+        },
+        {
+            "id": "85",
+            "original": "Preis",
+            "translation": "der Preis, die Preise"
+        },
+        {
+            "id": "86",
+            "original": "Rechnung",
+            "translation": "die Rechnung, die Rechnungen"
+        },
+        {
+            "id": "87",
+            "original": "Körper",
+            "translation": "der Körper, die Körper"
+        },
+        {
+            "id": "88",
+            "original": "Kopf",
+            "translation": "der Kopf, die Köpfe"
+        },
+        {
+            "id": "89",
+            "original": "Haar",
+            "translation": "das Haar, die Haare"
+        },
+        {
+            "id": "90",
+            "original": "Auge",
+            "translation": "das Auge, die Augen"
+        },
+        {
+            "id": "91",
+            "original": "Ohr",
+            "translation": "das Ohr, die Ohren"
+        },
+        {
+            "id": "92",
+            "original": "Nase",
+            "translation": "die Nase, die Nasen"
+        },
+        {
+            "id": "93",
+            "original": "Mund",
+            "translation": "der Mund, die Münder"
+        },
+        {
+            "id": "94",
+            "original": "Hals",
+            "translation": "der Hals, die Hälse"
+        },
+        {
+            "id": "95",
+            "original": "Arm",
+            "translation": "der Arm, die Arme"
+        },
+        {
+            "id": "96",
+            "original": "Hand",
+            "translation": "die Hand, die Hände"
+        },
+        {
+            "id": "97",
+            "original": "Finger",
+            "translation": "der Finger, die Finger"
+        },
+        {
+            "id": "98",
+            "original": "Bein",
+            "translation": "das Bein, die Beine"
+        },
+        {
+            "id": "99",
+            "original": "Fuß",
+            "translation": "der Fuß, die Füße"
+        },
+        {
+            "id": "100",
+            "original": "Rücken",
+            "translation": "der Rücken, die Rücken"
+        },
+        {
+            "id": "101",
+            "original": "Bauch",
+            "translation": "der Bauch, die Bäuche"
+        },
+        {
+            "id": "102",
+            "original": "Herz",
+            "translation": "das Herz, die Herzen"
+        },
+        {
+            "id": "103",
+            "original": "Arzt",
+            "translation": "der Arzt, die Ärzte"
+        },
+        {
+            "id": "104",
+            "original": "Krankenhaus",
+            "translation": "das Krankenhaus, die Krankenhäuser"
+        },
+        {
+            "id": "105",
+            "original": "Medikament",
+            "translation": "das Medikament, die Medikamente"
+        },
+        {
+            "id": "106",
+            "original": "Schmerz",
+            "translation": "der Schmerz, die Schmerzen"
+        },
+        {
+            "id": "107",
+            "original": "Kleidung",
+            "translation": "die Kleidung"
+        },
+        {
+            "id": "108",
+            "original": "Hose",
+            "translation": "die Hose, die Hosen"
+        },
+        {
+            "id": "109",
+            "original": "Hemd",
+            "translation": "das Hemd, die Hemden"
+        },
+        {
+            "id": "110",
+            "original": "T-Shirt",
+            "translation": "das T-Shirt, die T-Shirts"
+        },
+        {
+            "id": "111",
+            "original": "Kleid",
+            "translation": "das Kleid, die Kleider"
+        },
+        {
+            "id": "112",
+            "original": "Rock",
+            "translation": "der Rock, die Röcke"
+        },
+        {
+            "id": "113",
+            "original": "Jacke",
+            "translation": "die Jacke, die Jacken"
+        },
+        {
+            "id": "114",
+            "original": "Mantel",
+            "translation": "der Mantel, die Mäntel"
+        },
+        {
+            "id": "115",
+            "original": "Schuh",
+            "translation": "der Schuh, die Schuhe"
+        },
+        {
+            "id": "116",
+            "original": "Socke",
+            "translation": "die Socke, die Socken"
+        },
+        {
+            "id": "117",
+            "original": "Hut",
+            "translation": "der Hut, die Hüte"
+        },
+        {
+            "id": "118",
+            "original": "Tasche",
+            "translation": "die Tasche, die Taschen"
+        },
+        {
+            "id": "119",
+            "original": "Brille",
+            "translation": "die Brille, die Brillen"
+        },
+        {
+            "id": "120",
+            "original": "Uhr",
+            "translation": "die Uhr, die Uhren"
+        },
+        {
+            "id": "121",
+            "original": "Tag",
+            "translation": "der Tag, die Tage"
+        },
+        {
+            "id": "122",
+            "original": "Nacht",
+            "translation": "die Nacht, die Nächte"
+        },
+        {
+            "id": "123",
+            "original": "Morgen",
+            "translation": "der Morgen, die Morgen"
+        },
+        {
+            "id": "124",
+            "original": "Abend",
+            "translation": "der Abend, die Abende"
+        },
+        {
+            "id": "125",
+            "original": "Woche",
+            "translation": "die Woche, die Wochen"
+        },
+        {
+            "id": "126",
+            "original": "Monat",
+            "translation": "der Monat, die Monate"
+        },
+        {
+            "id": "127",
+            "original": "Jahr",
+            "translation": "das Jahr, die Jahre"
+        },
+        {
+            "id": "128",
+            "original": "Montag",
+            "translation": "der Montag, die Montage"
+        },
+        {
+            "id": "129",
+            "original": "Dienstag",
+            "translation": "der Dienstag, die Dienstage"
+        },
+        {
+            "id": "130",
+            "original": "Mittwoch",
+            "translation": "der Mittwoch, die Mittwoche"
+        },
+        {
+            "id": "131",
+            "original": "Donnerstag",
+            "translation": "der Donnerstag, die Donnerstage"
+        },
+        {
+            "id": "132",
+            "original": "Freitag",
+            "translation": "der Freitag, die Freitage"
+        },
+        {
+            "id": "133",
+            "original": "Samstag",
+            "translation": "der Samstag, die Samstage"
+        },
+        {
+            "id": "134",
+            "original": "Sonntag",
+            "translation": "der Sonntag, die Sonntage"
+        },
+        {
+            "id": "135",
+            "original": "Frühling",
+            "translation": "der Frühling, die Frühlinge"
+        },
+        {
+            "id": "136",
+            "original": "Sommer",
+            "translation": "der Sommer, die Sommer"
+        },
+        {
+            "id": "137",
+            "original": "Herbst",
+            "translation": "der Herbst, die Herbste"
+        },
+        {
+            "id": "138",
+            "original": "Winter",
+            "translation": "der Winter, die Winter"
+        },
+        {
+            "id": "139",
+            "original": "Wetter",
+            "translation": "das Wetter"
+        },
+        {
+            "id": "140",
+            "original": "Sonne",
+            "translation": "die Sonne, die Sonnen"
+        },
+        {
+            "id": "141",
+            "original": "Regen",
+            "translation": "der Regen"
+        },
+        {
+            "id": "142",
+            "original": "Schnee",
+            "translation": "der Schnee"
+        },
+        {
+            "id": "143",
+            "original": "Wind",
+            "translation": "der Wind, die Winde"
+        },
+        {
+            "id": "144",
+            "original": "Tier",
+            "translation": "das Tier, die Tiere"
+        },
+        {
+            "id": "145",
+            "original": "Hund",
+            "translation": "der Hund, die Hunde"
+        },
+        {
+            "id": "146",
+            "original": "Katze",
+            "translation": "die Katze, die Katzen"
+        },
+        {
+            "id": "147",
+            "original": "Pferd",
+            "translation": "das Pferd, die Pferde"
+        },
+        {
+            "id": "148",
+            "original": "Vogel",
+            "translation": "der Vogel, die Vögel"
+        },
+        {
+            "id": "149",
+            "original": "Baum",
+            "translation": "der Baum, die Bäume"
+        },
+        {
+            "id": "150",
+            "original": "Blume",
+            "translation": "die Blume, die Blumen"
+        },
+        {
+            "id": "151",
+            "original": "Wald",
+            "translation": "der Wald, die Wälder"
+        },
+        {
+            "id": "152",
+            "original": "Meer",
+            "translation": "das Meer, die Meere"
+        },
+        {
+            "id": "153",
+            "original": "Berg",
+            "translation": "der Berg, die Berge"
+        },
+        {
+            "id": "154",
+            "original": "Fluss",
+            "translation": "der Fluss, die Flüsse"
+        },
+        {
+            "id": "155",
+            "original": "Hobby",
+            "translation": "das Hobby, die Hobbys"
+        },
+        {
+            "id": "156",
+            "original": "Sport",
+            "translation": "der Sport"
+        },
+        {
+            "id": "157",
+            "original": "Fußball",
+            "translation": "der Fußball, die Fußbälle"
+        },
+        {
+            "id": "158",
+            "original": "Musik",
+            "translation": "die Musik"
+        },
+        {
+            "id": "159",
+            "original": "Film",
+            "translation": "der Film, die Filme"
+        },
+        {
+            "id": "160",
+            "original": "Kino",
+            "translation": "das Kino, die Kinos"
+        },
+        {
+            "id": "161",
+            "original": "Theater",
+            "translation": "das Theater, die Theater"
+        },
+        {
+            "id": "162",
+            "original": "Museum",
+            "translation": "das Museum, die Museen"
+        },
+        {
+            "id": "163",
+            "original": "Zeitung",
+            "translation": "die Zeitung, die Zeitungen"
+        },
+        {
+            "id": "164",
+            "original": "Radio",
+            "translation": "das Radio, die Radios"
+        },
+        {
+            "id": "165",
+            "original": "Urlaub",
+            "translation": "der Urlaub, die Urlaube"
+        },
+        {
+            "id": "166",
+            "original": "Reise",
+            "translation": "die Reise, die Reisen"
+        },
+        {
+            "id": "167",
+            "original": "Hotel",
+            "translation": "das Hotel, die Hotels"
+        },
+        {
+            "id": "168",
+            "original": "Restaurant",
+            "translation": "das Restaurant, die Restaurants"
+        },
+        {
+            "id": "169",
+            "original": "Essen",
+            "translation": "das Essen, die Essen"
+        },
+        {
+            "id": "170",
+            "original": "Getränk",
+            "translation": "das Getränk, die Getränke"
+        },
+        {
+            "id": "171",
+            "original": "Supermarkt",
+            "translation": "der Supermarkt, die Supermärkte"
+        },
+        {
+            "id": "172",
+            "original": "Markt",
+            "translation": "der Markt, die Märkte"
+        },
+        {
+            "id": "173",
+            "original": "Bäckerei",
+            "translation": "die Bäckerei, die Bäckereien"
+        },
+        {
+            "id": "174",
+            "original": "Kaufhaus",
+            "translation": "das Kaufhaus, die Kaufhäuser"
+        },
+        {
+            "id": "175",
+            "original": "Laden",
+            "translation": "der Laden, die Läden"
+        },
+        {
+            "id": "176",
+            "original": "Bank",
+            "translation": "die Bank, die Banken"
+        },
+        {
+            "id": "177",
+            "original": "Post",
+            "translation": "die Post"
+        },
+        {
+            "id": "178",
+            "original": "Polizei",
+            "translation": "die Polizei"
+        },
+        {
+            "id": "179",
+            "original": "Hilfe",
+            "translation": "die Hilfe, die Hilfen"
+        },
+        {
+            "id": "180",
+            "original": "Zeit",
+            "translation": "die Zeit, die Zeiten"
+        },
+        {
+            "id": "181",
+            "original": "Name",
+            "translation": "der Name, die Namen"
+        },
+        {
+            "id": "182",
+            "original": "Vorname",
+            "translation": "der Vorname, die Vornamen"
+        },
+        {
+            "id": "183",
+            "original": "Nachname",
+            "translation": "der Nachname, die Nachnamen"
+        },
+        {
+            "id": "184",
+            "original": "Adresse",
+            "translation": "die Adresse, die Adressen"
+        },
+        {
+            "id": "185",
+            "original": "Nummer",
+            "translation": "die Nummer, die Nummern"
+        },
+        {
+            "id": "186",
+            "original": "Land",
+            "translation": "das Land, die Länder"
+        },
+        {
+            "id": "187",
+            "original": "Stadt",
+            "translation": "die Stadt, die Städte"
+        },
+        {
+            "id": "188",
+            "original": "Wort",
+            "translation": "das Wort, die Wörter"
+        },
+        {
+            "id": "189",
+            "original": "Satz",
+            "translation": "der Satz, die Sätze"
+        },
+        {
+            "id": "190",
+            "original": "Sprache",
+            "translation": "die Sprache, die Sprachen"
+        },
+        {
+            "id": "191",
+            "original": "Deutsch",
+            "translation": "das Deutsch"
+        },
+        {
+            "id": "192",
+            "original": "Kurs",
+            "translation": "der Kurs, die Kurse"
+        },
+        {
+            "id": "193",
+            "original": "Unterricht",
+            "translation": "der Unterricht"
+        },
+        {
+            "id": "194",
+            "original": "Pause",
+            "translation": "die Pause, die Pausen"
+        },
+        {
+            "id": "195",
+            "original": "Ende",
+            "translation": "das Ende, die Enden"
+        },
+        {
+            "id": "196",
+            "original": "Anfang",
+            "translation": "der Anfang, die Anfänge"
+        },
+        {
+            "id": "197",
+            "original": "Möglichkeit",
+            "translation": "die Möglichkeit, die Möglichkeiten"
+        },
+        {
+            "id": "198",
+            "original": "Problem",
+            "translation": "das Problem, die Probleme"
+        },
+        {
+            "id": "199",
+            "original": "Lösung",
+            "translation": "die Lösung, die Lösungen"
+        },
+        {
+            "id": "200",
+            "original": "Glück",
+            "translation": "das Glück"
+        }
+    ]
+}
