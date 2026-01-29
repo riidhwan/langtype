@@ -45,3 +45,22 @@ export function autoMatchSpacing(rawInput: string, target: string): string {
 
     return result
 }
+
+/**
+ * Returns true if input matches target exactly, OR if target starts with input
+ * and all remaining characters in target are auto-insert characters (punctuation/spaces).
+ */
+export function isFlexibleMatch(input: string, target: string): boolean {
+    if (input === target) return true
+
+    if (!target.startsWith(input)) return false
+
+    const remaining = target.slice(input.length)
+    for (const char of remaining) {
+        if (!AUTO_INSERT_CHARS.has(char)) {
+            return false
+        }
+    }
+
+    return true
+}

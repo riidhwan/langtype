@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { autoMatchSpacing } from '../stringUtils'
+import { autoMatchSpacing, isFlexibleMatch } from '../stringUtils'
 
 describe('autoMatchSpacing', () => {
     const target = 'Hello World'
@@ -65,5 +65,33 @@ describe('autoMatchSpacing', () => {
         // '!' auto. Input exhausted. Break.
         // Result: "Oh, no"
         expect(autoMatchSpacing('Ohno', 'Oh, no!')).toBe('Oh, no')
+    })
+})
+
+describe('isFlexibleMatch', () => {
+    it('returns true for exact matches', () => {
+        expect(isFlexibleMatch('Hello', 'Hello')).toBe(true)
+        expect(isFlexibleMatch('Hello World!', 'Hello World!')).toBe(true)
+    })
+
+    it('returns true if only trailing punctuation is missing', () => {
+        expect(isFlexibleMatch('Hello', 'Hello!')).toBe(true)
+        expect(isFlexibleMatch('How are you', 'How are you?')).toBe(true)
+        expect(isFlexibleMatch('Wait', 'Wait...')).toBe(true)
+    })
+
+    it('returns false if non-punctuation characters are missing', () => {
+        expect(isFlexibleMatch('Hell', 'Hello')).toBe(false)
+        expect(isFlexibleMatch('Hello worl', 'Hello world!')).toBe(false)
+    })
+
+    it('returns false if there is a mismatch in typed characters', () => {
+        expect(isFlexibleMatch('Hella', 'Hello')).toBe(false)
+        expect(isFlexibleMatch('How are you!', 'How are you?')).toBe(false)
+    })
+
+    it('handles spaces as auto-insert characters', () => {
+        // Since spaces are in AUTO_INSERT_CHARS, they should be flexible too
+        expect(isFlexibleMatch('Hello', 'Hello ')).toBe(true)
     })
 })

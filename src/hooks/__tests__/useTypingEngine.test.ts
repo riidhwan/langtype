@@ -115,4 +115,22 @@ describe('useTypingEngine', () => {
         expect(result.current.currentSentence).toBe('Hello')
         expect(result.current.input).toBe('')
     })
+
+    it('handles flexible matching with trailing punctuation', () => {
+        const sentencesWithPunc = ['How are you?']
+        const { result } = renderHook(() => useTypingEngine(sentencesWithPunc))
+
+        act(() => {
+            result.current.setInput('How are you')
+        })
+
+        act(() => {
+            result.current.submit()
+        })
+
+        // Should be completed even without the '?'
+        expect(result.current.status).toBe('completed')
+        // Input should be automatically filled with the full sentence
+        expect(result.current.input).toBe('How are you?')
+    })
 })

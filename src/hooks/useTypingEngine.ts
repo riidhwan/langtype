@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { autoMatchSpacing } from '@/lib/stringUtils'
+import { autoMatchSpacing, isFlexibleMatch } from '@/lib/stringUtils'
 
 type Status = 'typing' | 'submitted' | 'completed'
 
@@ -50,8 +50,17 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
     const submit = () => {
         if (status === 'completed' || status === 'submitted') return
 
+
         const isMatch = input === currentSentence
-        setStatus(isMatch ? 'completed' : 'submitted')
+        const isFlexMatch = isFlexibleMatch(input, currentSentence)
+
+        if (isFlexMatch) {
+            setInput(currentSentence) // Fill in any trailing punctuation
+            setStatus('completed')
+        } else {
+            setStatus('submitted')
+        }
+
         setTimeLeft(5) // Start 5 second countdown
     }
 
