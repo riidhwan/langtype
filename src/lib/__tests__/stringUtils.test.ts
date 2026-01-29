@@ -59,12 +59,23 @@ describe('autoMatchSpacing', () => {
     })
 
     it('handles mixed space and punctuation', () => {
-        // 'Ohno' -> 'Oh' matches. ',' auto. 'n' != ','. ',' inserted.
-        // ' ' auto. 'n' != ' '. ' ' inserted.
-        // 'n' matches. 'o' matches.
-        // '!' auto. Input exhausted. Break.
-        // Result: "Oh, no"
         expect(autoMatchSpacing('Ohno', 'Oh, no!')).toBe('Oh, no')
+    })
+
+    it('handles smart case: lowecases first char if target expects lowercase', () => {
+        // User types "Der" but target is "der" -> should be "der"
+        expect(autoMatchSpacing('Der', 'der Mann')).toBe('der')
+        // User types "Die" but target is "die" -> should be "die"
+        expect(autoMatchSpacing('Die', 'die Frau')).toBe('die')
+        // User types "A" for "apfel" -> "a"
+        expect(autoMatchSpacing('A', 'apfel')).toBe('a')
+    })
+
+    it('handles smart case: preserves uppercase if target expects uppercase', () => {
+        // User types "M" for "Mann" -> should be "M"
+        expect(autoMatchSpacing('M', 'Mann')).toBe('M')
+        // User types "BMW" -> should be "BMW" (or at least "B")
+        expect(autoMatchSpacing('B', 'BMW')).toBe('B')
     })
 })
 

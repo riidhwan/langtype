@@ -88,4 +88,17 @@ describe('VisualTranslationInput', () => {
         rerender(<VisualTranslationInput {...defaultProps} status="completed" />)
         expect(screen.getByRole('textbox')).toBeDisabled()
     })
+
+    it('sets dynamic keyboard attributes correctly', () => {
+        // Target starts with lowercase -> autocapitalize="none"
+        const { rerender } = render(<VisualTranslationInput {...defaultProps} targetText="der Mann" />)
+        const input = screen.getByRole('textbox')
+        expect(input).toHaveAttribute('autoCapitalize', 'none')
+        expect(input).toHaveAttribute('autoCorrect', 'off')
+        expect(input).toHaveAttribute('spellCheck', 'false')
+
+        // Target starts with uppercase -> autocapitalize="sentences"
+        rerender(<VisualTranslationInput {...defaultProps} targetText="Mann" />)
+        expect(input).toHaveAttribute('autoCapitalize', 'sentences')
+    })
 })

@@ -77,6 +77,9 @@ export function VisualTranslationInput({
                 onKeyDown={handleKeyDown}
                 autoFocus
                 disabled={status !== 'typing'}
+                autoCapitalize={targetText[0] === targetText[0]?.toLowerCase() ? "none" : "sentences"}
+                autoCorrect="off"
+                spellCheck="false"
             />
 
             {/* Visual Render Layer */}

@@ -37,8 +37,18 @@ export function autoMatchSpacing(rawInput: string, target: string): string {
             // and will try to match inputChar against the NEXT targetChar in next iteration.
         } else {
             // Normal character.
-            // We just append input character.
-            result += inputChar
+            // SMART CASE: If it's the FIRST character of the result (first non-spacing)
+            // and target is lowercase but input is uppercase, convert input to lowercase.
+            // This handles Android auto-capitalization.
+            const isFirstChar = result.length === 0
+            let processedInputChar = inputChar
+            if (isFirstChar &&
+                inputChar.toLowerCase() === targetChar.toLowerCase() &&
+                targetChar !== targetChar.toUpperCase()) {
+                processedInputChar = inputChar.toLowerCase()
+            }
+
+            result += processedInputChar
             inputIndex++
         }
     }
