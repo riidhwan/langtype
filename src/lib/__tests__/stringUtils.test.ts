@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { autoMatchSpacing, isFlexibleMatch, parseSentence } from '../stringUtils'
+import { autoMatchSpacing, isFlexibleMatch, parseSentence, isFreebie, findNextNormalChar } from '../stringUtils'
 
 describe('autoMatchSpacing', () => {
     const target = 'Hello World'
@@ -139,6 +139,44 @@ describe('parseSentence', () => {
         const result = parseSentence('Hello World')
         expect(result.text).toBe('Hello World')
         expect(result.preFilledIndices.size).toBe(0)
+    })
+})
+
+describe('stringUtils helpers', () => {
+    describe('isFreebie', () => {
+        const target = 'A, B'
+        const pfi = new Set([0]) // 'A' is pre-filled
+
+        it('identifies auto-insert characters', () => {
+            expect(isFreebie(1, target)).toBe(true) // ','
+            expect(isFreebie(2, target)).toBe(true) // ' '
+        })
+
+        it('identifies pre-filled characters', () => {
+            expect(isFreebie(0, target, pfi)).toBe(true)
+        })
+
+        it('returns false for normal characters', () => {
+            expect(isFreebie(3, target)).toBe(false) // 'B'
+        })
+    })
+
+    describe('findNextNormalChar', () => {
+        it('finds the next non-freebie', () => {
+            const target = 'A, B'
+            expect(findNextNormalChar(0, target)).toEqual({ char: 'A', index: 0 })
+            expect(findNextNormalChar(1, target)).toEqual({ char: 'B', index: 3 })
+        })
+
+        it('returns null if no normal char remains', () => {
+            expect(findNextNormalChar(2, 'A, ')).toBe(null)
+        })
+
+        it('respects pre-filled indices', () => {
+            const target = 'ABC'
+            const pfi = new Set([0, 1])
+            expect(findNextNormalChar(0, target, pfi)).toEqual({ char: 'C', index: 2 })
+        })
     })
 })
 

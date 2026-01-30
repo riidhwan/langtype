@@ -37,14 +37,52 @@ export function parseSentence(raw: string): ParsedSentence {
 }
 
 /**
+ * Checks if a character at a given index in the target string is a "freebie"
+ * (either an auto-insert character or a pre-filled character).
+ */
+export function isFreebie(index: number, target: string, preFilledIndices?: Set<number>): boolean {
+    const char = target[index]
+    return AUTO_INSERT_CHARS.has(char) || (preFilledIndices?.has(index) ?? false)
+}
+
+/**
+ * Finds the index and value of the next "normal" (non-freebie) character in the target string.
+ */
+export function findNextNormalChar(startIndex: number, target: string, preFilledIndices?: Set<number>): { char: string; index: number } | null {
+    for (let i = startIndex; i < target.length; i++) {
+        if (!isFreebie(i, target, preFilledIndices)) {
+            return { char: target[i], index: i }
+        }
+    }
+    return null
+}
+
+/**
+ * Encapsulates the logic for deciding if a "freebie" character should be appended to the result.
+ */
+function shouldAppendFreebie(
+    char: string,
+    index: number,
+    target: string,
+    hasMoreInput: boolean,
+    typedInputMatch: boolean,
+    preFilledIndices?: Set<number>
+): boolean {
+    const isPreFilled = preFilledIndices?.has(index)
+    if (isPreFilled) return true
+    if (typedInputMatch) return true
+
+    const nextNormal = findNextNormalChar(index + 1, target, preFilledIndices)
+    const willNeedMore = hasMoreInput && nextNormal !== null
+    return willNeedMore
+}
+
+/**
  * Formats the raw input to match the spacing of the target string.
- * Example: Input "HelloW", Target "Hello World" -> "Hello W"
+ * This is the core engine for automatic punctuation, spacing and pre-filling.
  */
 export function autoMatchSpacing(rawInput: string, target: string, preFilledIndices?: Set<number>): string {
-    // Treat spaces as removable always. 
-    // We do NOT remove punctuation from input, because we want to allow the user to type it if they choose.
-    // If they strictly type punctuation, we match it. If they skip it (and it's auto-insert), we insert it.
-    const cleanInput = rawInput.replace(/\s/g, '') // Only strip spaces
+    const cleanInput = rawInput.replace(/\s/g, '')
     const inputChars = cleanInput.split('')
 
     let result = ''
@@ -52,79 +90,44 @@ export function autoMatchSpacing(rawInput: string, target: string, preFilledIndi
 
     for (let i = 0; i < target.length; i++) {
         const targetChar = target[i]
-        const isPreFilled = preFilledIndices?.has(i)
-        const isAutoInsert = AUTO_INSERT_CHARS.has(targetChar)
+        const hasMoreInput = inputIndex < inputChars.length
 
-        if (isPreFilled || isAutoInsert) {
-            // It's an auto-insert char or pre-filled from parentheses.
-
-            // Check if we should append it. 
-            // - Pre-filled chars (parentheses) are ALWAYS appended.
-            // - Auto-insert chars (punctuation) are appended if user typed it OR more input is coming.
-
-            const hasMoreInput = inputIndex < inputChars.length
+        if (isFreebie(i, target, preFilledIndices)) {
             const matchesInput = hasMoreInput && inputChars[inputIndex] === targetChar
-            const userTypedIt = !isPreFilled && matchesInput
+            const append = shouldAppendFreebie(targetChar, i, target, hasMoreInput, matchesInput, preFilledIndices)
 
-            let willNeedMore = false
-            if (hasMoreInput) {
-                // Find if there's any non-auto-insert/non-prefilled char ahead in target
-                for (let j = i + 1; j < target.length; j++) {
-                    if (!AUTO_INSERT_CHARS.has(target[j]) && !preFilledIndices?.has(j)) {
-                        willNeedMore = true
-                        break
-                    }
+            if (!append) break
+
+            result += targetChar
+
+            if (matchesInput) {
+                // Determine if we should consume the input character.
+                // It's ambiguous if the user typed a char that matches this freebie
+                // but actually intended it to match the next normal character.
+                const isLastTypedChar = inputIndex === inputChars.length - 1
+                const nextNormal = findNextNormalChar(i + 1, target, preFilledIndices)
+                const isAmbiguous = isLastTypedChar && nextNormal && nextNormal.char.toLowerCase() === targetChar.toLowerCase()
+
+                if (!isAmbiguous) {
+                    inputIndex++
                 }
-            }
-
-            if (isPreFilled || userTypedIt || willNeedMore) {
-                result += targetChar
-                if (matchesInput) {
-                    // SMART CONSUMPTION:
-                    // If this is a pre-filled or auto-insert character, and it matches the last
-                    // character of our current input, we should only consume it if it's NOT
-                    // a match for the next required normal character.
-                    const isLastChar = inputIndex === inputChars.length - 1
-                    const isFreebie = isPreFilled || isAutoInsert
-
-                    let isAmbiguous = false
-                    if (isFreebie && isLastChar && willNeedMore) {
-                        // Find the next normal character
-                        for (let j = i + 1; j < target.length; j++) {
-                            if (!AUTO_INSERT_CHARS.has(target[j]) && !preFilledIndices?.has(j)) {
-                                if (target[j].toLowerCase() === targetChar.toLowerCase()) {
-                                    isAmbiguous = true
-                                }
-                                break
-                            }
-                        }
-                    }
-
-                    if (!isAmbiguous) {
-                        inputIndex++
-                    }
-                }
-            } else {
-                // We reached an auto-insert char at the end and don't have input for what's after it.
-                // Stop here to avoid eager punctuation.
-                break
             }
         } else {
-            // Normal character.
-            if (inputIndex >= inputChars.length) break
+            // Normal character processing
+            if (!hasMoreInput) break
 
             const inputChar = inputChars[inputIndex]
 
-            // SMART CASE: first non-spacing char
+            // Smart Case: Lowercase first non-spacing char if target expects it
             const isFirstChar = result.length === 0 || !result.trim()
-            let processedInputChar = inputChar
+            let processedChar = inputChar
             if (isFirstChar &&
                 inputChar.toLowerCase() === targetChar.toLowerCase() &&
                 targetChar !== targetChar.toUpperCase()) {
-                processedInputChar = inputChar.toLowerCase()
+                processedChar = inputChar.toLowerCase()
             }
 
-            result += processedInputChar
+            result += processedChar
             inputIndex++
         }
     }
