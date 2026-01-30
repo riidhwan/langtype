@@ -114,4 +114,18 @@ describe('VisualTranslationInput', () => {
         // "T" slot (index 4, after space) should be empty
         expect(slots[3]).toHaveTextContent('')
     })
+
+    it('marks pre-filled characters as success when submitted even if not typed', () => {
+        const preFilledIndices = new Set([0, 1, 2]) // "der"
+        render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" status="submitted" />)
+
+        const slots = screen.getAllByTestId('char-slot')
+        // "der" slots (0,1,2) should be green because they are pre-filled
+        expect(slots[0]).toHaveClass('bg-green-500/20')
+        expect(slots[1]).toHaveClass('bg-green-500/20')
+        expect(slots[2]).toHaveClass('bg-green-500/20')
+
+        // "T" slot (index 4) should be red because it's required but empty
+        expect(slots[3]).toHaveClass('bg-red-500/20')
+    })
 })

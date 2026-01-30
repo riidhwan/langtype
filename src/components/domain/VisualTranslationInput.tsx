@@ -104,7 +104,7 @@ export function VisualTranslationInput({
                             const displayChar = inputValue || (isPreFilled ? char : "")
 
                             if (status === 'submitted' || status === 'completed') {
-                                const isMatch = inputValue === char
+                                const isMatch = inputValue === char || (!inputValue && (isPreFilledIdx || isAutoInsert))
                                 statusColor = isMatch
                                     ? "border-green-500 bg-green-500/20 text-green-700"
                                     : "border-red-500 bg-red-500/20 text-red-600"

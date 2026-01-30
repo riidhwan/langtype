@@ -105,6 +105,16 @@ describe('isFlexibleMatch', () => {
         // Since spaces are in AUTO_INSERT_CHARS, they should be flexible too
         expect(isFlexibleMatch('Hello', 'Hello ')).toBe(true)
     })
+
+    it('returns true if only pre-filled characters are missing', () => {
+        const preFilledIndices = new Set([6, 7, 8, 9, 10, 11]) // " world"
+        expect(isFlexibleMatch('Hello', 'Hello world', preFilledIndices)).toBe(true)
+    })
+
+    it('is case-insensitive for the prefix match', () => {
+        expect(isFlexibleMatch('hello', 'Hello!')).toBe(true)
+        expect(isFlexibleMatch('HELLO', 'hello')).toBe(true)
+    })
 })
 
 describe('parseSentence', () => {

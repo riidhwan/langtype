@@ -137,9 +137,8 @@ export function autoMatchSpacing(rawInput: string, target: string, preFilledIndi
  * and all remaining characters in target are auto-insert characters (punctuation/spaces/pre-filled).
  */
 export function isFlexibleMatch(input: string, target: string, preFilledIndices?: Set<number>): boolean {
-    if (input === target) return true
-
-    if (!target.startsWith(input)) return false
+    if (input.toLowerCase() === target.toLowerCase()) return true
+    if (!target.toLowerCase().startsWith(input.toLowerCase())) return false
 
     const remaining = target.slice(input.length)
     for (let i = 0; i < remaining.length; i++) {
