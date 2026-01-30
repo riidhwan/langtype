@@ -101,4 +101,17 @@ describe('VisualTranslationInput', () => {
         rerender(<VisualTranslationInput {...defaultProps} targetText="Mann" />)
         expect(input).toHaveAttribute('autoCapitalize', 'sentences')
     })
+
+    it('renders pre-filled characters from indices even if not typed', () => {
+        const preFilledIndices = new Set([0, 1, 2]) // "der"
+        render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" />)
+
+        const slots = screen.getAllByTestId('char-slot')
+        // "der" slots (0,1,2) should have the characters
+        expect(slots[0]).toHaveTextContent('d')
+        expect(slots[1]).toHaveTextContent('e')
+        expect(slots[2]).toHaveTextContent('r')
+        // "T" slot (index 4, after space) should be empty
+        expect(slots[3]).toHaveTextContent('')
+    })
 })

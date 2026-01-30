@@ -1,23 +1,29 @@
 import { useState, useMemo, useEffect } from 'react'
-import { autoMatchSpacing, isFlexibleMatch } from '@/lib/stringUtils'
+import { autoMatchSpacing, isFlexibleMatch, parseSentence } from '@/lib/stringUtils'
 
 type Status = 'typing' | 'submitted' | 'completed'
 
 export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
+    const parsedSentences = useMemo(() => sentences.map(s => parseSentence(s)), [sentences])
+
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
     const [input, setInput] = useState('')
     const [status, setStatus] = useState<Status>('typing')
 
-    const currentSentence = sentences[currentIndex] || ''
+    const { text: currentSentence, preFilledIndices } = useMemo(() => {
+        return parsedSentences[currentIndex] || { text: '', preFilledIndices: new Set<number>() }
+    }, [parsedSentences, currentIndex])
 
     const [timeLeft, setTimeLeft] = useState(0)
 
     // Reset when index changes
     useEffect(() => {
-        setInput('')
+        // Initial input should already handle pre-filled start if any
+        const initialInput = autoMatchSpacing('', currentSentence, preFilledIndices)
+        setInput(initialInput)
         setStatus('typing')
         setTimeLeft(0)
-    }, [currentIndex])
+    }, [currentIndex, currentSentence, preFilledIndices])
 
     useEffect(() => {
         let timer: NodeJS.Timeout
@@ -43,16 +49,15 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
 
     const setInputSafe = (value: string) => {
         if (status === 'completed' || status === 'submitted') return
-        const spacedValue = autoMatchSpacing(value, currentSentence)
+        const spacedValue = autoMatchSpacing(value, currentSentence, preFilledIndices)
         setInput(spacedValue)
     }
 
     const submit = () => {
         if (status === 'completed' || status === 'submitted') return
 
-
         const isMatch = input === currentSentence
-        const isFlexMatch = isFlexibleMatch(input, currentSentence)
+        const isFlexMatch = isFlexibleMatch(input, currentSentence, preFilledIndices)
 
         if (isFlexMatch) {
             setInput(currentSentence) // Fill in any trailing punctuation
@@ -85,5 +90,6 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
         submit,
         timeLeft,
         setCurrentIndex,
+        preFilledIndices,
     }
 }

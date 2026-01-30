@@ -7,6 +7,7 @@ interface Props {
     onChange: (value: string) => void
     onSubmit?: () => void
     targetText: string
+    preFilledIndices?: Set<number>
     status?: 'typing' | 'submitted' | 'completed'
 }
 
@@ -37,6 +38,7 @@ export function VisualTranslationInput({
     onChange,
     onSubmit,
     targetText,
+    preFilledIndices,
     status = 'typing'
 }: Props) {
     const inputRef = useRef<HTMLInputElement>(null)
@@ -95,8 +97,10 @@ export function VisualTranslationInput({
                             // Feedback logic
                             let statusColor = "border-muted-foreground/30 text-muted-foreground"
 
-                            // Determine if we should show a pre-filled hint (punctuation/spaces)
-                            const isPreFilled = !inputValue && AUTO_INSERT_CHARS.has(char)
+                            // Determine if we should show a pre-filled hint (punctuation/spaces or indices from parentheses)
+                            const isAutoInsert = AUTO_INSERT_CHARS.has(char)
+                            const isPreFilledIdx = preFilledIndices?.has(index)
+                            const isPreFilled = !inputValue && (isAutoInsert || isPreFilledIdx)
                             const displayChar = inputValue || (isPreFilled ? char : "")
 
                             if (status === 'submitted' || status === 'completed') {

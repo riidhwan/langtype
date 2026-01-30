@@ -1,0 +1,207 @@
+{
+    "id": "a1_nouns_01",
+    "title": "German A1 Nouns - Part 1",
+    "description": "Essential beginner nouns with articles / plurals / and prepositional cases.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Apfel",
+            "translation": "der Apfel / die Äpfel / (mit) dem Apfel / (für) den Apfel"
+        },
+        {
+            "id": "2",
+            "original": "Auto",
+            "translation": "das Auto / die Autos / (mit) dem Auto / (für) das Auto"
+        },
+        {
+            "id": "3",
+            "original": "Brot",
+            "translation": "das Brot / die Brote / (mit) dem Brot / (für) das Brot"
+        },
+        {
+            "id": "4",
+            "original": "Buch",
+            "translation": "das Buch / die Bücher / (mit) dem Buch / (für) das Buch"
+        },
+        {
+            "id": "5",
+            "original": "Kind",
+            "translation": "das Kind / die Kinder / (mit) dem Kind / (für) das Kind"
+        },
+        {
+            "id": "6",
+            "original": "Tisch",
+            "translation": "der Tisch / die Tische / (mit) dem Tisch / (für) den Tisch"
+        },
+        {
+            "id": "7",
+            "original": "Stuhl",
+            "translation": "der Stuhl / die Stühle / (mit) dem Stuhl / (für) den Stuhl"
+        },
+        {
+            "id": "8",
+            "original": "Frau",
+            "translation": "die Frau / die Frauen / (mit) der Frau / (für) die Frau"
+        },
+        {
+            "id": "9",
+            "original": "Mann",
+            "translation": "der Mann / die Männer / (mit) dem Mann / (für) den Mann"
+        },
+        {
+            "id": "10",
+            "original": "Haus",
+            "translation": "das Haus / die Häuser / (mit) dem Haus / (für) das Haus"
+        },
+        {
+            "id": "11",
+            "original": "Schule",
+            "translation": "die Schule / die Schulen / (mit) der Schule / (für) die Schule"
+        },
+        {
+            "id": "12",
+            "original": "Stadt",
+            "translation": "die Stadt / die Städte / (mit) der Stadt / (für) die Stadt"
+        },
+        {
+            "id": "13",
+            "original": "Wasser",
+            "translation": "das Wasser / die Wasser / (mit) dem Wasser / (für) das Wasser"
+        },
+        {
+            "id": "14",
+            "original": "Kaffee",
+            "translation": "der Kaffee / die Kaffees / (mit) dem Kaffee / (für) den Kaffee"
+        },
+        {
+            "id": "15",
+            "original": "Tee",
+            "translation": "der Tee / die Tees / (mit) dem Tee / (für) den Tee"
+        },
+        {
+            "id": "16",
+            "original": "Zeitung",
+            "translation": "die Zeitung / die Zeitungen / (mit) der Zeitung / (für) die Zeitung"
+        },
+        {
+            "id": "17",
+            "original": "Handy",
+            "translation": "das Handy / die Handys / (mit) dem Handy / (für) das Handy"
+        },
+        {
+            "id": "18",
+            "original": "Freund",
+            "translation": "der Freund / die Freunde / (mit) dem Freund / (für) den Freund"
+        },
+        {
+            "id": "19",
+            "original": "Freundin",
+            "translation": "die Freundin / die Freundinnen / (mit) der Freundin / (für) die Freundin"
+        },
+        {
+            "id": "20",
+            "original": "Tasche",
+            "translation": "die Tasche / die Taschen / (mit) der Tasche / (für) die Tasche"
+        },
+        {
+            "id": "21",
+            "original": "Schlüssel",
+            "translation": "der Schlüssel / die Schlüssel / (mit) dem Schlüssel / (für) den Schlüssel"
+        },
+        {
+            "id": "22",
+            "original": "Fahrrad",
+            "translation": "das Fahrrad / die Fahrräder / (mit) dem Fahrrad / (für) das Fahrrad"
+        },
+        {
+            "id": "23",
+            "original": "Tag",
+            "translation": "der Tag / die Tage / (mit) dem Tag / (für) den Tag"
+        },
+        {
+            "id": "24",
+            "original": "Nacht",
+            "translation": "die Nacht / die Nächte / (mit) der Nacht / (für) die Nacht"
+        },
+        {
+            "id": "25",
+            "original": "Zimmer",
+            "translation": "das Zimmer / die Zimmer / (mit) dem Zimmer / (für) das Zimmer"
+        },
+        {
+            "id": "26",
+            "original": "Küche",
+            "translation": "die Küche / die Küchen / (mit) der Küche / (für) die Küche"
+        },
+        {
+            "id": "27",
+            "original": "Garten",
+            "translation": "der Garten / die Gärten / (mit) dem Garten / (für) den Garten"
+        },
+        {
+            "id": "28",
+            "original": "Baum",
+            "translation": "der Baum / die Bäume / (mit) dem Baum / (für) den Baum"
+        },
+        {
+            "id": "29",
+            "original": "Hund",
+            "translation": "der Hund / die Hunde / (mit) dem Hund / (für) den Hund"
+        },
+        {
+            "id": "30",
+            "original": "Katze",
+            "translation": "die Katze / die Katzen / (mit) der Katze / (für) die Katze"
+        },
+        {
+            "id": "31",
+            "original": "Geld",
+            "translation": "das Geld / die Gelder / (mit) dem Geld / (für) das Geld"
+        },
+        {
+            "id": "32",
+            "original": "Uhr",
+            "translation": "die Uhr / die Uhren / (mit) der Uhr / (für) die Uhr"
+        },
+        {
+            "id": "33",
+            "original": "Bild",
+            "translation": "das Bild / die Bilder / (mit) dem Bild / (für) das Bild"
+        },
+        {
+            "id": "34",
+            "original": "Fenster",
+            "translation": "das Fenster / die Fenster / (mit) dem Fenster / (für) das Fenster"
+        },
+        {
+            "id": "35",
+            "original": "Tür",
+            "translation": "die Tür / die Türen / (mit) der Tür / (für) die Tür"
+        },
+        {
+            "id": "36",
+            "original": "Stift",
+            "translation": "der Stift / die Stifte / (mit) dem Stift / (für) den Stift"
+        },
+        {
+            "id": "37",
+            "original": "Lampe",
+            "translation": "die Lampe / die Lampen / (mit) der Lampe / (für) die Lampe"
+        },
+        {
+            "id": "38",
+            "original": "Weg",
+            "translation": "der Weg / die Wege / (mit) dem Weg / (für) den Weg"
+        },
+        {
+            "id": "39",
+            "original": "Essen",
+            "translation": "das Essen / die Essen / (mit) dem Essen / (für) das Essen"
+        },
+        {
+            "id": "40",
+            "original": "Getränk",
+            "translation": "das Getränk / die Getränke / (mit) dem Getränk / (für) das Getränk"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { autoMatchSpacing, isFlexibleMatch } from '../stringUtils'
+import { autoMatchSpacing, isFlexibleMatch, parseSentence } from '../stringUtils'
 
 describe('autoMatchSpacing', () => {
     const target = 'Hello World'
@@ -104,5 +104,56 @@ describe('isFlexibleMatch', () => {
     it('handles spaces as auto-insert characters', () => {
         // Since spaces are in AUTO_INSERT_CHARS, they should be flexible too
         expect(isFlexibleMatch('Hello', 'Hello ')).toBe(true)
+    })
+})
+
+describe('parseSentence', () => {
+    it('removes parentheses and identifies pre-filled indices', () => {
+        const result = parseSentence('(der) Tisch')
+        expect(result.text).toBe('der Tisch')
+        // "(der)" -> "der" are indices 0, 1, 2. The space is NOT pre-filled by parens.
+        expect(Array.from(result.preFilledIndices)).toEqual([0, 1, 2])
+    })
+
+    it('handles multiple parentheses', () => {
+        const result = parseSentence('(the) apple (is) green')
+        expect(result.text).toBe('the apple is green')
+        // "the" (0,1,2) and "is" (10,11)
+        expect(result.preFilledIndices.has(0)).toBe(true)
+        expect(result.preFilledIndices.has(10)).toBe(true)
+        expect(result.preFilledIndices.has(3)).toBe(false) // space
+        expect(result.preFilledIndices.has(12)).toBe(false) // space
+    })
+
+    it('handles strings without parentheses', () => {
+        const result = parseSentence('Hello World')
+        expect(result.text).toBe('Hello World')
+        expect(result.preFilledIndices.size).toBe(0)
+    })
+})
+
+describe('autoMatchSpacing with preFilledIndices', () => {
+    const target = 'der Tisch'
+    const preFilledIndices = new Set([0, 1, 2, 3]) // "der "
+
+    it('pre-fills content from indices', () => {
+        // If user types 'T', and 'der ' is pre-filled:
+        expect(autoMatchSpacing('T', target, preFilledIndices)).toBe('der T')
+    })
+
+    it('pre-fills content from indices even with empty input', () => {
+        // Should return "der " even if user typed nothing
+        expect(autoMatchSpacing('', target, preFilledIndices)).toBe('der ')
+    })
+
+    it('consumes manual input if it matches pre-filled indices', () => {
+        // User types 'd' for 'der Tisch' where 'der ' is pre-filled.
+        // It SHOULD consume 'd' because it matches the pre-filled 'd' at index 0.
+        // Result remains "der " (nothing leaked to slot 4).
+        expect(autoMatchSpacing('d', target, preFilledIndices)).toBe('der ')
+    })
+
+    it('handles input that includes pre-filled prefix without duplicating it', () => {
+        expect(autoMatchSpacing('der T', target, preFilledIndices)).toBe('der T')
     })
 })

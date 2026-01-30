@@ -18,6 +18,8 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange }: 
         return idx !== -1 ? idx : 0
     }, [challenges, initialQuestionId])
 
+    const translations = useMemo(() => challenges.map((c) => c.translation), [challenges])
+
     const {
         input,
         setInput,
@@ -28,8 +30,9 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange }: 
         currentSentence,
         timeLeft,
         setCurrentIndex,
+        preFilledIndices,
     } = useTypingEngine(
-        challenges.map((c) => c.translation),
+        translations,
         initialIndex,
     )
 
@@ -56,6 +59,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange }: 
                     onChange={setInput}
                     onSubmit={submit}
                     targetText={currentSentence}
+                    preFilledIndices={preFilledIndices}
                     status={status}
                 />
 
