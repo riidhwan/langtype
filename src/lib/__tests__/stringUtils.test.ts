@@ -156,4 +156,24 @@ describe('autoMatchSpacing with preFilledIndices', () => {
     it('handles input that includes pre-filled prefix without duplicating it', () => {
         expect(autoMatchSpacing('der T', target, preFilledIndices)).toBe('der T')
     })
+
+    it('does not consume user input for pre-filled slot if it matches the next normal word start', () => {
+        // Example from bug report: "die (Freundin) / (die) Freundinnen"
+        // Target: "die Freundin / die Freundinnen"
+        const raw = 'die (Freundin) / (die) Freundinnen'
+        const { text, preFilledIndices: pfi } = parseSentence(raw)
+
+        // Typing "die" results in "die" because no more input to trigger trailing auto-inserts
+        expect(autoMatchSpacing('die', text, pfi)).toBe('die')
+
+        // Now user types "F". The engine sees "dieF".
+        // 1. Matches "die"
+        // 2. Encounters space (auto-insert) -> appended because "F" is ahead
+        // 3. Encounters "Freundin" (pre-filled) -> appended
+        // 4. Encounters " / die " (auto-insert/pre-filled) -> appended
+        // 5. Encounters index 19 "F" (normal) -> MATCHES "F" from input.
+        // The fix prevents the "F" from being consumed by the "F" in "Freundin" (index 4).
+        const result = autoMatchSpacing('dieF', text, pfi)
+        expect(result).toBe('die Freundin / die F')
+    })
 })

@@ -80,7 +80,29 @@ export function autoMatchSpacing(rawInput: string, target: string, preFilledIndi
             if (isPreFilled || userTypedIt || willNeedMore) {
                 result += targetChar
                 if (matchesInput) {
-                    inputIndex++
+                    // SMART CONSUMPTION:
+                    // If this is a pre-filled or auto-insert character, and it matches the last
+                    // character of our current input, we should only consume it if it's NOT
+                    // a match for the next required normal character.
+                    const isLastChar = inputIndex === inputChars.length - 1
+                    const isFreebie = isPreFilled || isAutoInsert
+
+                    let isAmbiguous = false
+                    if (isFreebie && isLastChar && willNeedMore) {
+                        // Find the next normal character
+                        for (let j = i + 1; j < target.length; j++) {
+                            if (!AUTO_INSERT_CHARS.has(target[j]) && !preFilledIndices?.has(j)) {
+                                if (target[j].toLowerCase() === targetChar.toLowerCase()) {
+                                    isAmbiguous = true
+                                }
+                                break
+                            }
+                        }
+                    }
+
+                    if (!isAmbiguous) {
+                        inputIndex++
+                    }
                 }
             } else {
                 // We reached an auto-insert char at the end and don't have input for what's after it.
