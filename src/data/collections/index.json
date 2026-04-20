@@ -28,5 +28,10 @@
         "id": "dativ_personalpronomen_02",
         "title": "Personalpronomen im Dativ — Verb + Pronomen",
         "description": "Type both the conjugated verb and the dative pronoun. All surrounding context is pre-filled."
+    },
+    {
+        "id": "nomen_artikel_a1",
+        "title": "Netzwerk Neu A1 — Kapitel 1 Nomen",
+        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 1."
     }
 ]

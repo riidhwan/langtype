@@ -1,0 +1,142 @@
+{
+    "id": "nomen_artikel_a1",
+    "title": "Netzwerk Neu A1 — Kapitel 1 Nomen",
+    "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 1.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Name",
+            "translation": "der (Name)"
+        },
+        {
+            "id": "2",
+            "original": "First Name",
+            "translation": "der (Vorname)"
+        },
+        {
+            "id": "3",
+            "original": "Last Name",
+            "translation": "der (Nachname)"
+        },
+        {
+            "id": "4",
+            "original": "E-Mail Address",
+            "translation": "die (E-Mail-Adresse)"
+        },
+        {
+            "id": "5",
+            "original": "Mobile Phone Number",
+            "translation": "die (Handynummer)"
+        },
+        {
+            "id": "6",
+            "original": "Phone Number",
+            "translation": "die (Telefonnummer)"
+        },
+        {
+            "id": "7",
+            "original": "Switzerland",
+            "translation": "die (Schweiz)"
+        },
+        {
+            "id": "8",
+            "original": "Turkey",
+            "translation": "die (Türkei)"
+        },
+        {
+            "id": "9",
+            "original": "USA",
+            "translation": "die (USA)"
+        },
+        {
+            "id": "10",
+            "original": "Country",
+            "translation": "das (Land)"
+        },
+        {
+            "id": "11",
+            "original": "Language",
+            "translation": "die (Sprache)"
+        },
+        {
+            "id": "12",
+            "original": "Number",
+            "translation": "die (Zahl)"
+        },
+        {
+            "id": "13",
+            "original": "Answer",
+            "translation": "die (Antwort)"
+        },
+        {
+            "id": "14",
+            "original": "Male Partner",
+            "translation": "der (Partner)"
+        },
+        {
+            "id": "15",
+            "original": "Female Partner",
+            "translation": "die (Partnerin)"
+        },
+        {
+            "id": "16",
+            "original": "Person",
+            "translation": "die (Person)"
+        },
+        {
+            "id": "17",
+            "original": "Text",
+            "translation": "der (Text)"
+        },
+        {
+            "id": "18",
+            "original": "Word",
+            "translation": "das (Wort)"
+        },
+        {
+            "id": "19",
+            "original": "Highway",
+            "translation": "die (Autobahn)"
+        },
+        {
+            "id": "20",
+            "original": "Bottle",
+            "translation": "die (Flasche)"
+        },
+        {
+            "id": "21",
+            "original": "Kindergarten",
+            "translation": "der (Kindergarten)"
+        },
+        {
+            "id": "22",
+            "original": "Suitcase",
+            "translation": "der (Koffer)"
+        },
+        {
+            "id": "23",
+            "original": "Noodle",
+            "translation": "die (Nudel)"
+        },
+        {
+            "id": "24",
+            "original": "Sick Man",
+            "translation": "der (Kranke)"
+        },
+        {
+            "id": "25",
+            "original": "Bread and Butter",
+            "translation": "das (Butterbrot)"
+        },
+        {
+            "id": "26",
+            "original": "Sausage",
+            "translation": "das (Würstchen)"
+        },
+        {
+            "id": "27",
+            "original": "Towel",
+            "translation": "das (Handtuch)"
+        }
+    ]
+}
