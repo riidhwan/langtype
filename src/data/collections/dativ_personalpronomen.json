@@ -1,0 +1,212 @@
+{
+    "id": "dativ_personalpronomen",
+    "title": "Personalpronomen im Dativ",
+    "description": "Practice all dative personal pronouns — mir, dir, ihm, ihr, uns, euch, ihnen, Ihnen — with common verbs and prepositions.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Can you help me?",
+            "translation": "(Kannst du) mir (helfen?)"
+        },
+        {
+            "id": "2",
+            "original": "He is giving me the book.",
+            "translation": "(Er gibt) mir (das Buch.)"
+        },
+        {
+            "id": "3",
+            "original": "The food tastes good to me.",
+            "translation": "(Das Essen schmeckt) mir (gut.)"
+        },
+        {
+            "id": "4",
+            "original": "She is writing to me.",
+            "translation": "(Sie schreibt) mir."
+        },
+        {
+            "id": "5",
+            "original": "Come with me!",
+            "translation": "(Komm mit) mir!"
+        },
+        {
+            "id": "6",
+            "original": "This bag belongs to me.",
+            "translation": "(Diese Tasche gehört) mir."
+        },
+        {
+            "id": "7",
+            "original": "He is sitting opposite me.",
+            "translation": "(Er sitzt) mir (gegenüber.)"
+        },
+        {
+            "id": "8",
+            "original": "I can help you.",
+            "translation": "(Ich kann) dir (helfen.)"
+        },
+        {
+            "id": "9",
+            "original": "I am giving you a present.",
+            "translation": "(Ich gebe) dir (ein Geschenk.)"
+        },
+        {
+            "id": "10",
+            "original": "How are you?",
+            "translation": "(Wie geht es) dir?"
+        },
+        {
+            "id": "11",
+            "original": "I am coming with you.",
+            "translation": "(Ich komme mit) dir."
+        },
+        {
+            "id": "12",
+            "original": "I believe you.",
+            "translation": "(Ich glaube) dir."
+        },
+        {
+            "id": "13",
+            "original": "I am telling you the truth.",
+            "translation": "(Ich sage) dir (die Wahrheit.)"
+        },
+        {
+            "id": "14",
+            "original": "I am going to you.",
+            "translation": "(Ich komme zu) dir."
+        },
+        {
+            "id": "15",
+            "original": "She is helping him.",
+            "translation": "(Sie hilft) ihm."
+        },
+        {
+            "id": "16",
+            "original": "I am giving him a letter.",
+            "translation": "(Ich gebe) ihm (einen Brief.)"
+        },
+        {
+            "id": "17",
+            "original": "The trousers suit him well.",
+            "translation": "(Die Hose passt) ihm (gut.)"
+        },
+        {
+            "id": "18",
+            "original": "We are going to him.",
+            "translation": "(Wir gehen zu) ihm."
+        },
+        {
+            "id": "19",
+            "original": "This book belongs to him.",
+            "translation": "(Dieses Buch gehört) ihm."
+        },
+        {
+            "id": "20",
+            "original": "She is talking about him.",
+            "translation": "(Sie spricht von) ihm."
+        },
+        {
+            "id": "21",
+            "original": "He is helping her.",
+            "translation": "(Er hilft) ihr."
+        },
+        {
+            "id": "22",
+            "original": "I am giving her the key.",
+            "translation": "(Ich gebe) ihr (den Schlüssel.)"
+        },
+        {
+            "id": "23",
+            "original": "The dress fits her well.",
+            "translation": "(Das Kleid passt) ihr (gut.)"
+        },
+        {
+            "id": "24",
+            "original": "He is coming with her.",
+            "translation": "(Er kommt mit) ihr."
+        },
+        {
+            "id": "25",
+            "original": "The money belongs to her.",
+            "translation": "(Das Geld gehört) ihr."
+        },
+        {
+            "id": "26",
+            "original": "She lives near us.",
+            "translation": "(Sie wohnt bei) uns."
+        },
+        {
+            "id": "27",
+            "original": "Can you help us?",
+            "translation": "(Kannst du) uns (helfen?)"
+        },
+        {
+            "id": "28",
+            "original": "She is showing us the way.",
+            "translation": "(Sie zeigt) uns (den Weg.)"
+        },
+        {
+            "id": "29",
+            "original": "The film pleases us.",
+            "translation": "(Der Film gefällt) uns."
+        },
+        {
+            "id": "30",
+            "original": "He is coming with us.",
+            "translation": "(Er kommt mit) uns."
+        },
+        {
+            "id": "31",
+            "original": "He is thanking us.",
+            "translation": "(Er dankt) uns."
+        },
+        {
+            "id": "32",
+            "original": "I am giving you all a present.",
+            "translation": "(Ich gebe) euch (ein Geschenk.)"
+        },
+        {
+            "id": "33",
+            "original": "I am coming with you all.",
+            "translation": "(Ich komme mit) euch."
+        },
+        {
+            "id": "34",
+            "original": "He is showing you all the way.",
+            "translation": "(Er zeigt) euch (den Weg.)"
+        },
+        {
+            "id": "35",
+            "original": "I am helping them.",
+            "translation": "(Ich helfe) ihnen."
+        },
+        {
+            "id": "36",
+            "original": "She is writing to them.",
+            "translation": "(Sie schreibt) ihnen."
+        },
+        {
+            "id": "37",
+            "original": "He is going to them.",
+            "translation": "(Er geht zu) ihnen."
+        },
+        {
+            "id": "38",
+            "original": "She is telling them a story.",
+            "translation": "(Sie erzählt) ihnen (eine Geschichte.)"
+        },
+        {
+            "id": "39",
+            "original": "Can I help you? (formal)",
+            "translation": "(Kann ich) Ihnen (helfen?)"
+        },
+        {
+            "id": "40",
+            "original": "I am giving you the menu. (formal)",
+            "translation": "(Ich gebe) Ihnen (die Speisekarte.)"
+        },
+        {
+            "id": "41",
+            "original": "How are you? (formal)",
+            "translation": "(Wie geht es) Ihnen?"
+        }
+    ]
+}

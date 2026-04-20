@@ -18,5 +18,10 @@
         "id": "shopping_restaurant",
         "title": "Dining and Shopping",
         "description": "A2 structures for ordering food and buying goods using A1 vocabulary."
+    },
+    {
+        "id": "dativ_personalpronomen",
+        "title": "Personalpronomen im Dativ",
+        "description": "Practice all dative personal pronouns — mir, dir, ihm, ihr, uns, euch, ihnen, Ihnen — with common verbs and prepositions."
     }
 ]
