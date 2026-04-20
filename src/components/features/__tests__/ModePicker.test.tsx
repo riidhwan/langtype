@@ -80,24 +80,24 @@ describe('ModePicker', () => {
         expect(screen.getByText('1 card due for review')).toBeInTheDocument()
     })
 
-    it('calls onSelectSRS when Review Due is clicked and cards are due', () => {
+    it('calls onSelectSRS when Spaced Repetition is clicked and cards are due', () => {
         mockGetDueChallengeIds.mockReturnValue(['1'])
         const onSelectSRS = vi.fn()
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} />)
 
-        fireEvent.click(screen.getByText('Review Due'))
+        fireEvent.click(screen.getByText('Spaced Repetition'))
 
         expect(onSelectSRS).toHaveBeenCalledOnce()
     })
 
-    it('does not call onSelectSRS when Review Due is clicked but no cards are due', () => {
+    it('does not call onSelectSRS when Spaced Repetition is clicked but no cards are due', () => {
         mockGetDueChallengeIds.mockReturnValue([])
         const onSelectSRS = vi.fn()
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} />)
 
-        fireEvent.click(screen.getByText('Review Due'))
+        fireEvent.click(screen.getByText('Spaced Repetition'))
 
         expect(onSelectSRS).not.toHaveBeenCalled()
     })

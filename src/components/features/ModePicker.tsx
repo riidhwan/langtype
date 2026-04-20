@@ -73,7 +73,7 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS }: Props) {
                             : 'border-border opacity-50 cursor-not-allowed',
                     )}
                 >
-                    <span className="text-xl font-semibold">Review Due</span>
+                    <span className="text-xl font-semibold">Spaced Repetition</span>
                     <span className="text-sm text-muted-foreground">
                         {dueCount > 0
                             ? `${dueCount} ${dueCount === 1 ? 'card' : 'cards'} due for review`

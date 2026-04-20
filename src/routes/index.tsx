@@ -1,23 +1,18 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { getCollections, getCollectionChallengeIds } from '@/services/challengeService'
+import { getCollections } from '@/services/challengeService'
 import { useSRSStore } from '@/store/useSRSStore'
-import { getDueChallengeIds } from '@/lib/srsAlgorithm'
+import { isCardDue } from '@/lib/srsAlgorithm'
 
 export const Route = createFileRoute('/')({
     component: Home,
     loader: async () => {
         const collections = await getCollections()
-        const challengeIdMap = Object.fromEntries(
-            await Promise.all(
-                collections.map(async (c) => [c.id, await getCollectionChallengeIds(c.id)]),
-            ),
-        )
-        return { collections, challengeIdMap }
+        return { collections }
     },
 })
 
 function Home() {
-    const { collections, challengeIdMap } = Route.useLoaderData()
+    const { collections } = Route.useLoaderData()
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
 
@@ -30,9 +25,11 @@ function Home() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {collections.map((collection) => {
-                        const challengeIds = challengeIdMap[collection.id] ?? []
                         const dueCount = hasHydrated
-                            ? getDueChallengeIds(collection.id, challengeIds, cards).length
+                            ? Object.entries(cards)
+                                .filter(([key]) => key.startsWith(`${collection.id}:`))
+                                .filter(([, card]) => isCardDue(card))
+                                .length
                             : 0
 
                         return (
@@ -40,6 +37,7 @@ function Home() {
                                 key={collection.id}
                                 to="/collections/$id"
                                 params={{ id: collection.id }}
+                                preload={false}
                                 className="block group"
                             >
                                 <div className="border rounded-lg p-6 h-full transition-all hover:border-primary hover:shadow-md bg-card">
