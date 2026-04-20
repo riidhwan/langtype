@@ -1,0 +1,32 @@
+{
+    "id": "dev_test",
+    "title": "[DEV] Test Collection",
+    "description": "Small set for testing features in development.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Hello",
+            "translation": "Hallo"
+        },
+        {
+            "id": "2",
+            "original": "Goodbye",
+            "translation": "Auf Wiedersehen"
+        },
+        {
+            "id": "3",
+            "original": "Thank you",
+            "translation": "Danke"
+        },
+        {
+            "id": "4",
+            "original": "Yes",
+            "translation": "Ja"
+        },
+        {
+            "id": "5",
+            "original": "No",
+            "translation": "Nein"
+        }
+    ]
+}

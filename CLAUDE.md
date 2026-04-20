@@ -66,7 +66,7 @@ JSON files in `src/data/collections/` define challenge sets. Parentheses in answ
 
 **Hooks**: Extract all non-trivial logic from components into custom hooks.
 
-**Tests**: Co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests.
+**Tests**: Co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests. Write tests before or alongside implementation — do not consider a task complete until `npm run test:coverage` has been run and any meaningful gaps addressed. Mock patterns: use `vi.hoisted()` for mock values referenced inside `vi.mock()` factories; wrap real module functions in `vi.fn()` when per-test overrides are needed (`vi.mock('@/lib/foo', async (orig) => { const a = await orig(); return { ...a, fn: vi.fn(a.fn) } })`).
 
 **Git**: Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`.
 

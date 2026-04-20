@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getCollection, getCollections } from '../challengeService'
+import { getCollection, getCollections, getCollectionChallengeIds } from '../challengeService'
 
 describe('challengeService', () => {
     describe('getCollections', () => {
@@ -9,6 +9,12 @@ describe('challengeService', () => {
             expect(collections.length).toBeGreaterThan(0)
             expect(collections.find(c => c.id === 'basics')).toBeDefined()
             expect(collections.find(c => c.id === 'shopping_restaurant')).toBeDefined()
+        })
+
+        it('includes the dev_test collection in DEV mode', async () => {
+            // Vitest runs in DEV mode (import.meta.env.DEV === true)
+            const collections = await getCollections()
+            expect(collections.find(c => c.id === 'dev_test')).toBeDefined()
         })
     })
 
@@ -30,6 +36,20 @@ describe('challengeService', () => {
         it('returns undefined for non-existent collection', async () => {
             const collection = await getCollection('non_existent')
             expect(collection).toBeUndefined()
+        })
+    })
+
+    describe('getCollectionChallengeIds', () => {
+        it('returns an array of challenge ids for an existing collection', async () => {
+            const ids = await getCollectionChallengeIds('basics')
+            expect(ids).toBeInstanceOf(Array)
+            expect(ids.length).toBeGreaterThan(0)
+            ids.forEach(id => expect(typeof id).toBe('string'))
+        })
+
+        it('returns an empty array for a non-existent collection', async () => {
+            const ids = await getCollectionChallengeIds('non_existent')
+            expect(ids).toEqual([])
         })
     })
 })

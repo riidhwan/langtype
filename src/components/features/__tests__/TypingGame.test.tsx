@@ -3,6 +3,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { TypingGame } from '../TypingGame'
 import { Challenge } from '@/types/challenge'
 
+const mockRecordReview = vi.hoisted(() => vi.fn())
+
+vi.mock('@/store/useSRSStore', () => ({
+    useSRSStore: (selector: (s: any) => any) =>
+        selector({ recordReview: mockRecordReview }),
+}))
+
 describe('TypingGame', () => {
     const challenges: Challenge[] = [
         { id: '1', original: 'Hello', translation: 'Hallo' },
@@ -12,6 +19,7 @@ describe('TypingGame', () => {
 
     beforeEach(() => {
         vi.useFakeTimers()
+        mockRecordReview.mockClear()
     })
 
     afterEach(() => {
@@ -95,5 +103,186 @@ describe('TypingGame', () => {
         )
 
         expect(screen.getByText('World')).toBeInTheDocument()
+    })
+
+    describe('SRS recording', () => {
+        const singleChallenge: Challenge[] = [
+            { id: '1', original: 'Hello', translation: 'Hallo' },
+        ]
+
+        it('calls recordReview with "correct" on a correct answer', () => {
+            const onCardResult = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+
+            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'correct')
+            expect(onCardResult).toHaveBeenCalledWith('1', true)
+        })
+
+        it('calls recordReview with "incorrect" on a wrong answer', () => {
+            const onCardResult = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'wrong answer' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+
+            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'incorrect')
+            expect(onCardResult).toHaveBeenCalledWith('1', false)
+        })
+
+        it('does not call recordReview when skipRecording is true', () => {
+            const onCardResult = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, skipRecording: true, onCardResult }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+
+            expect(mockRecordReview).not.toHaveBeenCalled()
+            // onCardResult still fires even when skipRecording is true
+            expect(onCardResult).toHaveBeenCalledWith('1', true)
+        })
+
+        it('records a result only once per card even if status persists', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+            // Advance partially — status stays 'completed' with timeLeft > 0
+            act(() => {
+                vi.advanceTimersByTime(2000)
+            })
+
+            expect(mockRecordReview).toHaveBeenCalledOnce()
+        })
+
+        it('shows "X cards remaining" counter when srsContext is provided', () => {
+            render(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3 }}
+                />
+            )
+
+            expect(screen.getByText('3 cards remaining')).toBeInTheDocument()
+        })
+
+        it('shows "Reviewing X missed cards" during retry phase', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, isRetry: true }}
+                />
+            )
+
+            expect(screen.getByText('Reviewing 1 missed card')).toBeInTheDocument()
+        })
+    })
+
+    describe('onFinished', () => {
+        const singleChallenge: Challenge[] = [
+            { id: '1', original: 'Hello', translation: 'Hallo' },
+        ]
+
+        it('calls onFinished after the last card timer expires', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+
+            act(() => {
+                vi.advanceTimersByTime(5100)
+            })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('calls onFinished after an incorrect answer on the last card', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+
+            act(() => {
+                vi.advanceTimersByTime(5100)
+            })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('does not call onFinished before the timer expires', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+            act(() => {
+                vi.advanceTimersByTime(2000)
+            })
+
+            expect(onFinished).not.toHaveBeenCalled()
+        })
+
+        it('does not call onFinished on the last card when more cards remain', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={challenges} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => {
+                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+            })
+            act(() => {
+                vi.advanceTimersByTime(5100)
+            })
+
+            // Advanced to second card — onFinished should not have been called yet
+            expect(screen.getByText('World')).toBeInTheDocument()
+            expect(onFinished).not.toHaveBeenCalled()
+        })
     })
 })

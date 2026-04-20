@@ -7,7 +7,11 @@ const collections = import.meta.glob<{ default: Collection }>('../data/collectio
 })
 
 export async function getCollections(): Promise<Collection[]> {
-    return indexData as Collection[]
+    const all = indexData as Collection[]
+    if (import.meta.env.DEV) {
+        return [...all, { id: 'dev_test', title: '[DEV] Test Collection', description: 'Small set for testing features in development.' }]
+    }
+    return all
 }
 
 export async function getCollection(id: string): Promise<Collection | undefined> {
@@ -18,4 +22,9 @@ export async function getCollection(id: string): Promise<Collection | undefined>
     })
 
     return entry ? entry[1].default : undefined
+}
+
+export async function getCollectionChallengeIds(id: string): Promise<string[]> {
+    const collection = await getCollection(id)
+    return collection?.challenges?.map((c) => c.id) ?? []
 }

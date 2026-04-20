@@ -8,8 +8,10 @@ import {
 } from '@tanstack/react-router'
 import * as React from 'react'
 import appCss from '../globals.css?url'
+import { useSRSStore } from '@/store/useSRSStore'
 
 export const Route = createRootRoute({
+    component: RootComponent,
     head: () => ({
         meta: [
             {
@@ -30,6 +32,13 @@ export const Route = createRootRoute({
     shellComponent: RootDocument,
     notFoundComponent: NotFound,
 })
+
+function RootComponent() {
+    React.useEffect(() => {
+        useSRSStore.persist.rehydrate()
+    }, [])
+    return <Outlet />
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
     return (
