@@ -30,6 +30,11 @@
         "description": "Type both the conjugated verb and the dative pronoun. All surrounding context is pre-filled."
     },
     {
+        "id": "dativ_personalpronomen_kontext",
+        "title": "Personalpronomen im Dativ — Kontext",
+        "description": "Read the German context and type the correct dative pronoun (mir, dir, ihm, ihr, uns, euch, ihnen, Ihnen)."
+    },
+    {
         "id": "netzwerk_neu_a1_k1_artikel",
         "title": "Netzwerk Neu A1 — Kapitel 1: Artikel",
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 1."

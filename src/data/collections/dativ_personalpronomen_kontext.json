@@ -1,0 +1,155 @@
+{
+    "id": "dativ_personalpronomen_kontext",
+    "title": "Personalpronomen im Dativ — Kontext",
+    "description": "Read the German context and type the correct dative pronoun (mir, dir, ihm, ihr, uns, euch, ihnen, Ihnen).",
+    "challenges": [
+        {
+            "id": "1",
+            "translation": "(Ich bin müde. Kannst du) mir (helfen?)"
+        },
+        {
+            "id": "2",
+            "translation": "(Ich verstehe das nicht. Erklärst du) mir (das?)"
+        },
+        {
+            "id": "3",
+            "translation": "(Ich habe Hunger! Gibst du) mir (etwas zu essen?)"
+        },
+        {
+            "id": "4",
+            "translation": "(Ich suche den Bahnhof. Zeigst du) mir (den Weg?)"
+        },
+        {
+            "id": "5",
+            "translation": "(Ich habe Geburtstag! Meine Mutter backt) mir (einen Kuchen.)"
+        },
+        {
+            "id": "6",
+            "translation": "(Ich bin krank. Der Arzt gibt) mir (ein Rezept.)"
+        },
+        {
+            "id": "7",
+            "translation": "(Du siehst krank aus. Kann ich) dir (helfen?)"
+        },
+        {
+            "id": "8",
+            "translation": "(Du hast Geburtstag! Ich schenke) dir (ein Buch.)"
+        },
+        {
+            "id": "9",
+            "translation": "(Du bist neu hier. Ich zeige) dir (die Stadt.)"
+        },
+        {
+            "id": "10",
+            "translation": "(Du verstehst das nicht? Ich erkläre) dir (das gerne.)"
+        },
+        {
+            "id": "11",
+            "translation": "(Du bist müde. Ich mache) dir (einen Tee.)"
+        },
+        {
+            "id": "12",
+            "translation": "(Das ist mein Bruder Thomas. Ich gebe) ihm (das Geld.)"
+        },
+        {
+            "id": "13",
+            "translation": "(Herr Braun kommt morgen. Ich erkläre) ihm (den Plan.)"
+        },
+        {
+            "id": "14",
+            "translation": "(Mein Vater ist krank. Ich bringe) ihm (Suppe.)"
+        },
+        {
+            "id": "15",
+            "translation": "(Das ist Tims Fahrrad. Es gehört) ihm."
+        },
+        {
+            "id": "16",
+            "translation": "(Mein Sohn lernt Englisch. Der Lehrer hilft) ihm (sehr.)"
+        },
+        {
+            "id": "17",
+            "translation": "(Das ist meine Schwester Lisa. Ich gebe) ihr (das Buch.)"
+        },
+        {
+            "id": "18",
+            "translation": "(Frau Bauer kommt morgen. Ich erkläre) ihr (den Plan.)"
+        },
+        {
+            "id": "19",
+            "translation": "(Meine Mutter ist krank. Ich bringe) ihr (Suppe.)"
+        },
+        {
+            "id": "20",
+            "translation": "(Das ist Annas Tasche. Sie gehört) ihr."
+        },
+        {
+            "id": "21",
+            "translation": "(Meine Tochter lernt Englisch. Der Lehrer hilft) ihr (sehr.)"
+        },
+        {
+            "id": "22",
+            "translation": "(Wir haben uns verirrt. Kannst du) uns (helfen?)"
+        },
+        {
+            "id": "23",
+            "translation": "(Wir sind Touristen. Zeigst du) uns (den Weg zum Bahnhof?)"
+        },
+        {
+            "id": "24",
+            "translation": "(Meine Frau und ich warten. Der Kellner bringt) uns (die Speisekarte.)"
+        },
+        {
+            "id": "25",
+            "translation": "(Wir haben Hunger. Kochst du) uns (etwas?)"
+        },
+        {
+            "id": "26",
+            "translation": "(Mein Mann und ich verstehen das nicht. Erklärst du) uns (das?)"
+        },
+        {
+            "id": "27",
+            "translation": "(Hey, ihr zwei! Ich bringe) euch (etwas zu trinken.)"
+        },
+        {
+            "id": "28",
+            "translation": "(Hallo, Kinder! Ich erkläre) euch (die Aufgabe.)"
+        },
+        {
+            "id": "29",
+            "translation": "(Hallo, Jungs! Ich zeige) euch (den Weg.)"
+        },
+        {
+            "id": "30",
+            "translation": "(Ihr seid neu hier. Ich helfe) euch (gerne.)"
+        },
+        {
+            "id": "31",
+            "translation": "(Klaus und Maria sind verloren. Ich zeige) ihnen (den Weg.)"
+        },
+        {
+            "id": "32",
+            "translation": "(Meine Eltern verstehen das nicht. Ich erkläre) ihnen (alles.)"
+        },
+        {
+            "id": "33",
+            "translation": "(Die Kinder haben Hunger. Ich koche) ihnen (Suppe.)"
+        },
+        {
+            "id": "34",
+            "translation": "(Die Touristen suchen den Bahnhof. Ich zeige) ihnen (den Weg.)"
+        },
+        {
+            "id": "35",
+            "translation": "(Guten Tag, Frau Schmidt! Wie geht es) Ihnen?"
+        },
+        {
+            "id": "36",
+            "translation": "(Entschuldigung, Herr Doktor. Kann ich) Ihnen (helfen?)"
+        },
+        {
+            "id": "37",
+            "translation": "(Darf ich) Ihnen (Ihren Mantel abnehmen, Frau Müller?)"
+        }
+    ]
+}
