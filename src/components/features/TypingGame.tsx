@@ -1,6 +1,7 @@
 import { useTypingEngine } from "@/hooks/useTypingEngine"
 import { useUrlSync } from "@/hooks/useUrlSync"
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import type { SRSGrade } from "@/types/srs"
 import { SentenceDisplay } from "@/components/domain/SentenceDisplay"
 import { VisualTranslationInput } from "@/components/domain/VisualTranslationInput"
 import { Challenge } from "@/types/challenge"
@@ -40,6 +41,8 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         currentIndex,
         currentSentence,
         timeLeft,
+        setTimeLeft,
+        setIsPaused,
         setCurrentIndex,
         preFilledIndices,
     } = useTypingEngine(
@@ -57,7 +60,25 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         onQuestionChange
     })
 
-    // SRS: record result exactly once per challenge
+    // SRS: confidence override — timer is paused until the user makes an explicit choice
+    const [confidenceOverride, setConfidenceOverride] = useState<null | 'again' | 'hard' | 'good'>(null)
+    useEffect(() => {
+        setConfidenceOverride(null)
+    }, [currentIndex])
+
+    const showingConfidenceButtons =
+        isCorrect && !!srsContext && !srsContext.skipRecording && confidenceOverride === null
+
+    useEffect(() => {
+        setIsPaused(showingConfidenceButtons)
+    }, [showingConfidenceButtons]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const handleConfidenceClick = (override: 'again' | 'hard' | 'good') => {
+        setConfidenceOverride(override)
+        setIsPaused(false)
+        setTimeLeft(2)
+    }
+
     const recordReview = useSRSStore((s) => s.recordReview)
     const hasRecordedRef = useRef(false)
 
@@ -68,17 +89,28 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         }
         if (!srsContext || hasRecordedRef.current) return
         if (status !== 'completed' && status !== 'submitted') return
+        if (timeLeft !== 0) return
 
         hasRecordedRef.current = true
-        const passed = status === 'completed'
+
+        let grade: SRSGrade
+        if (status === 'submitted' || confidenceOverride === 'again') {
+            grade = 'incorrect'
+        } else if (confidenceOverride === 'hard') {
+            grade = 'hard'
+        } else {
+            grade = 'correct'
+        }
+
+        const passed = grade !== 'incorrect'
         const id = challenges[currentIndex].id
 
         if (!srsContext.skipRecording) {
-            recordReview(srsContext.collectionId, id, passed ? 'correct' : 'incorrect')
+            recordReview(srsContext.collectionId, id, grade)
         }
 
         srsContext.onCardResult?.(id, passed)
-    }, [status, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Detect end of session: last card done, timer expired, nothing left to advance to
     const hasCalledOnFinished = useRef(false)
@@ -128,8 +160,42 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                 />
 
                 {isCorrect && (
-                    <div className="text-green-600 font-bold animate-pulse mt-4">
-                        ✨ Correct! Moving to next sentence in {timeLeft}...
+                    <div className="flex flex-col items-center gap-2 mt-4">
+                        <div className="text-green-600 font-bold animate-pulse">
+                            {showingConfidenceButtons
+                                ? '✨ Correct! How confident were you?'
+                                : `✨ Correct! Moving to next sentence in ${timeLeft}...`}
+                        </div>
+                        {srsContext && !srsContext.skipRecording && (
+                            confidenceOverride !== null ? (
+                                confidenceOverride === 'again' ? (
+                                    <p className="text-sm text-muted-foreground">Showing again soon ✓</p>
+                                ) : confidenceOverride === 'hard' ? (
+                                    <p className="text-sm text-muted-foreground">Scheduling sooner ✓</p>
+                                ) : null
+                            ) : (
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => handleConfidenceClick('again')}
+                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
+                                    >
+                                        Not at all
+                                    </button>
+                                    <button
+                                        onClick={() => handleConfidenceClick('hard')}
+                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
+                                    >
+                                        Somewhat
+                                    </button>
+                                    <button
+                                        onClick={() => handleConfidenceClick('good')}
+                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
+                                    >
+                                        Very
+                                    </button>
+                                </div>
+                            )
+                        )}
                     </div>
                 )}
 

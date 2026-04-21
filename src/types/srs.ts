@@ -8,4 +8,4 @@ export interface SRSCard {
     lastReviewedAt: number  // ms timestamp; 0 = never reviewed
 }
 
-export type SRSGrade = 'correct' | 'incorrect'
+export type SRSGrade = 'correct' | 'hard' | 'incorrect'

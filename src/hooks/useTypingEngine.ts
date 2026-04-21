@@ -15,28 +15,24 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
     }, [parsedSentences, currentIndex])
 
     const [timeLeft, setTimeLeft] = useState(0)
+    const [isPaused, setIsPaused] = useState(false)
 
     // Reset when index changes
     useEffect(() => {
-        // Initial input should already handle pre-filled start if any
         const initialInput = autoMatchSpacing('', currentSentence, preFilledIndices)
         setInput(initialInput)
         setStatus('typing')
         setTimeLeft(0)
+        setIsPaused(false)
     }, [currentIndex, currentSentence, preFilledIndices])
 
     useEffect(() => {
         let timer: NodeJS.Timeout
-        if ((status === 'submitted' || status === 'completed') && timeLeft > 0) {
+        if ((status === 'submitted' || status === 'completed') && timeLeft > 0 && !isPaused) {
             timer = setInterval(() => {
-                setTimeLeft((prev) => {
-                    if (prev <= 1) {
-                        return 0
-                    }
-                    return prev - 1
-                })
+                setTimeLeft((prev) => (prev <= 1 ? 0 : prev - 1))
             }, 1000)
-        } else if (timeLeft === 0 && (status === 'submitted' || status === 'completed')) {
+        } else if (timeLeft === 0 && (status === 'submitted' || status === 'completed') && !isPaused) {
             // Timer finished, time to move on
             if (currentIndex < sentences.length - 1) {
                 setCurrentIndex(prev => prev + 1)
@@ -45,7 +41,7 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
             }
         }
         return () => clearInterval(timer)
-    }, [status, timeLeft, currentIndex, sentences.length])
+    }, [status, timeLeft, currentIndex, sentences.length, isPaused])
 
     const setInputSafe = (value: string) => {
         if (status === 'completed' || status === 'submitted') return
@@ -89,6 +85,8 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
         status,
         submit,
         timeLeft,
+        setTimeLeft,
+        setIsPaused,
         setCurrentIndex,
         preFilledIndices,
     }

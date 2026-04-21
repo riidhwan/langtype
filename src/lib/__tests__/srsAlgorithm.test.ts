@@ -92,6 +92,45 @@ describe('computeReview — incorrect', () => {
     })
 })
 
+describe('computeReview — hard', () => {
+    it('sets interval to 0.25 days (6h) on first hard answer (rep 0)', () => {
+        const result = computeReview(makeCard({ repetitions: 0 }), 'hard', NOW)
+        expect(result.interval).toBe(0.25)
+        expect(result.nextReviewAt).toBe(NOW + 0.25 * DAY)
+    })
+
+    it('sets interval to 3 days on second hard answer (rep 1)', () => {
+        const result = computeReview(makeCard({ repetitions: 1, interval: 1 }), 'hard', NOW)
+        expect(result.interval).toBe(3)
+        expect(result.repetitions).toBe(2)
+    })
+
+    it('multiplies interval by ease factor × 0.6 on subsequent hard answers', () => {
+        const result = computeReview(makeCard({ repetitions: 2, interval: 6, easeFactor: 2.5 }), 'hard', NOW)
+        expect(result.interval).toBe(Math.round(6 * 2.5 * 0.6)) // 9
+    })
+
+    it('increments repetitions', () => {
+        const result = computeReview(makeCard({ repetitions: 0 }), 'hard', NOW)
+        expect(result.repetitions).toBe(1)
+    })
+
+    it('decreases ease factor by 0.1', () => {
+        const result = computeReview(makeCard({ easeFactor: 2.5 }), 'hard', NOW)
+        expect(result.easeFactor).toBeCloseTo(2.4)
+    })
+
+    it('does not let ease factor drop below 1.3', () => {
+        const result = computeReview(makeCard({ easeFactor: 1.3 }), 'hard', NOW)
+        expect(result.easeFactor).toBeCloseTo(1.3)
+    })
+
+    it('records lastReviewedAt', () => {
+        const result = computeReview(makeCard(), 'hard', NOW)
+        expect(result.lastReviewedAt).toBe(NOW)
+    })
+})
+
 describe('isCardDue', () => {
     it('returns true for a new card (nextReviewAt === 0)', () => {
         expect(isCardDue(makeCard({ nextReviewAt: 0 }), NOW)).toBe(true)

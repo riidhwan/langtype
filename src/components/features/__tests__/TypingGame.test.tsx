@@ -110,7 +110,7 @@ describe('TypingGame', () => {
             { id: '1', original: 'Hello', translation: 'Hallo' },
         ]
 
-        it('calls recordReview with "correct" on a correct answer', () => {
+        it('calls recordReview with "correct" after clicking Got it', () => {
             const onCardResult = vi.fn()
             render(
                 <TypingGame
@@ -121,15 +121,19 @@ describe('TypingGame', () => {
 
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'Hallo' } })
-            act(() => {
-                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-            })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+
+            // Not yet recorded — timer is paused waiting for user choice
+            expect(mockRecordReview).not.toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText('Very'))
+            act(() => { vi.advanceTimersByTime(2100) })
 
             expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'correct')
             expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
-        it('calls recordReview with "incorrect" on a wrong answer', () => {
+        it('calls recordReview with "incorrect" after countdown expires on wrong answer', () => {
             const onCardResult = vi.fn()
             render(
                 <TypingGame
@@ -140,12 +144,27 @@ describe('TypingGame', () => {
 
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'wrong answer' } })
-            act(() => {
-                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-            })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
 
             expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'incorrect')
             expect(onCardResult).toHaveBeenCalledWith('1', false)
+        })
+
+        it('does not call recordReview during the countdown (before timeLeft === 0)', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(2000) })
+
+            expect(mockRecordReview).not.toHaveBeenCalled()
         })
 
         it('does not call recordReview when skipRecording is true', () => {
@@ -159,16 +178,14 @@ describe('TypingGame', () => {
 
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'Hallo' } })
-            act(() => {
-                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-            })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
 
             expect(mockRecordReview).not.toHaveBeenCalled()
-            // onCardResult still fires even when skipRecording is true
             expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
-        it('records a result only once per card even if status persists', () => {
+        it('records a result only once even after clicking Got it', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -178,13 +195,9 @@ describe('TypingGame', () => {
 
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'Hallo' } })
-            act(() => {
-                fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
-            })
-            // Advance partially — status stays 'completed' with timeLeft > 0
-            act(() => {
-                vi.advanceTimersByTime(2000)
-            })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByText('Very'))
+            act(() => { vi.advanceTimersByTime(2100) })
 
             expect(mockRecordReview).toHaveBeenCalledOnce()
         })
@@ -209,6 +222,196 @@ describe('TypingGame', () => {
             )
 
             expect(screen.getByText('Reviewing 1 missed card')).toBeInTheDocument()
+        })
+    })
+
+    describe('confidence override buttons', () => {
+        const singleChallenge: Challenge[] = [
+            { id: '1', original: 'Hello', translation: 'Hallo' },
+        ]
+
+        function submitCorrect() {
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+        }
+
+        it('shows "How confident were you?" and all three buttons after correct answer in SRS mode', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            expect(screen.getByText('✨ Correct! How confident were you?')).toBeInTheDocument()
+            expect(screen.getByText('Not at all')).toBeInTheDocument()
+            expect(screen.getByText('Somewhat')).toBeInTheDocument()
+            expect(screen.getByText('Very')).toBeInTheDocument()
+        })
+
+        it('hides the countdown number while confidence buttons are shown', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            expect(screen.queryByText(/Moving to next sentence in/)).not.toBeInTheDocument()
+        })
+
+        it('does NOT auto-advance without a button click (timer is paused)', () => {
+            const twoCards: Challenge[] = [
+                { id: '1', original: 'Hello', translation: 'Hallo' },
+                { id: '2', original: 'World', translation: 'Welt' },
+            ]
+            render(
+                <TypingGame
+                    challenges={twoCards}
+                    srsContext={{ collectionId: 'col', totalDue: 2 }}
+                />
+            )
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+
+            // Even after a long wait, stays on the same card
+            act(() => { vi.advanceTimersByTime(30000) })
+            expect(screen.getByText('Hello')).toBeInTheDocument()
+        })
+
+        it('advances after clicking Got it', () => {
+            const twoCards: Challenge[] = [
+                { id: '1', original: 'Hello', translation: 'Hallo' },
+                { id: '2', original: 'World', translation: 'Welt' },
+            ]
+            render(
+                <TypingGame
+                    challenges={twoCards}
+                    srsContext={{ collectionId: 'col', totalDue: 2 }}
+                />
+            )
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+
+            fireEvent.click(screen.getByText('Very'))
+            act(() => { vi.advanceTimersByTime(2100) })
+            expect(screen.getByText('World')).toBeInTheDocument()
+        })
+
+        it('does not show confidence buttons in normal (non-SRS) mode', () => {
+            render(<TypingGame challenges={singleChallenge} />)
+            submitCorrect()
+            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
+            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
+        })
+
+        it('does not show confidence buttons when skipRecording is true', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, skipRecording: true }}
+                />
+            )
+            submitCorrect()
+            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
+            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
+        })
+
+        it('replaces buttons with feedback text after clicking Again', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Not at all'))
+            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
+            expect(screen.getByText('Showing again soon ✓')).toBeInTheDocument()
+        })
+
+        it('replaces buttons with countdown and no feedback text after clicking Got it', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Very'))
+            expect(screen.queryByText('Very')).not.toBeInTheDocument()
+            expect(screen.getByText(/Moving to next sentence in/)).toBeInTheDocument()
+            expect(screen.queryByText(/✓/)).not.toBeInTheDocument()
+        })
+
+        it('replaces buttons with feedback text after clicking Not sure', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Somewhat'))
+            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
+            expect(screen.getByText('Scheduling sooner ✓')).toBeInTheDocument()
+        })
+
+        it('records "incorrect" grade when Again is clicked (after 2s countdown)', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Not at all'))
+            act(() => { vi.advanceTimersByTime(2100) })
+            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'incorrect')
+        })
+
+        it('records "hard" grade when Not sure is clicked (after 2s countdown)', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Somewhat'))
+            act(() => { vi.advanceTimersByTime(2100) })
+            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'hard')
+        })
+
+        it('Again reports passed=false via onCardResult (triggering retry queue)', () => {
+            const onCardResult = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Not at all'))
+            act(() => { vi.advanceTimersByTime(2100) })
+            expect(onCardResult).toHaveBeenCalledWith('1', false)
+        })
+
+        it('Not sure reports passed=true via onCardResult', () => {
+            const onCardResult = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+            submitCorrect()
+            fireEvent.click(screen.getByText('Somewhat'))
+            act(() => { vi.advanceTimersByTime(2100) })
+            expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
     })
 
