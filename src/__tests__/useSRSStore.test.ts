@@ -15,7 +15,37 @@ import { useSRSStore } from '@/store/useSRSStore'
 describe('useSRSStore', () => {
     beforeEach(() => {
         // Reset the in-memory store state before each test
-        useSRSStore.setState({ cards: {}, _hasHydrated: false })
+        useSRSStore.setState({ cards: {}, lastPlayedAt: {}, _hasHydrated: false })
+    })
+
+    describe('recordPlay', () => {
+        it('stores a timestamp for the given collection', () => {
+            const before = Date.now()
+            useSRSStore.getState().recordPlay('col1')
+            const after = Date.now()
+
+            const ts = useSRSStore.getState().lastPlayedAt['col1']
+            expect(ts).toBeGreaterThanOrEqual(before)
+            expect(ts).toBeLessThanOrEqual(after)
+        })
+
+        it('keeps entries for different collections independently', () => {
+            useSRSStore.getState().recordPlay('col1')
+            useSRSStore.getState().recordPlay('col2')
+
+            expect(useSRSStore.getState().lastPlayedAt['col1']).toBeDefined()
+            expect(useSRSStore.getState().lastPlayedAt['col2']).toBeDefined()
+        })
+
+        it('overwrites the timestamp when called again for the same collection', () => {
+            useSRSStore.getState().recordPlay('col1')
+            const first = useSRSStore.getState().lastPlayedAt['col1']
+
+            useSRSStore.getState().recordPlay('col1')
+            const second = useSRSStore.getState().lastPlayedAt['col1']
+
+            expect(second).toBeGreaterThanOrEqual(first)
+        })
     })
 
     describe('setHasHydrated', () => {

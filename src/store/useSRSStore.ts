@@ -6,11 +6,13 @@ import { createNewCard, computeReview } from '@/lib/srsAlgorithm'
 
 interface SRSState {
     cards: Record<string, SRSCard>
+    lastPlayedAt: Record<string, number>
     _hasHydrated: boolean
 }
 
 interface SRSActions {
     recordReview: (collectionId: string, challengeId: string, grade: SRSGrade) => void
+    recordPlay: (collectionId: string) => void
     getCard: (collectionId: string, challengeId: string) => SRSCard | undefined
     resetCollection: (collectionId: string) => void
     resetAll: () => void
@@ -23,7 +25,14 @@ export const useSRSStore = create<SRSStore>()(
     persist(
         (set, get) => ({
             cards: {},
+            lastPlayedAt: {},
             _hasHydrated: false,
+
+            recordPlay(collectionId) {
+                set((state) => ({
+                    lastPlayedAt: { ...state.lastPlayedAt, [collectionId]: Date.now() },
+                }))
+            },
 
             recordReview(collectionId, challengeId, grade) {
                 const key = `${collectionId}:${challengeId}`
@@ -68,7 +77,7 @@ export const useSRSStore = create<SRSStore>()(
             })),
             version: 1,
             skipHydration: true,
-            partialize: (state) => ({ cards: state.cards }),
+            partialize: (state) => ({ cards: state.cards, lastPlayedAt: state.lastPlayedAt }),
             onRehydrateStorage: () => (state) => {
                 state?.setHasHydrated(true)
             },

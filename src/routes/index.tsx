@@ -15,6 +15,11 @@ function Home() {
     const { collections } = Route.useLoaderData()
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
+    const lastPlayedAt = useSRSStore((s) => s.lastPlayedAt)
+
+    const sortedCollections = [...collections].sort(
+        (a, b) => (lastPlayedAt[b.id] ?? 0) - (lastPlayedAt[a.id] ?? 0)
+    )
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24 bg-background">
@@ -24,7 +29,7 @@ function Home() {
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {collections.map((collection) => {
+                    {sortedCollections.map((collection) => {
                         const dueCount = hasHydrated
                             ? Object.entries(cards)
                                 .filter(([key]) => key.startsWith(`${collection.id}:`))

@@ -49,7 +49,7 @@ vi.mock('@/components/features/SRSAllDoneScreen', () => ({
 }))
 
 vi.mock('@/store/useSRSStore', () => {
-    const mockState = { cards: {}, _hasHydrated: false }
+    const mockState = { cards: {}, lastPlayedAt: {}, _hasHydrated: false, recordPlay: vi.fn() }
     return {
         useSRSStore: (selector?: (s: any) => any) =>
             selector ? selector(mockState) : mockState,

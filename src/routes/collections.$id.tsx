@@ -68,6 +68,7 @@ export function CollectionGamePage() {
     const { questionId, mode, view } = Route.useSearch()
     const navigate = useNavigate({ from: Route.fullPath })
     const { cards } = useSRSStore()
+    const recordPlay = useSRSStore((s) => s.recordPlay)
 
     const [retryCount, setRetryCount] = useState(0)
     const [missedIds, setMissedIds] = useState<string[]>([])
@@ -95,6 +96,12 @@ export function CollectionGamePage() {
         return []
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collection.challenges, collection.id, mode, retryCount, missedIds])
+
+    useEffect(() => {
+        if (mode === 'srs' || mode === 'normal') {
+            recordPlay(collection.id)
+        }
+    }, [mode, collection.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Reset retry state only after mode leaves 'srs' to avoid a transient render
     // where mode='srs' + retryCount=0 triggers the all-done screen before navigation.
