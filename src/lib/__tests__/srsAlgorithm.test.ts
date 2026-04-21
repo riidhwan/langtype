@@ -75,10 +75,10 @@ describe('computeReview — incorrect', () => {
         expect(result.repetitions).toBe(0)
     })
 
-    it('resets interval to 1 day', () => {
+    it('sets interval to 0 and nextReviewAt to now so card is immediately due', () => {
         const result = computeReview(makeCard({ interval: 30 }), 'incorrect', NOW)
-        expect(result.interval).toBe(1)
-        expect(result.nextReviewAt).toBe(NOW + 1 * DAY)
+        expect(result.interval).toBe(0)
+        expect(result.nextReviewAt).toBe(NOW)
     })
 
     it('decreases ease factor by 0.2', () => {

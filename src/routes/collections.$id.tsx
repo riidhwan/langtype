@@ -4,7 +4,7 @@ import { TypingGame } from '@/components/features/TypingGame'
 import { ModePicker } from '@/components/features/ModePicker'
 import { SRSAllDoneScreen } from '@/components/features/SRSAllDoneScreen'
 import { SRSProgressView } from '@/components/features/SRSProgressView'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { shuffleArray } from '@/lib/utils'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getDueChallengeIds } from '@/lib/srsAlgorithm'
@@ -95,10 +95,17 @@ export function CollectionGamePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collection.challenges, collection.id, mode, retryCount, missedIds])
 
+    // Reset retry state only after mode leaves 'srs' to avoid a transient render
+    // where mode='srs' + retryCount=0 triggers the all-done screen before navigation.
+    useEffect(() => {
+        if (mode !== 'srs') {
+            setRetryCount(0)
+            setMissedIds([])
+            pendingMissedIds.current = []
+        }
+    }, [mode])
+
     const goToPicker = () => {
-        setRetryCount(0)
-        setMissedIds([])
-        pendingMissedIds.current = []
         navigate({ search: () => ({}) })
     }
     const startNormal = () => navigate({ search: () => ({ mode: 'normal' as const }) })
@@ -116,8 +123,6 @@ export function CollectionGamePage() {
             setMissedIds(missed)
             setRetryCount((c) => c + 1)
         } else {
-            setRetryCount(0)
-            setMissedIds([])
             goToPicker()
         }
     }
@@ -216,7 +221,6 @@ export function CollectionGamePage() {
                     collectionId: collection.id,
                     totalDue: challenges.length,
                     isRetry: isRetryPhase,
-                    skipRecording: isRetryPhase,
                     onCardResult: handleCardResult,
                 } : undefined}
             />

@@ -6,7 +6,6 @@ const EASE_BONUS_CORRECT = 0.1
 const EASE_PENALTY_HARD = 0.1
 const EASE_PENALTY_INCORRECT = 0.2
 const HARD_INTERVAL_MULTIPLIER = 0.6
-const INCORRECT_INTERVAL = 1
 const MS_PER_DAY = 86_400_000
 
 export function createNewCard(collectionId: string, challengeId: string): SRSCard {
@@ -28,10 +27,10 @@ export function computeReview(
 ): Partial<SRSCard> {
     if (grade === 'incorrect') {
         return {
-            interval: INCORRECT_INTERVAL,
+            interval: 0,
             repetitions: 0,
             easeFactor: Math.max(MIN_EASE_FACTOR, card.easeFactor - EASE_PENALTY_INCORRECT),
-            nextReviewAt: now + INCORRECT_INTERVAL * MS_PER_DAY,
+            nextReviewAt: now,
             lastReviewedAt: now,
         }
     }

@@ -320,6 +320,19 @@ describe('TypingGame', () => {
             expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
         })
 
+        it('shows confidence buttons during retry phase (isRetry: true, no skipRecording)', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1, isRetry: true }}
+                />
+            )
+            submitCorrect()
+            expect(screen.getByText('Not at all')).toBeInTheDocument()
+            expect(screen.getByText('Somewhat')).toBeInTheDocument()
+            expect(screen.getByText('Very')).toBeInTheDocument()
+        })
+
         it('replaces buttons with feedback text after clicking Again', () => {
             render(
                 <TypingGame

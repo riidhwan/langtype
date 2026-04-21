@@ -50,7 +50,7 @@ describe('useSRSStore', () => {
             const card = useSRSStore.getState().cards['col1:ch1']
             expect(card).toBeDefined()
             expect(card.repetitions).toBe(0)
-            expect(card.interval).toBe(1)
+            expect(card.interval).toBe(0)
         })
 
         it('gives 6-day interval after two consecutive correct answers', () => {
@@ -71,7 +71,7 @@ describe('useSRSStore', () => {
 
             const card = useSRSStore.getState().cards['col1:ch1']
             expect(card.repetitions).toBe(0)
-            expect(card.interval).toBe(1)
+            expect(card.interval).toBe(0)
             expect(card.easeFactor).toBeLessThan(efBefore)
         })
 
