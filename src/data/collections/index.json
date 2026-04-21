@@ -43,5 +43,10 @@
         "id": "netzwerk_neu_a1_k3_artikel",
         "title": "Netzwerk Neu A1 — Kapitel 3: Artikel",
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 3."
+    },
+    {
+        "id": "netzwerk_neu_a1_k4_artikel",
+        "title": "Netzwerk Neu A1 — Kapitel 4: Artikel",
+        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 4."
     }
 ]
