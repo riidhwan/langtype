@@ -85,7 +85,7 @@ export function VisualTranslationInput({
             />
 
             {/* Visual Render Layer */}
-            <div className="flex flex-wrap gap-y-4 gap-x-4">
+            <div className="flex flex-wrap justify-center gap-y-4 gap-x-4">
                 {words.map((word, wIdx) => (
                     <div key={wIdx} className="flex gap-x-1">
                         {word.text.split('').map((char, charOffset) => {
