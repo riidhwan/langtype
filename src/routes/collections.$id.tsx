@@ -71,6 +71,7 @@ export function CollectionGamePage() {
 
     const [retryCount, setRetryCount] = useState(0)
     const [missedIds, setMissedIds] = useState<string[]>([])
+    const [completedCount, setCompletedCount] = useState(0)
     const pendingMissedIds = useRef<string[]>([])
     const isRetryPhase = retryCount > 0
 
@@ -113,6 +114,7 @@ export function CollectionGamePage() {
     const goToProgress = () => navigate({ search: () => ({ view: 'progress' as const }) })
 
     const handleCardResult = (challengeId: string, passed: boolean) => {
+        setCompletedCount((c) => c + 1)
         if (!passed) pendingMissedIds.current.push(challengeId)
     }
 
@@ -120,6 +122,7 @@ export function CollectionGamePage() {
         const missed = pendingMissedIds.current
         pendingMissedIds.current = []
         if (missed.length > 0) {
+            setCompletedCount(0)
             setMissedIds(missed)
             setRetryCount((c) => c + 1)
         } else {
@@ -220,6 +223,7 @@ export function CollectionGamePage() {
                 srsContext={mode === 'srs' ? {
                     collectionId: collection.id,
                     totalDue: challenges.length,
+                    cardsCompleted: completedCount,
                     isRetry: isRetryPhase,
                     onCardResult: handleCardResult,
                 } : undefined}

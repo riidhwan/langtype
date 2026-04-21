@@ -10,6 +10,7 @@ import { useSRSStore } from "@/store/useSRSStore"
 interface SRSContext {
     collectionId: string
     totalDue: number
+    cardsCompleted?: number
     isRetry?: boolean
     skipRecording?: boolean
     onCardResult?: (challengeId: string, passed: boolean) => void
@@ -132,7 +133,9 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         }
     }, [status, timeLeft, currentIndex, challenges.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const cardsRemaining = srsContext ? srsContext.totalDue - currentIndex : null
+    const cardsRemaining = srsContext
+        ? srsContext.totalDue - (srsContext.cardsCompleted ?? currentIndex)
+        : null
 
     return (
         <div className="w-full max-w-2xl flex flex-col items-center gap-4 md:gap-8">
