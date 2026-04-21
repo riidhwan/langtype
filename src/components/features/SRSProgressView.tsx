@@ -89,7 +89,7 @@ export function SRSProgressView({ collection, onBack }: Props) {
                             <ul className="flex flex-col divide-y divide-border">
                                 {due.map((c) => (
                                     <li key={c.id} className="flex items-center justify-between py-3">
-                                        <span className="text-foreground">{c.original}</span>
+                                        <span className="text-foreground">{c.original ?? c.translation}</span>
                                         <span className="text-sm text-red-500 font-medium shrink-0 ml-4">Due</span>
                                     </li>
                                 ))}
@@ -106,7 +106,7 @@ export function SRSProgressView({ collection, onBack }: Props) {
                             <ul className="flex flex-col divide-y divide-border">
                                 {newCards.map((c) => (
                                     <li key={c.id} className="flex items-center justify-between py-3">
-                                        <span className="text-foreground">{c.original}</span>
+                                        <span className="text-foreground">{c.original ?? c.translation}</span>
                                         <span className="text-sm text-muted-foreground shrink-0 ml-4">New</span>
                                     </li>
                                 ))}
@@ -123,7 +123,7 @@ export function SRSProgressView({ collection, onBack }: Props) {
                             <ul className="flex flex-col divide-y divide-border">
                                 {upcoming.map(({ challenge, msUntil }) => (
                                     <li key={challenge.id} className="flex items-center justify-between py-3">
-                                        <span className="text-foreground">{challenge.original}</span>
+                                        <span className="text-foreground">{challenge.original ?? challenge.translation}</span>
                                         <span className="text-sm text-muted-foreground shrink-0 ml-4">
                                             {formatTimeUntil(msUntil)}
                                         </span>

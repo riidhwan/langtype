@@ -140,7 +140,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
     return (
         <div className="w-full max-w-2xl flex flex-col items-center gap-4 md:gap-8">
 
-            {currentChallenge && (
+            {currentChallenge?.original && (
                 <SentenceDisplay text={currentChallenge.original} />
             )}
 

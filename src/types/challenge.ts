@@ -1,6 +1,6 @@
 export interface Challenge {
     id: string
-    original: string
+    original?: string
     translation: string
 }
 
