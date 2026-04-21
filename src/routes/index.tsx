@@ -28,6 +28,16 @@ function Home() {
                     <p className="text-xl text-muted-foreground">Select a collection to start practicing.</p>
                 </header>
 
+                {!hasHydrated ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {collections.map((collection) => (
+                            <div key={collection.id} className="border rounded-lg p-6 h-full bg-card animate-pulse">
+                                <div className="h-8 bg-muted rounded w-3/4 mb-2" />
+                                {collection.description && <div className="h-4 bg-muted rounded w-full" />}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {sortedCollections.map((collection) => {
                         const dueCount = hasHydrated
@@ -66,6 +76,7 @@ function Home() {
                         )
                     })}
                 </div>
+                )}
             </div>
         </main>
     )
