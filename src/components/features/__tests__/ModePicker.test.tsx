@@ -43,21 +43,21 @@ describe('ModePicker', () => {
     })
 
     it('renders collection title and description', () => {
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText('Test Collection')).toBeInTheDocument()
         expect(screen.getByText('A test collection')).toBeInTheDocument()
     })
 
     it('shows total challenge count on the Practice All card', () => {
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText(/2 challenges in random order/)).toBeInTheDocument()
     })
 
     it('calls onSelectNormal when Practice All is clicked', () => {
         const onSelectNormal = vi.fn()
-        render(<ModePicker collection={collection} onSelectNormal={onSelectNormal} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={onSelectNormal} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Practice All'))
 
@@ -67,7 +67,7 @@ describe('ModePicker', () => {
     it('shows due count when cards are due', () => {
         mockGetDueChallengeIds.mockReturnValue(['1', '2'])
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText('2 cards due for review')).toBeInTheDocument()
     })
@@ -75,7 +75,7 @@ describe('ModePicker', () => {
     it('uses singular "card" when exactly 1 card is due', () => {
         mockGetDueChallengeIds.mockReturnValue(['1'])
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText('1 card due for review')).toBeInTheDocument()
     })
@@ -84,7 +84,7 @@ describe('ModePicker', () => {
         mockGetDueChallengeIds.mockReturnValue(['1'])
         const onSelectSRS = vi.fn()
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Spaced Repetition'))
 
@@ -95,7 +95,7 @@ describe('ModePicker', () => {
         mockGetDueChallengeIds.mockReturnValue([])
         const onSelectSRS = vi.fn()
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={onSelectSRS} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Spaced Repetition'))
 
@@ -106,7 +106,7 @@ describe('ModePicker', () => {
         mockGetDueChallengeIds.mockReturnValue([])
         mockGetNextReviewTime.mockReturnValue(Date.now() + 3 * 3_600_000)
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText(/Next review in 3 hours/)).toBeInTheDocument()
     })
@@ -115,7 +115,7 @@ describe('ModePicker', () => {
         mockGetDueChallengeIds.mockReturnValue([])
         mockGetNextReviewTime.mockReturnValue(null)
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText(/All caught up/)).toBeInTheDocument()
     })
@@ -123,7 +123,7 @@ describe('ModePicker', () => {
     it('does not show reset button when no SRS progress exists', () => {
         mockSRSState.cards = {}
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.queryByText('Reset SRS progress')).not.toBeInTheDocument()
     })
@@ -131,7 +131,7 @@ describe('ModePicker', () => {
     it('shows reset button when SRS progress exists for this collection', () => {
         mockSRSState.cards = { 'test-col:1': {} }
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         expect(screen.getByText('Reset SRS progress')).toBeInTheDocument()
     })
@@ -139,7 +139,7 @@ describe('ModePicker', () => {
     it('shows confirmation UI when Reset SRS progress is clicked', () => {
         mockSRSState.cards = { 'test-col:1': {} }
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Reset SRS progress'))
 
@@ -151,7 +151,7 @@ describe('ModePicker', () => {
     it('hides confirmation and restores reset button when Cancel is clicked', () => {
         mockSRSState.cards = { 'test-col:1': {} }
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Reset SRS progress'))
         fireEvent.click(screen.getByText('Cancel'))
@@ -160,10 +160,19 @@ describe('ModePicker', () => {
         expect(screen.getByText('Reset SRS progress')).toBeInTheDocument()
     })
 
+    it('shows "View cards" button and calls onViewProgress when clicked', () => {
+        const onViewProgress = vi.fn()
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={onViewProgress} />)
+
+        fireEvent.click(screen.getByText('View cards'))
+
+        expect(onViewProgress).toHaveBeenCalledOnce()
+    })
+
     it('calls resetCollection with the collection id when Reset is confirmed', () => {
         mockSRSState.cards = { 'test-col:1': {} }
 
-        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} />)
+        render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
         fireEvent.click(screen.getByText('Reset SRS progress'))
         fireEvent.click(screen.getByText('Reset'))

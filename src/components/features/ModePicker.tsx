@@ -8,9 +8,10 @@ interface Props {
     collection: Collection
     onSelectNormal: () => void
     onSelectSRS: () => void
+    onViewProgress: () => void
 }
 
-export function ModePicker({ collection, onSelectNormal, onSelectSRS }: Props) {
+export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProgress }: Props) {
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
     const resetCollection = useSRSStore((s) => s.resetCollection)
@@ -83,6 +84,13 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS }: Props) {
                     </span>
                 </button>
             </div>
+
+            <button
+                onClick={onViewProgress}
+                className="text-sm text-muted-foreground underline underline-offset-4 cursor-pointer hover:text-foreground transition-colors"
+            >
+                View cards
+            </button>
 
             {hasProgress && (
                 <div className="text-sm text-muted-foreground">

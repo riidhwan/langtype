@@ -3,6 +3,7 @@ import { getCollection } from '@/services/challengeService'
 import { TypingGame } from '@/components/features/TypingGame'
 import { ModePicker } from '@/components/features/ModePicker'
 import { SRSAllDoneScreen } from '@/components/features/SRSAllDoneScreen'
+import { SRSProgressView } from '@/components/features/SRSProgressView'
 import { useMemo, useRef, useState } from 'react'
 import { shuffleArray } from '@/lib/utils'
 import { useSRSStore } from '@/store/useSRSStore'
@@ -17,7 +18,7 @@ export const Route = createFileRoute('/collections/$id')({
         }
         return collection
     },
-    validateSearch: (search: Record<string, unknown>): { questionId?: string | number; mode?: 'normal' | 'srs' } => {
+    validateSearch: (search: Record<string, unknown>): { questionId?: string | number; mode?: 'normal' | 'srs'; view?: 'progress' } => {
         const raw = search.questionId
 
         let questionId: string | number | undefined
@@ -39,7 +40,9 @@ export const Route = createFileRoute('/collections/$id')({
         const rawMode = search.mode
         const mode = rawMode === 'srs' ? 'srs' : rawMode === 'normal' ? 'normal' : undefined
 
-        return { questionId, mode }
+        const view = search.view === 'progress' ? ('progress' as const) : undefined
+
+        return { questionId, mode, view }
     },
 })
 
@@ -62,7 +65,7 @@ const BackArrow = () => (
 
 export function CollectionGamePage() {
     const collection = Route.useLoaderData()
-    const { questionId, mode } = Route.useSearch()
+    const { questionId, mode, view } = Route.useSearch()
     const navigate = useNavigate({ from: Route.fullPath })
     const { cards } = useSRSStore()
 
@@ -100,6 +103,7 @@ export function CollectionGamePage() {
     }
     const startNormal = () => navigate({ search: () => ({ mode: 'normal' as const }) })
     const startSRS = () => navigate({ search: () => ({ mode: 'srs' as const }) })
+    const goToProgress = () => navigate({ search: () => ({ view: 'progress' as const }) })
 
     const handleCardResult = (challengeId: string, passed: boolean) => {
         if (!passed) pendingMissedIds.current.push(challengeId)
@@ -118,6 +122,23 @@ export function CollectionGamePage() {
         }
     }
 
+    // Progress view
+    if (view === 'progress') {
+        return (
+            <main className="relative flex min-h-screen flex-col items-center justify-start md:justify-center px-4 pb-4 pt-20 md:p-24 bg-background">
+                <button
+                    onClick={goToPicker}
+                    className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    title="Back"
+                >
+                    <BackArrow />
+                    <span className="sr-only md:not-sr-only text-sm font-medium">Back</span>
+                </button>
+                <SRSProgressView collection={collection} onBack={goToPicker} />
+            </main>
+        )
+    }
+
     // Mode picker — no mode selected yet
     if (mode === undefined) {
         return (
@@ -134,6 +155,7 @@ export function CollectionGamePage() {
                     collection={collection}
                     onSelectNormal={startNormal}
                     onSelectSRS={startSRS}
+                    onViewProgress={goToProgress}
                 />
             </main>
         )
