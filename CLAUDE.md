@@ -82,7 +82,7 @@ This section must be kept up to date whenever product behaviour changes. If you 
 
 ### Home page (`/`)
 
-Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A search input filters by title/description; "Due (N)" tab narrows to collections with at least one card due. Skeleton rows are shown until the SRS store hydrates (`_hasHydrated`) to prevent sort-order flicker.
+Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A search input filters by title/description; "Due (N)" tab narrows to collections with at least one card due. Skeleton rows are shown until the SRS store hydrates (`_hasHydrated`) to prevent sort-order flicker. Tag pills appear below the All/Due tabs when any collection has a `tags` field. Clicking a tag (single-select) filters to collections containing that tag; clicking the active tag deselects it. Tag, All/Due, and search filters are ANDed. Collections without a `tags` field are visible when no tag is active and hidden when a tag is active.
 
 ### Collection page (`/collections/$id`)
 
@@ -218,6 +218,37 @@ Use `IconSearch` and `IconChevronRight` from `src/components/ui/icons.tsx`. No i
 **Hooks**: Extract all non-trivial logic from components into custom hooks.
 
 **Tests**: Co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests. Write tests before or alongside implementation — do not consider a task complete until `npm run test:coverage` has been run and any meaningful gaps addressed. Mock patterns: use `vi.hoisted()` for mock values referenced inside `vi.mock()` factories; wrap real module functions in `vi.fn()` when per-test overrides are needed (`vi.mock('@/lib/foo', async (orig) => { const a = await orig(); return { ...a, fn: vi.fn(a.fn) } })`).
+
+**Route component tests** — export the component from the route file (e.g. `export function Home()`), then render it directly. Standard mock setup:
+
+```typescript
+// 1. Mock loader data
+const mockUseLoaderData = vi.hoisted(() => vi.fn())
+
+vi.mock('@tanstack/react-router', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@tanstack/react-router')>()
+    return {
+        ...actual,
+        Link: ({ children, className }: any) => <div className={className}>{children}</div>,
+        createFileRoute: () => () => ({ useLoaderData: mockUseLoaderData }),
+        // add useSearch / useNavigate only if the route uses them
+    }
+})
+
+// 2. Mock Zustand store with hoisted mutable state (reset fields in beforeEach)
+const mockSRSState = vi.hoisted(() => ({
+    cards: {} as Record<string, any>,
+    _hasHydrated: true,
+    lastPlayedAt: {} as Record<string, number>,
+}))
+vi.mock('@/store/useSRSStore', () => ({
+    useSRSStore: (selector: (s: any) => any) => selector(mockSRSState),
+}))
+
+// 3. In beforeEach: mockUseLoaderData.mockReturnValue({ ... }) + reset mockSRSState fields
+```
+
+See `src/routes/__tests__/index.test.tsx` and `src/routes/__tests__/collections.$id.test.tsx` for complete examples.
 
 **Bug fixes must include a regression test.** After fixing a bug, always add a test that would have caught it. The test documents the invariant and prevents the same issue from silently reappearing through future refactors.
 

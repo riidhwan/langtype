@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { getCollections } from '@/services/challengeService'
 import { useSRSStore } from '@/store/useSRSStore'
 import { isCardDue } from '@/lib/srsAlgorithm'
 import { cn } from '@/lib/utils'
 import { IconSearch, IconChevronRight } from '@/components/ui/icons'
+import { DEFAULT_HOME_TAG } from '@/config'
 
 export const Route = createFileRoute('/')({
     component: Home,
@@ -14,7 +15,7 @@ export const Route = createFileRoute('/')({
     },
 })
 
-function Home() {
+export function Home() {
     const { collections } = Route.useLoaderData()
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
@@ -22,10 +23,24 @@ function Home() {
 
     const [query, setQuery] = useState('')
     const [filter, setFilter] = useState<'all' | 'due'>('all')
+    const [activeTag, setActiveTag] = useState<string | null>(DEFAULT_HOME_TAG)
 
     const sortedCollections = [...collections].sort(
         (a, b) => (lastPlayedAt[b.id] ?? 0) - (lastPlayedAt[a.id] ?? 0)
     )
+
+    const allTags = useMemo(() => {
+        const seen = new Set<string>()
+        const result: string[] = []
+        for (const col of sortedCollections) {
+            for (const tag of col.tags ?? []) {
+                if (!seen.has(tag)) { seen.add(tag); result.push(tag) }
+            }
+        }
+        return result
+    }, [sortedCollections])
+
+    const handleTagClick = (tag: string) => setActiveTag(prev => prev === tag ? null : tag)
 
     const getDueCount = (colId: string) =>
         hasHydrated
@@ -43,7 +58,8 @@ function Home() {
             || col.title.toLowerCase().includes(q)
             || (col.description ?? '').toLowerCase().includes(q)
         const matchesDue = filter === 'all' || getDueCount(col.id) > 0
-        return matchesQuery && matchesDue
+        const matchesTag = activeTag === null || (col.tags ?? []).includes(activeTag)
+        return matchesQuery && matchesDue && matchesTag
     })
 
     return (
@@ -89,6 +105,26 @@ function Home() {
                             </button>
                         ))}
                     </div>
+
+                    {/* Tag pills */}
+                    {allTags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                            {allTags.map((tag) => (
+                                <button
+                                    key={tag}
+                                    onClick={() => handleTagClick(tag)}
+                                    className={cn(
+                                        'px-3 py-1 rounded-full border text-xs font-mono transition-colors',
+                                        activeTag === tag
+                                            ? 'border-primary bg-[var(--accent-dim)] text-primary font-semibold'
+                                            : 'border-border text-muted-foreground hover:text-foreground'
+                                    )}
+                                >
+                                    {tag}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </header>
 
                 {!hasHydrated ? (

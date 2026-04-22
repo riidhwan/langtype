@@ -8,5 +8,6 @@ export interface Collection {
     id: string
     title: string
     description?: string
+    tags?: string[]
     challenges?: Challenge[]
 }
