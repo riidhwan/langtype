@@ -31,7 +31,7 @@ src/
 ├── components/      # ui/ (generic), domain/ (business-aware), features/ (composite)
 ├── hooks/           # Complex logic extracted into custom hooks (Logic layer)
 ├── services/        # Data access — currently static JSON loading (Data layer)
-├── store/           # Zustand global state (currently empty, planned)
+├── store/           # Zustand global state — SRS cards + play history, persisted to IndexedDB
 ├── data/collections/# Static JSON challenge files (loaded via Vite glob)
 └── lib/             # Shared utilities (stringUtils, cn helper)
 ```
@@ -54,9 +54,27 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 
 **`useUrlSync`** (`src/hooks/useUrlSync.ts`) — Keeps `questionId` in the URL query string, enabling deep-linking and browser back/forward navigation.
 
+### Zustand Store (`src/store/useSRSStore.ts`)
+
+Persisted to IndexedDB via `idb-keyval` under the key `langtype-srs-v1`. Only `cards` and `lastPlayedAt` are persisted; `_hasHydrated` is runtime-only.
+
+| Field | Type | Purpose |
+|---|---|---|
+| `cards` | `Record<"colId:chalId", SRSCard>` | Per-card SRS state, keyed `collectionId:challengeId` |
+| `lastPlayedAt` | `Record<colId, ms>` | Timestamp of last play per collection, used for home-page sort |
+| `_hasHydrated` | `boolean` | Set to `true` after IndexedDB rehydration; gates sort order and due counts to prevent flicker |
+
+**`SRSCard` fields**: `interval` (days), `repetitions` (consecutive correct), `easeFactor` (starts 2.5, min 1.3), `nextReviewAt` (ms; 0 = new card), `lastReviewedAt` (ms; 0 = never reviewed).
+
+Storage uses `skipHydration: true` — the route must call `useSRSStore.persist.rehydrate()` manually (done in `__root.tsx`).
+
 ### Challenge Data Format
 
+`Challenge` type: `id` (required), `translation` (required), `original` (optional — when absent no source sentence is shown to the user). `Collection.challenges` is also optional (loaded separately when needed).
+
 JSON files in `src/data/collections/` define challenge sets. Parentheses in answer strings mark pre-filled hints: `"(The) quick brown fox"` — `"The"` is pre-filled.
+
+Raw source CSVs live in `src/data/collections/raw/` (gitignored). Generation scripts are in `scripts/` (gitignored). Only the final JSON files are committed.
 
 ## Product Behaviour
 

@@ -40,6 +40,16 @@
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 1."
     },
     {
+        "id": "netzwerk_neu_a1_k1_nomen_plural",
+        "title": "Netzwerk Neu A1 — Kapitel 1: Artikel + Plural",
+        "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 1."
+    },
+    {
+        "id": "netzwerk_neu_a1_k2_nomen_plural",
+        "title": "Netzwerk Neu A1 — Kapitel 2: Artikel + Plural",
+        "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 2."
+    },
+    {
         "id": "netzwerk_neu_a1_k2_artikel",
         "title": "Netzwerk Neu A1 — Kapitel 2: Artikel",
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 2."
