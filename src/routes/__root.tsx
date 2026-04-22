@@ -9,6 +9,9 @@ import {
 import * as React from 'react'
 import appCss from '../globals.css?url'
 import { useSRSStore } from '@/store/useSRSStore'
+import { IconSun, IconMoon } from '@/components/ui/icons'
+
+type Theme = 'warm' | 'ink'
 
 export const Route = createRootRoute({
     component: RootComponent,
@@ -39,10 +42,36 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+    const [theme, setTheme] = React.useState<Theme>('warm')
+
+    React.useEffect(() => {
+        const stored = localStorage.getItem('lt_theme') as Theme | null
+        if (stored === 'ink') setTheme('ink')
+    }, [])
+
+    React.useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme)
+        localStorage.setItem('lt_theme', theme)
+    }, [theme])
+
     React.useEffect(() => {
         useSRSStore.persist.rehydrate()
     }, [])
-    return <Outlet />
+
+    const toggleTheme = () => setTheme(prev => prev === 'warm' ? 'ink' : 'warm')
+
+    return (
+        <>
+            <Outlet />
+            <button
+                onClick={toggleTheme}
+                aria-label={theme === 'warm' ? 'Switch to dark mode' : 'Switch to light mode'}
+                className="fixed bottom-4 right-4 p-2 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary transition-colors z-50"
+            >
+                {theme === 'warm' ? <IconMoon className="h-4 w-4" /> : <IconSun className="h-4 w-4" />}
+            </button>
+        </>
+    )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {

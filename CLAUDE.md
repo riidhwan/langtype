@@ -80,6 +80,10 @@ Raw source CSVs live in `src/data/collections/raw/` (gitignored). Generation scr
 
 This section must be kept up to date whenever product behaviour changes. If you add, remove, or change a user-facing flow, update this section as part of the same task.
 
+### Theme toggle
+
+A fixed button (bottom-right, visible on every page) switches between `warm` (light) and `ink` (dark). Shows a moon icon in light mode and a sun icon in dark mode. The chosen theme is persisted in `localStorage` under key `lt_theme`. The inline script in `RootDocument` (`__root.tsx`) reads this key before hydration to prevent FOUC; React state in `RootComponent` syncs from `localStorage` on mount and writes back on toggle. Default is `warm`.
+
 ### Home page (`/`)
 
 Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A search input filters by title/description; "Due (N)" tab narrows to collections with at least one card due. Skeleton rows are shown until the SRS store hydrates (`_hasHydrated`) to prevent sort-order flicker. Tag pills appear below the All/Due tabs when any collection has a `tags` field. Clicking a tag (single-select) filters to collections containing that tag; clicking the active tag deselects it. Tag, All/Due, and search filters are ANDed. Collections without a `tags` field are visible when no tag is active and hidden when a tag is active.
