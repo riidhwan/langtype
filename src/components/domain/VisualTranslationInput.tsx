@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
-import { AUTO_INSERT_CHARS } from "@/lib/stringUtils"
+import { AUTO_INSERT_CHARS, isFreebie } from "@/lib/stringUtils"
 
 interface Props {
     value: string
@@ -64,6 +64,13 @@ export function VisualTranslationInput({
 
     const words = getWordsWithIndices(targetText)
 
+    // Advance past freebies (spaces, auto-insert, pre-filled) so the cursor
+    // lands on the first slot the user still needs to type, not on an unrendered space.
+    let cursorIndex = value.length
+    while (cursorIndex < targetText.length && isFreebie(cursorIndex, targetText, preFilledIndices)) {
+        cursorIndex++
+    }
+
     return (
         <div
             className="relative w-full max-w-2xl cursor-text font-mono"
@@ -92,7 +99,7 @@ export function VisualTranslationInput({
                             const index = word.startIndex + charOffset
                             const inputValue = value[index] || ""
                             const isTyped = index < value.length
-                            const isCurrent = index === value.length && status === 'typing'
+                            const isCurrent = index === cursorIndex && status === 'typing'
 
                             // Feedback logic
                             let statusColor = "border-muted-foreground/30 text-muted-foreground"

@@ -115,6 +115,17 @@ describe('VisualTranslationInput', () => {
         expect(slots[3]).toHaveTextContent('')
     })
 
+    it('shows cursor on first char of next word when previous word is fully typed', () => {
+        // Regression: value.length after "der" is 3 (a space), which has no rendered slot.
+        // The cursor must jump to the first non-freebie slot (index 4, 'N' of "Namen").
+        render(<VisualTranslationInput {...defaultProps} targetText="der Namen" value="der" />)
+
+        const slots = screen.getAllByTestId('char-slot')
+        // slots: d(0), e(1), r(2), N(4), a(5), m(6), e(7), n(8) — space not rendered
+        expect(slots[3]).toHaveClass('outline-[var(--accent)]') // 'N' of "Namen"
+        expect(slots[2]).not.toHaveClass('outline-[var(--accent)]') // 'r' of "der" — already typed
+    })
+
     it('marks pre-filled characters as success when submitted even if not typed', () => {
         const preFilledIndices = new Set([0, 1, 2]) // "der"
         render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" status="submitted" />)
