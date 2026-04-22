@@ -6,362 +6,362 @@
         {
             "id": "1",
             "original": "Hobby",
-            "translation": "das (Hobby),(die) Hobbys"
+            "translation": "das (Hobby), (die) Hobbys"
         },
         {
             "id": "2",
             "original": "Book",
-            "translation": "das (Buch),(die) Bücher"
+            "translation": "das (Buch), (die) Bücher"
         },
         {
             "id": "3",
             "original": "Café",
-            "translation": "das (Café),(die) Cafés"
+            "translation": "das (Café), (die) Cafés"
         },
         {
             "id": "4",
             "original": "Computer",
-            "translation": "der (Computer),(die) Computer"
+            "translation": "der (Computer), (die) Computer"
         },
         {
             "id": "5",
             "original": "Appointment",
-            "translation": "die (Verabredung),(die) Verabredungen"
+            "translation": "die (Verabredung), (die) Verabredungen"
         },
         {
             "id": "6",
             "original": "Friend (Male) / Boyfriend",
-            "translation": "der (Freund),(die) Freunde"
+            "translation": "der (Freund), (die) Freunde"
         },
         {
             "id": "7",
             "original": "Friend (Female) / Girlfriend",
-            "translation": "die (Freundin),(die) Freundinnen"
+            "translation": "die (Freundin), (die) Freundinnen"
         },
         {
             "id": "8",
             "original": "Football",
-            "translation": "der (Fußball),(die) Fußbälle"
+            "translation": "der (Fußball), (die) Fußbälle"
         },
         {
             "id": "9",
             "original": "Cinema",
-            "translation": "das (Kino),(die) Kinos"
+            "translation": "das (Kino), (die) Kinos"
         },
         {
             "id": "10",
             "original": "Theater",
-            "translation": "das (Theater),(die) Theater"
+            "translation": "das (Theater), (die) Theater"
         },
         {
             "id": "11",
             "original": "Museum",
-            "translation": "das (Museum),(die) Museen"
+            "translation": "das (Museum), (die) Museen"
         },
         {
             "id": "12",
             "original": "Music",
-            "translation": "die (Musik),(die) Musiken"
+            "translation": "die (Musik), (die) Musiken"
         },
         {
             "id": "13",
             "original": "Swimming Pool",
-            "translation": "das (Schwimmbad),(die) Schwimmbäder"
+            "translation": "das (Schwimmbad), (die) Schwimmbäder"
         },
         {
             "id": "14",
             "original": "Doctor (Male)",
-            "translation": "der (Arzt),(die) Ärzte"
+            "translation": "der (Arzt), (die) Ärzte"
         },
         {
             "id": "15",
             "original": "Doctor (Female)",
-            "translation": "die (Ärztin),(die) Ärztinnen"
+            "translation": "die (Ärztin), (die) Ärztinnen"
         },
         {
             "id": "16",
             "original": "Hospital",
-            "translation": "das (Krankenhaus),(die) Krankenhäuser"
+            "translation": "das (Krankenhaus), (die) Krankenhäuser"
         },
         {
             "id": "17",
             "original": "Hairdresser / Barber",
-            "translation": "der (Friseur),(die) Friseure"
+            "translation": "der (Friseur), (die) Friseure"
         },
         {
             "id": "18",
             "original": "Artisan (Male)",
-            "translation": "die (Handwerker),(die) Handwerker"
+            "translation": "die (Handwerker), (die) Handwerker"
         },
         {
             "id": "19",
             "original": "Artisan (Female)",
-            "translation": "die (Handwerkerin),(die) Handwerkerinnen"
+            "translation": "die (Handwerkerin), (die) Handwerkerinnen"
         },
         {
             "id": "20",
             "original": "Journalist (Male)",
-            "translation": "der (Journalist),(die) Journalisten"
+            "translation": "der (Journalist), (die) Journalisten"
         },
         {
             "id": "21",
             "original": "Journalisten (Female)",
-            "translation": "die (Journalistin),(die) Journalistinnen"
+            "translation": "die (Journalistin), (die) Journalistinnen"
         },
         {
             "id": "22",
             "original": "Waiter (Male) / Server (Male)",
-            "translation": "der (Kellner),(die) Kellner"
+            "translation": "der (Kellner), (die) Kellner"
         },
         {
             "id": "23",
             "original": "Waiter (Female) / Server (Female)",
-            "translation": "die (Kellnerin),(die) Kellnerinnen"
+            "translation": "die (Kellnerin), (die) Kellnerinnen"
         },
         {
             "id": "24",
             "original": "Chef (Male)",
-            "translation": "der (Koch),(die) Köche"
+            "translation": "der (Koch), (die) Köche"
         },
         {
             "id": "25",
             "original": "Chef (Female)",
-            "translation": "die (Köchin),(die) Köchinnen"
+            "translation": "die (Köchin), (die) Köchinnen"
         },
         {
             "id": "26",
             "original": "Nurse (Male)",
-            "translation": "der (Krankenpfleger),(die) Krankenpfleger"
+            "translation": "der (Krankenpfleger), (die) Krankenpfleger"
         },
         {
             "id": "27",
             "original": "Nurse (Female)",
-            "translation": "die (Krankenschwester),(die) Krankenschwestern"
+            "translation": "die (Krankenschwester), (die) Krankenschwestern"
         },
         {
             "id": "28",
             "original": "Restaurant",
-            "translation": "das (Restaurant),(die) Restaurants"
+            "translation": "das (Restaurant), (die) Restaurants"
         },
         {
             "id": "29",
             "original": "Colleague (Male)",
-            "translation": "der (Kollege),(die) Kollegen"
+            "translation": "der (Kollege), (die) Kollegen"
         },
         {
             "id": "30",
             "original": "Colleague (Female)",
-            "translation": "die (Kollegin),(die) Kolleginnen"
+            "translation": "die (Kollegin), (die) Kolleginnen"
         },
         {
             "id": "31",
             "original": "Company",
-            "translation": "die (Firma),(die) Firmen"
+            "translation": "die (Firma), (die) Firmen"
         },
         {
             "id": "32",
             "original": "Teacher (Male)",
-            "translation": "der (Lehrer),(die) Lehrer"
+            "translation": "der (Lehrer), (die) Lehrer"
         },
         {
             "id": "33",
             "original": "Teacher (Female)",
-            "translation": "die (Lehrerin),(die) Lehrerinnen"
+            "translation": "die (Lehrerin), (die) Lehrerinnen"
         },
         {
             "id": "34",
             "original": "School",
-            "translation": "die (Schule),(die) Schulen"
+            "translation": "die (Schule), (die) Schulen"
         },
         {
             "id": "35",
             "original": "Course",
-            "translation": "der (Kurs),(die) Kurse"
+            "translation": "der (Kurs), (die) Kurse"
         },
         {
             "id": "36",
             "original": "Mechanic (Male)",
-            "translation": "der (Mechaniker),(die) Mechaniker"
+            "translation": "der (Mechaniker), (die) Mechaniker"
         },
         {
             "id": "37",
             "original": "Mechanic (Female)",
-            "translation": "die (Mechanikerin),(die) Mechanikerinnen"
+            "translation": "die (Mechanikerin), (die) Mechanikerinnen"
         },
         {
             "id": "38",
             "original": "Police Officer (Male)",
-            "translation": "der (Polizist),(die) Polizisten"
+            "translation": "der (Polizist), (die) Polizisten"
         },
         {
             "id": "39",
             "original": "Police officer (Female)",
-            "translation": "die (Polizistin),(die) Polizistinnen"
+            "translation": "die (Polizistin), (die) Polizistinnen"
         },
         {
             "id": "40",
             "original": "Student (Male)",
-            "translation": "der (Student),(die) Studenten"
+            "translation": "der (Student), (die) Studenten"
         },
         {
             "id": "41",
             "original": "Student (Female)",
-            "translation": "die (Studentin),(die) Studentinnen"
+            "translation": "die (Studentin), (die) Studentinnen"
         },
         {
             "id": "42",
             "original": "University",
-            "translation": "die (Universität),(die) Universitäten"
+            "translation": "die (Universität), (die) Universitäten"
         },
         {
             "id": "43",
             "original": "Seminar",
-            "translation": "das (Seminar),(die) Seminare"
+            "translation": "das (Seminar), (die) Seminare"
         },
         {
             "id": "44",
             "original": "Taxi Driver",
-            "translation": "der (Taxifahrer),(die) Taxifahrer"
+            "translation": "der (Taxifahrer), (die) Taxifahrer"
         },
         {
             "id": "45",
             "original": "Taxi",
-            "translation": "das (Taxi),(die) Taxis"
+            "translation": "das (Taxi), (die) Taxis"
         },
         {
             "id": "46",
             "original": "Car",
-            "translation": "das (Auto),(die) Autos"
+            "translation": "das (Auto), (die) Autos"
         },
         {
             "id": "47",
             "original": "Seller (Male)",
-            "translation": "der (Verkäufer),(die) Verkäufer"
+            "translation": "der (Verkäufer), (die) Verkäufer"
         },
         {
             "id": "48",
             "original": "Seller (Female)",
-            "translation": "die (Verkäuferin),(die) Verkäuferinnen"
+            "translation": "die (Verkäuferin), (die) Verkäuferinnen"
         },
         {
             "id": "49",
             "original": "Evening",
-            "translation": "der (Abend),(die) Abende"
+            "translation": "der (Abend), (die) Abende"
         },
         {
             "id": "50",
             "original": "Afternoon",
-            "translation": "der (Nachmittag),(die) Nachmittage"
+            "translation": "der (Nachmittag), (die) Nachmittage"
         },
         {
             "id": "51",
             "original": "Moment",
-            "translation": "der (Moment),(die) Momente"
+            "translation": "der (Moment), (die) Momente"
         },
         {
             "id": "52",
             "original": "Day",
-            "translation": "der (Tag),(die) Tage"
+            "translation": "der (Tag), (die) Tage"
         },
         {
             "id": "53",
             "original": "Week",
-            "translation": "die (Woche),(die) Wochen"
+            "translation": "die (Woche), (die) Wochen"
         },
         {
             "id": "54",
             "original": "Weekend",
-            "translation": "das (Wochenende),(die) Wochenenden"
+            "translation": "das (Wochenende), (die) Wochenenden"
         },
         {
             "id": "55",
             "original": "Weekday",
-            "translation": "der (Wochentag),(die) Wochentage"
+            "translation": "der (Wochentag), (die) Wochentage"
         },
         {
             "id": "56",
             "original": "Year",
-            "translation": "das (Jahr),(die) Jahre"
+            "translation": "das (Jahr), (die) Jahre"
         },
         {
             "id": "57",
             "original": "Appointment",
-            "translation": "der (Termin),(die) Termine"
+            "translation": "der (Termin), (die) Termine"
         },
         {
             "id": "58",
             "original": "Information",
-            "translation": "die (Information),(die) Informationen"
+            "translation": "die (Information), (die) Informationen"
         },
         {
             "id": "59",
             "original": "Family Name",
-            "translation": "der (Familienname),(die) Familiennamen"
+            "translation": "der (Familienname), (die) Familiennamen"
         },
         {
             "id": "60",
             "original": "Address",
-            "translation": "die (Adresse),(die) Adressen"
+            "translation": "die (Adresse), (die) Adressen"
         },
         {
             "id": "61",
             "original": "Street",
-            "translation": "die (Straße),(die) Straßen"
+            "translation": "die (Straße), (die) Straßen"
         },
         {
             "id": "62",
             "original": "House Number",
-            "translation": "die (Hausnummer),(die) Hausnummern"
+            "translation": "die (Hausnummer), (die) Hausnummern"
         },
         {
             "id": "63",
             "original": "Postal Code",
-            "translation": "die (Postleitzahl),(die) Postleitzahlen"
+            "translation": "die (Postleitzahl), (die) Postleitzahlen"
         },
         {
             "id": "64",
             "original": "Place of Residence",
-            "translation": "der (Wohnort),(die) Wohnorte"
+            "translation": "der (Wohnort), (die) Wohnorte"
         },
         {
             "id": "65",
             "original": "Date of Birth",
-            "translation": "das (Geburtsdatum),(die) Geburtsdaten"
+            "translation": "das (Geburtsdatum), (die) Geburtsdaten"
         },
         {
             "id": "66",
             "original": "Place of Birth",
-            "translation": "der (Geburtsort),(die) Geburtsorte"
+            "translation": "der (Geburtsort), (die) Geburtsorte"
         },
         {
             "id": "67",
             "original": "Form",
-            "translation": "das (Formular),(die) Formulare"
+            "translation": "das (Formular), (die) Formulare"
         },
         {
             "id": "68",
             "original": "Note / Memo",
-            "translation": "die (Notiz),(die) Notizen"
+            "translation": "die (Notiz), (die) Notizen"
         },
         {
             "id": "69",
             "original": "Example",
-            "translation": "das (Beispiel),(die) Beispiele"
+            "translation": "das (Beispiel), (die) Beispiele"
         },
         {
             "id": "70",
             "original": "Key",
-            "translation": "der (Schlüssel),(die) Schlüssel"
+            "translation": "der (Schlüssel), (die) Schlüssel"
         },
         {
             "id": "71",
             "original": "Dictionary",
-            "translation": "das (Wörterbuch),(die) Wörterbücher"
+            "translation": "das (Wörterbuch), (die) Wörterbücher"
         },
         {
             "id": "72",
             "original": "Room",
-            "translation": "das (Zimmer),(die) Zimmer"
+            "translation": "das (Zimmer), (die) Zimmer"
         }
     ]
 }

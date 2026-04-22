@@ -6,117 +6,117 @@
         {
             "id": "1",
             "original": "Name",
-            "translation": "der (Name),(die) Namen"
+            "translation": "der (Name), (die) Namen"
         },
         {
             "id": "2",
             "original": "First Name",
-            "translation": "der (Vorname),(die) Vornamen"
+            "translation": "der (Vorname), (die) Vornamen"
         },
         {
             "id": "3",
             "original": "Last Name",
-            "translation": "der (Nachname),(die) Nachnamen"
+            "translation": "der (Nachname), (die) Nachnamen"
         },
         {
             "id": "4",
             "original": "Address",
-            "translation": "die (Adresse),(die) Adressen"
+            "translation": "die (Adresse), (die) Adressen"
         },
         {
             "id": "5",
             "original": "Number",
-            "translation": "die (Nummer),(die) Nummern"
+            "translation": "die (Nummer), (die) Nummern"
         },
         {
             "id": "6",
             "original": "Country",
-            "translation": "das (Land),(die) Länder"
+            "translation": "das (Land), (die) Länder"
         },
         {
             "id": "7",
             "original": "Language",
-            "translation": "die (Sprache),(die) Sprachen"
+            "translation": "die (Sprache), (die) Sprachen"
         },
         {
             "id": "8",
             "original": "Number",
-            "translation": "die (Zahl),(die) Zahlen"
+            "translation": "die (Zahl), (die) Zahlen"
         },
         {
             "id": "9",
             "original": "Answer",
-            "translation": "die (Antwort),(die) Antworten"
+            "translation": "die (Antwort), (die) Antworten"
         },
         {
             "id": "10",
             "original": "Male Partner",
-            "translation": "der (Partner),(die) Partner"
+            "translation": "der (Partner), (die) Partner"
         },
         {
             "id": "11",
             "original": "Female Partner",
-            "translation": "die (Partnerin),(die) Partnerinnen"
+            "translation": "die (Partnerin), (die) Partnerinnen"
         },
         {
             "id": "12",
             "original": "Person",
-            "translation": "die (Person),(die) Personen"
+            "translation": "die (Person), (die) Personen"
         },
         {
             "id": "13",
             "original": "Text",
-            "translation": "der (Text),(die) Texte"
+            "translation": "der (Text), (die) Texte"
         },
         {
             "id": "14",
             "original": "Word",
-            "translation": "das (Wort),(die) Wörter"
+            "translation": "das (Wort), (die) Wörter"
         },
         {
             "id": "15",
             "original": "Highway",
-            "translation": "die (Autobahn),(die) Autobahnen"
+            "translation": "die (Autobahn), (die) Autobahnen"
         },
         {
             "id": "16",
             "original": "Bottle",
-            "translation": "die (Flasche),(die) Flaschen"
+            "translation": "die (Flasche), (die) Flaschen"
         },
         {
             "id": "17",
             "original": "Kindergarten",
-            "translation": "der (Kindergarten),(die) Kindergärten"
+            "translation": "der (Kindergarten), (die) Kindergärten"
         },
         {
             "id": "18",
             "original": "Suitcase",
-            "translation": "der (Koffer),(die) Koffer"
+            "translation": "der (Koffer), (die) Koffer"
         },
         {
             "id": "19",
             "original": "Noodle",
-            "translation": "die (Nudel),(die) Nudeln"
+            "translation": "die (Nudel), (die) Nudeln"
         },
         {
             "id": "20",
             "original": "Sick Man",
-            "translation": "der (Kranke),(die) Kranken"
+            "translation": "der (Kranke), (die) Kranken"
         },
         {
             "id": "21",
             "original": "Bread",
-            "translation": "das (Brot),(die) Brote"
+            "translation": "das (Brot), (die) Brote"
         },
         {
             "id": "22",
             "original": "Sausage",
-            "translation": "das (Würstchen),(die) Würstchen"
+            "translation": "das (Würstchen), (die) Würstchen"
         },
         {
             "id": "23",
             "original": "Towel",
-            "translation": "das (Handtuch),(die) Handtücher"
+            "translation": "das (Handtuch), (die) Handtücher"
         }
     ]
 }
