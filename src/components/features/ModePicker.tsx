@@ -3,6 +3,7 @@ import { Collection } from '@/types/challenge'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getDueChallengeIds, getNextReviewTime } from '@/lib/srsAlgorithm'
 import { cn } from '@/lib/utils'
+import { IconChevronRight } from '@/components/ui/icons'
 
 interface Props {
     collection: Collection
@@ -51,45 +52,51 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                 )}
             </div>
 
-            <p className="text-sm text-muted-foreground">How would you like to practice?</p>
+            <p className="mono-label">How would you like to practice?</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <button
                     onClick={onSelectNormal}
-                    className="flex flex-col items-start gap-2 rounded-xl border border-border bg-card p-6 text-left transition-all hover:border-primary hover:shadow-md cursor-pointer"
+                    className="flex items-center justify-between gap-4 w-full rounded-[var(--radius)] border border-border bg-card p-5 text-left transition-colors hover:border-primary hover:bg-[var(--bg2)] cursor-pointer"
                 >
-                    <span className="text-xl font-semibold">Practice All</span>
-                    <span className="text-sm text-muted-foreground">
-                        {totalCount} {totalCount === 1 ? 'challenge' : 'challenges'} in random order
-                    </span>
+                    <div>
+                        <span className="text-[15px] font-semibold block mb-1">Practice All</span>
+                        <span className="text-sm text-muted-foreground">
+                            {totalCount} {totalCount === 1 ? 'challenge' : 'challenges'} in random order
+                        </span>
+                    </div>
+                    <IconChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                 </button>
 
                 <button
                     onClick={dueCount > 0 ? onSelectSRS : undefined}
                     disabled={dueCount === 0}
                     className={cn(
-                        'flex flex-col items-start gap-2 rounded-xl border bg-card p-6 text-left transition-all',
+                        'flex items-center justify-between gap-4 w-full rounded-[var(--radius)] border bg-card p-5 text-left transition-colors',
                         dueCount > 0
-                            ? 'border-border hover:border-primary hover:shadow-md cursor-pointer'
-                            : 'border-border opacity-50 cursor-not-allowed',
+                            ? 'border-border hover:border-primary hover:bg-[var(--bg2)] cursor-pointer'
+                            : 'border-border opacity-45 cursor-not-allowed',
                     )}
                 >
-                    <span className="text-xl font-semibold">Spaced Repetition</span>
-                    <span className="text-sm text-muted-foreground">
-                        {dueCount > 0
-                            ? `${dueCount} ${dueCount === 1 ? 'card' : 'cards'} due for review`
-                            : hoursUntil && hoursUntil > 0
-                                ? `Next review in ${hoursUntil} ${hoursUntil === 1 ? 'hour' : 'hours'}`
-                                : 'All caught up — check back tomorrow'}
-                    </span>
+                    <div>
+                        <span className="text-[15px] font-semibold block mb-1">Spaced Repetition</span>
+                        <span className="text-sm text-muted-foreground">
+                            {dueCount > 0
+                                ? `${dueCount} ${dueCount === 1 ? 'card' : 'cards'} due for review`
+                                : hoursUntil && hoursUntil > 0
+                                    ? `Next review in ${hoursUntil}h`
+                                    : 'All caught up'}
+                        </span>
+                    </div>
+                    {dueCount > 0 && <IconChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />}
                 </button>
             </div>
 
             <button
                 onClick={onViewProgress}
-                className="text-sm text-muted-foreground underline underline-offset-4 cursor-pointer hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
             >
-                View cards
+                View progress
             </button>
 
             {hasProgress && (
@@ -99,7 +106,7 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                             <span>Reset SRS progress for this collection?</span>
                             <button
                                 onClick={handleReset}
-                                className="text-red-500 hover:text-red-600 font-medium transition-colors"
+                                className="text-[var(--incorrect)] hover:opacity-80 font-medium transition-opacity"
                             >
                                 Reset
                             </button>

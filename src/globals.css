@@ -1,24 +1,126 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Base body ── */
+body {
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* ── Theme: Warm (default) ── */
+:root,
+[data-theme="warm"] {
+  --bg:           #fffbf2;
+  --bg2:          #fff6e0;
+  --bg3:          #fdefc3;
+  --fg:           #27200e;
+  --fg-muted:     #8c7a56;
+  --border:       #e8d9b8;
+  --border2:      #d4c090;
+  --accent:       #d97706;
+  --accent-dim:   #fef3c7;
+  --accent-fg:    #ffffff;
+  --correct:      #15803d;
+  --correct-bg:   #f0fdf4;
+  --incorrect:    #b91c1c;
+  --incorrect-bg: #fff1f0;
+  --radius:       10px;
+  --radius-sm:    6px;
+
+  /* Tailwind compat aliases */
+  --background:         var(--bg);
+  --foreground:         var(--fg);
+  --card:               var(--bg2);
+  --primary:            var(--accent);
+  --primary-foreground: var(--accent-fg);
+  --muted-foreground:   var(--fg-muted);
+}
+
+/* ── Theme: Slate ── */
+[data-theme="slate"] {
+  --bg:           #f2f4fa;
+  --bg2:          #e8ecf7;
+  --bg3:          #d8dff2;
+  --fg:           #181c2e;
+  --fg-muted:     #606880;
+  --border:       #ced4e8;
+  --border2:      #b0bad8;
+  --accent:       #4f46e5;
+  --accent-dim:   #eef2ff;
+  --accent-fg:    #ffffff;
+  --correct:      #0d9488;
+  --correct-bg:   #f0fdfc;
+  --incorrect:    #dc2626;
+  --incorrect-bg: #fff1f2;
+  --radius:       8px;
+  --radius-sm:    4px;
+
+  --background:         var(--bg);
+  --foreground:         var(--fg);
+  --card:               var(--bg2);
+  --primary:            var(--accent);
+  --primary-foreground: var(--accent-fg);
+  --muted-foreground:   var(--fg-muted);
+}
+
+/* ── Theme: Ink (dark) ── */
+[data-theme="ink"] {
+  --bg:           #0f0e0c;
+  --bg2:          #1a1712;
+  --bg3:          #252118;
+  --fg:           #ede8dc;
+  --fg-muted:     #6e6656;
+  --border:       #2a2620;
+  --border2:      #3d3830;
+  --accent:       #e09800;
+  --accent-dim:   #2a2008;
+  --accent-fg:    #0f0e0c;
+  --correct:      #22c55e;
+  --correct-bg:   #051a0a;
+  --incorrect:    #f87171;
+  --incorrect-bg: #1f0808;
+  --radius:       6px;
+  --radius-sm:    3px;
+
+  --background:         var(--bg);
+  --foreground:         var(--fg);
+  --card:               var(--bg2);
+  --primary:            var(--accent);
+  --primary-foreground: var(--accent-fg);
+  --muted-foreground:   var(--fg-muted);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--card);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-border:             var(--border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Shared utility classes ── */
+
+/* Monospace label — used for section headings, counters, hints */
+.mono-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Keycap style — used for Enter hint and SRS number shortcuts */
+.key-hint {
+  border: 1px solid var(--border2);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  padding: 1px 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--fg-muted);
+  background: var(--bg2);
 }

@@ -15,8 +15,8 @@ describe('VisualTranslationInput', () => {
         render(<VisualTranslationInput {...defaultProps} value="H" />)
         const slots = screen.getAllByTestId('char-slot')
         expect(slots[0]).toHaveClass('border-foreground') // Neutral/Active style
-        expect(slots[0]).not.toHaveClass('bg-red-500/20')
-        expect(slots[0]).not.toHaveClass('bg-green-500/20')
+        expect(slots[0]).not.toHaveClass('bg-[var(--incorrect-bg)]')
+        expect(slots[0]).not.toHaveClass('bg-[var(--correct-bg)]')
     })
 
     it('shows error state when submitted and incorrect', () => {
@@ -24,11 +24,11 @@ describe('VisualTranslationInput', () => {
         const slots = screen.getAllByTestId('char-slot')
 
         // First slot 'X' != 'H' -> Error (Red)
-        expect(slots[0]).toHaveClass('bg-red-500/20')
-        expect(slots[0]).toHaveClass('text-red-600')
+        expect(slots[0]).toHaveClass('bg-[var(--incorrect-bg)]')
+        expect(slots[0]).toHaveClass('text-[var(--incorrect)]')
 
         // Second slot empty != 'i' -> Error (Red)
-        expect(slots[1]).toHaveClass('bg-red-500/20')
+        expect(slots[1]).toHaveClass('bg-[var(--incorrect-bg)]')
     })
 
     it('shows success state when submitted and correct', () => {
@@ -36,7 +36,7 @@ describe('VisualTranslationInput', () => {
         const slots = screen.getAllByTestId('char-slot')
 
         // First slot 'H' == 'H' -> Success (Green)
-        expect(slots[0]).toHaveClass('bg-green-500/20')
+        expect(slots[0]).toHaveClass('bg-[var(--correct-bg)]')
     })
 
     it('focuses input when container is clicked', () => {
@@ -121,11 +121,11 @@ describe('VisualTranslationInput', () => {
 
         const slots = screen.getAllByTestId('char-slot')
         // "der" slots (0,1,2) should be green because they are pre-filled
-        expect(slots[0]).toHaveClass('bg-green-500/20')
-        expect(slots[1]).toHaveClass('bg-green-500/20')
-        expect(slots[2]).toHaveClass('bg-green-500/20')
+        expect(slots[0]).toHaveClass('bg-[var(--correct-bg)]')
+        expect(slots[1]).toHaveClass('bg-[var(--correct-bg)]')
+        expect(slots[2]).toHaveClass('bg-[var(--correct-bg)]')
 
         // "T" slot (index 4) should be red because it's required but empty
-        expect(slots[3]).toHaveClass('bg-red-500/20')
+        expect(slots[3]).toHaveClass('bg-[var(--incorrect-bg)]')
     })
 })

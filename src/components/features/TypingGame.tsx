@@ -25,20 +25,6 @@ interface Props {
     srsContext?: SRSContext
 }
 
-type PillColor = 'red' | 'yellow' | 'green'
-
-const PILL_COLORS: Record<SRSIntervalChoice, PillColor> = {
-    asap: 'red', '1h': 'red', '6h': 'red',
-    '12h': 'yellow', '1d': 'yellow',
-    '3d': 'green', '1w': 'green',
-}
-
-const PILL_CLASSES: Record<PillColor, string> = {
-    red:    'border text-red-600 border-red-300 hover:bg-red-50 dark:hover:bg-red-950',
-    yellow: 'border text-yellow-600 border-yellow-400 hover:bg-amber-50 dark:hover:bg-amber-950',
-    green:  'border text-green-600 border-green-400 hover:bg-green-50 dark:hover:bg-green-950',
-}
-
 const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
 
 export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext }: Props) {
@@ -96,6 +82,19 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         setIsPaused(false)
         setTimeLeft(2)
     }
+
+    // Keyboard shortcuts 1–7 for interval pills
+    useEffect(() => {
+        if (!showingIntervalPills) return
+        const handler = (e: KeyboardEvent) => {
+            const n = parseInt(e.key)
+            if (n >= 1 && n <= INTERVAL_ORDER.length) {
+                handleIntervalClick(INTERVAL_ORDER[n - 1])
+            }
+        }
+        window.addEventListener('keydown', handler)
+        return () => window.removeEventListener('keydown', handler)
+    }, [showingIntervalPills]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const recordReview = useSRSStore((s) => s.recordReview)
     const recordReviewWithInterval = useSRSStore((s) => s.recordReviewWithInterval)
@@ -163,7 +162,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
 
             <div className="w-full flex flex-col items-center gap-4">
                 {srsContext && cardsRemaining !== null && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="mono-label">
                         {srsContext.isRetry
                             ? `Reviewing ${Math.max(0, cardsRemaining)} missed ${cardsRemaining === 1 ? 'card' : 'cards'}`
                             : `${Math.max(0, cardsRemaining)} ${cardsRemaining === 1 ? 'card' : 'cards'} remaining`}
@@ -179,32 +178,45 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                     status={status}
                 />
 
+                <p className="text-center text-[12px] text-muted-foreground font-mono">
+                    press <kbd className="key-hint">enter</kbd> to check
+                </p>
+
                 {isCorrect && (
-                    <div className="flex flex-col items-center gap-3 mt-4">
-                        <div className="text-green-600 font-bold animate-pulse">
+                    <div className="flex flex-col items-center gap-3 mt-2">
+                        <p className="font-mono text-[13px] text-[var(--correct)]">
                             {showingIntervalPills
-                                ? '✨ Correct!'
-                                : `✨ Correct! Moving to next sentence in ${timeLeft}...`}
-                        </div>
+                                ? '✓ correct'
+                                : `✓ correct · moving in ${timeLeft}...`}
+                        </p>
                         {srsContext && !srsContext.skipRecording && (
                             intervalChoice !== null ? (
-                                <p className="text-sm text-muted-foreground">
+                                <p className="font-mono text-[11px] text-muted-foreground">
                                     Review in {SRS_INTERVAL_LABELS[intervalChoice]} ✓
                                 </p>
                             ) : (
                                 <div className="flex flex-col items-center gap-2">
-                                    <p className="text-sm text-muted-foreground">Review again in:</p>
+                                    <p className="mono-label">Review again in:</p>
                                     <div className="flex flex-wrap justify-center gap-2">
-                                        {INTERVAL_ORDER.map((choice) => (
+                                        {INTERVAL_ORDER.map((choice, i) => (
                                             <button
                                                 key={choice}
                                                 onClick={() => handleIntervalClick(choice)}
-                                                className={`rounded-full px-3 py-1 text-sm cursor-pointer transition-colors ${PILL_CLASSES[PILL_COLORS[choice]]}`}
+                                                aria-label={SRS_INTERVAL_LABELS[choice]}
+                                                title={`Press ${i + 1}`}
+                                                className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[44px]
+                                                           border border-border border-b-2 border-b-[var(--border2)]
+                                                           rounded-[var(--radius-sm)] bg-card hover:bg-[var(--bg3)]
+                                                           cursor-pointer transition-colors"
                                             >
-                                                {SRS_INTERVAL_LABELS[choice]}
+                                                <span className="text-[9px] text-muted-foreground font-mono leading-none">{i + 1}</span>
+                                                <span className="text-[13px] font-semibold font-mono leading-none">{SRS_INTERVAL_LABELS[choice]}</span>
                                             </button>
                                         ))}
                                     </div>
+                                    <p className="text-[11px] text-muted-foreground font-mono mt-1">
+                                        or press <span className="text-foreground">1–7</span>
+                                    </p>
                                 </div>
                             )
                         )}
@@ -212,13 +224,14 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                 )}
 
                 {status === 'submitted' && (
-                    <div className="flex flex-col items-center gap-2 mt-4">
-                        <div className="text-red-600 font-bold">
-                            ❌ Incorrect. Moving in {timeLeft}...
+                    <div className="flex flex-col items-center gap-2 mt-2">
+                        <div className="bg-[var(--incorrect-bg)] border border-[var(--incorrect)] rounded-[var(--radius)] px-5 py-4 text-center">
+                            <p className="font-mono text-[13px] text-[var(--incorrect)] mb-2">✗ incorrect</p>
+                            <p className="text-sm text-muted-foreground">
+                                Correct: <span className="font-mono font-semibold text-foreground">{currentSentence}</span>
+                            </p>
                         </div>
-                        <div className="text-muted-foreground">
-                            Correct answer: <span className="font-mono font-bold text-foreground">{currentSentence}</span>
-                        </div>
+                        <p className="font-mono text-[11px] text-muted-foreground">moving in {timeLeft}...</p>
                     </div>
                 )}
             </div>

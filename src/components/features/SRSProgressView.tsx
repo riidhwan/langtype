@@ -67,30 +67,36 @@ export function SRSProgressView({ collection, onBack }: Props) {
                 <p className="text-center text-muted-foreground text-sm">No cards in this collection.</p>
             ) : (
                 <>
-                    {/* Summary bar */}
-                    <div className="flex justify-center gap-4 text-sm">
+                    {/* Summary pills */}
+                    <div className="flex gap-2 flex-wrap mb-2">
                         {due.length > 0 && (
-                            <span className="text-red-500 font-medium">{due.length} due</span>
+                            <span className="font-mono text-xs font-semibold text-[var(--incorrect)] bg-[var(--incorrect-bg)] rounded-full px-3 py-1">
+                                {due.length} due
+                            </span>
                         )}
                         {newCards.length > 0 && (
-                            <span className="text-muted-foreground">{newCards.length} new</span>
+                            <span className="font-mono text-xs text-muted-foreground bg-card border border-border rounded-full px-3 py-1">
+                                {newCards.length} new
+                            </span>
                         )}
                         {upcoming.length > 0 && (
-                            <span className="text-muted-foreground">{upcoming.length} upcoming</span>
+                            <span className="font-mono text-xs text-muted-foreground bg-card border border-border rounded-full px-3 py-1">
+                                {upcoming.length} upcoming
+                            </span>
                         )}
                     </div>
 
                     {/* Due section */}
                     {due.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                            <h2 className="mono-label mb-3">
                                 Due ({due.length})
                             </h2>
                             <ul className="flex flex-col divide-y divide-border">
                                 {due.map((c) => (
-                                    <li key={c.id} className="flex items-center justify-between py-3">
+                                    <li key={c.id} className="flex items-center justify-between px-3 py-3">
                                         <span className="text-foreground">{c.original ?? c.translation}</span>
-                                        <span className="text-sm text-red-500 font-medium shrink-0 ml-4">Due</span>
+                                        <span className="font-mono text-[11px] text-[var(--incorrect)] shrink-0 ml-4">Due</span>
                                     </li>
                                 ))}
                             </ul>
@@ -100,14 +106,14 @@ export function SRSProgressView({ collection, onBack }: Props) {
                     {/* New section */}
                     {newCards.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                            <h2 className="mono-label mb-3">
                                 New ({newCards.length})
                             </h2>
                             <ul className="flex flex-col divide-y divide-border">
                                 {newCards.map((c) => (
-                                    <li key={c.id} className="flex items-center justify-between py-3">
+                                    <li key={c.id} className="flex items-center justify-between px-3 py-3">
                                         <span className="text-foreground">{c.original ?? c.translation}</span>
-                                        <span className="text-sm text-muted-foreground shrink-0 ml-4">New</span>
+                                        <span className="font-mono text-[11px] text-muted-foreground shrink-0 ml-4">New</span>
                                     </li>
                                 ))}
                             </ul>
@@ -117,14 +123,14 @@ export function SRSProgressView({ collection, onBack }: Props) {
                     {/* Upcoming section */}
                     {upcoming.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                            <h2 className="mono-label mb-3">
                                 Upcoming ({upcoming.length})
                             </h2>
                             <ul className="flex flex-col divide-y divide-border">
                                 {upcoming.map(({ challenge, msUntil }) => (
-                                    <li key={challenge.id} className="flex items-center justify-between py-3">
+                                    <li key={challenge.id} className="flex items-center justify-between px-3 py-3">
                                         <span className="text-foreground">{challenge.original ?? challenge.translation}</span>
-                                        <span className="text-sm text-muted-foreground shrink-0 ml-4">
+                                        <span className="font-mono text-[11px] text-muted-foreground shrink-0 ml-4">
                                             {formatTimeUntil(msUntil)}
                                         </span>
                                     </li>

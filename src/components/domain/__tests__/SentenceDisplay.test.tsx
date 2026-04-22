@@ -8,6 +8,6 @@ describe('SentenceDisplay', () => {
         render(<SentenceDisplay text={text} />)
 
         expect(screen.getByText(text)).toBeInTheDocument()
-        expect(screen.getByText('Translate this:')).toBeInTheDocument()
+        expect(screen.getByText('translate')).toBeInTheDocument()
     })
 })

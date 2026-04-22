@@ -247,7 +247,7 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            expect(screen.getByText('✨ Correct!')).toBeInTheDocument()
+            expect(screen.getByText('✓ correct')).toBeInTheDocument()
             expect(screen.getByText('Review again in:')).toBeInTheDocument()
             expect(screen.getByRole('button', { name: 'ASAP' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '1h' })).toBeInTheDocument()
@@ -266,7 +266,32 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            expect(screen.queryByText(/Moving to next sentence in/)).not.toBeInTheDocument()
+            expect(screen.queryByText(/moving in/)).not.toBeInTheDocument()
+        })
+
+        it('keyboard shortcut 1 selects ASAP pill', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.keyDown(window, { key: '1' })
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.getByText('Review in ASAP ✓')).toBeInTheDocument()
+        })
+
+        it('keyboard shortcut 7 selects 1w pill', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                />
+            )
+            submitCorrect()
+            fireEvent.keyDown(window, { key: '7' })
+            expect(screen.getByText('Review in 1w ✓')).toBeInTheDocument()
         })
 
         it('does NOT auto-advance without a pill click (timer is paused)', () => {
@@ -365,7 +390,7 @@ describe('TypingGame', () => {
             fireEvent.click(screen.getByRole('button', { name: '1d' }))
             expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
             expect(screen.getByText('Review in 1d ✓')).toBeInTheDocument()
-            expect(screen.getByText(/Moving to next sentence in/)).toBeInTheDocument()
+            expect(screen.getByText(/moving in/)).toBeInTheDocument()
         })
 
         it('replaces pills with confirmation text after clicking 6h', () => {

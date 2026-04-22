@@ -106,8 +106,8 @@ export function VisualTranslationInput({
                             if (status === 'submitted' || status === 'completed') {
                                 const isMatch = inputValue === char || (!inputValue && (isPreFilledIdx || isAutoInsert))
                                 statusColor = isMatch
-                                    ? "border-green-500 bg-green-500/20 text-green-700"
-                                    : "border-red-500 bg-red-500/20 text-red-600"
+                                    ? "border-b-[var(--correct)] bg-[var(--correct-bg)] text-[var(--correct)]"
+                                    : "border-b-[var(--incorrect)] bg-[var(--incorrect-bg)] text-[var(--incorrect)]"
                             } else if (isTyped) {
                                 statusColor = "border-foreground text-foreground"
                             } else if (isPreFilled) {
@@ -121,10 +121,9 @@ export function VisualTranslationInput({
                                     key={index}
                                     data-testid="char-slot"
                                     className={cn(
-                                        "w-5 h-8 md:w-8 md:h-12 border-b-2 flex items-center justify-center text-lg md:text-2xl transition-colors select-none",
+                                        "w-[26px] h-[38px] md:w-8 md:h-10 border-b-2 flex items-center justify-center font-mono text-lg md:text-xl transition-colors select-none",
                                         statusColor,
-                                        // Current cursor position
-                                        isCurrent && "border-primary animate-pulse"
+                                        isCurrent && "outline outline-2 outline-[var(--accent)] outline-offset-[3px]"
                                     )}
                                 >
                                     {displayChar}

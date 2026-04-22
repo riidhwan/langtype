@@ -108,7 +108,7 @@ describe('ModePicker', () => {
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        expect(screen.getByText(/Next review in 3 hours/)).toBeInTheDocument()
+        expect(screen.getByText(/Next review in 3h/)).toBeInTheDocument()
     })
 
     it('shows "All caught up" when no due cards and no future review', () => {
@@ -164,7 +164,7 @@ describe('ModePicker', () => {
         const onViewProgress = vi.fn()
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={onViewProgress} />)
 
-        fireEvent.click(screen.getByText('View cards'))
+        fireEvent.click(screen.getByText('View progress'))
 
         expect(onViewProgress).toHaveBeenCalledOnce()
     })
