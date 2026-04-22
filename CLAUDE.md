@@ -58,6 +58,74 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 
 JSON files in `src/data/collections/` define challenge sets. Parentheses in answer strings mark pre-filled hints: `"(The) quick brown fox"` — `"The"` is pre-filled.
 
+## Product Behaviour
+
+This section must be kept up to date whenever product behaviour changes. If you add, remove, or change a user-facing flow, update this section as part of the same task.
+
+### Home page (`/`)
+
+Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A search input filters by title/description; "Due (N)" tab narrows to collections with at least one card due. Skeleton rows are shown until the SRS store hydrates (`_hasHydrated`) to prevent sort-order flicker.
+
+### Collection page (`/collections/$id`)
+
+All state lives in URL search params. The page renders one of four views depending on `?mode` and `?view`:
+
+| URL params | Renders |
+|---|---|
+| _(none)_ | `ModePicker` — choose Practice All or SRS |
+| `?view=progress` | `SRSProgressView` — per-card due/new/upcoming breakdown |
+| `?mode=normal` | `TypingGame` — all cards shuffled, no SRS recording |
+| `?mode=srs` | `TypingGame` — only due cards, full SRS flow (see below) |
+
+Back button always navigates to `?` (clears params) → ModePicker. Retry state is reset via a `useEffect` watching `mode`, not before `navigate()`, to avoid a transient render where `mode=srs` + `retryCount=0` would flash the all-done screen.
+
+### SRS session flow
+
+```
+[ModePicker] → startSRS() → mode=srs
+    ↓
+[TypingGame] — due cards only, shuffled
+  • correct answer → 7 interval pills shown, timer paused
+      → user picks interval (or presses 1–7) → recordReviewWithInterval()
+      → ASAP (0 days) → passed=false; all others → passed=true
+  • wrong answer   → recordReview('incorrect'), nextReviewAt=now → passed=false
+  • onCardResult(id, passed) — route accumulates passed=false IDs in pendingMissedIds ref
+    ↓
+[handleFinished — last card done]
+  if pendingMissedIds.length > 0:
+    → setMissedIds, retryCount++ → challenges recomputes → TypingGame re-mounts (isRetry=true)
+  else:
+    → goToPicker()
+    ↓
+[Retry phase — isRetry=true in srsContext]
+  Same TypingGame flow; "X cards remaining" shows "Reviewing X missed cards"
+  handleFinished again → if still misses → another retry; else → goToPicker()
+    ↓
+[SRSAllDoneScreen — shown when mode=srs but challenges.length===0]
+  Reached if: 0 cards due at session start, OR navigating back during session.
+```
+
+### SRS algorithm summary (`src/lib/srsAlgorithm.ts`)
+
+- **`computeReview(card, grade)`** — SM-2: `incorrect` resets reps + EF−0.2, interval=0, nextReviewAt=now; `hard` EF−0.1, shorter interval; `correct` EF+0.1, longer interval.
+- **`computeReviewFromInterval(card, intervalDays)`** — bypasses SM-2; sets nextReviewAt directly and nudges EF/reps by magnitude (ASAP→−0.2/reset, 1w→+0.15/+1 rep).
+- **`isCardDue(card)`** — true if `nextReviewAt === 0` (new) or `nextReviewAt <= now`.
+
+### SRS Progress view
+
+Cards are bucketed into three groups: **due** (`isCardDue` = true and `lastReviewedAt > 0`), **new** (`lastReviewedAt === 0`), **upcoming** (not due, sorted by `nextReviewAt` ascending). Time until review is formatted by `formatTimeUntil()` in `SRSProgressView.tsx`.
+
+### Normal mode
+
+All collection challenges shuffled. `TypingGame` receives no `srsContext` — no SRS recording, no interval pills, no retry phase. Timer auto-advances after correct (5s) or incorrect (5s) answer.
+
+### TypingGame internals
+
+- Status lifecycle: `typing` → `completed` (correct) or `submitted` (incorrect) → auto-advance (or wait for pill in SRS mode)
+- In SRS mode, correct answer pauses the timer (`setIsPaused(true)`) until a pill is selected, then restarts with a 2-second countdown.
+- Recording fires exactly once per card via `hasRecordedRef` (reset on `status=typing`), triggered when `timeLeft === 0`.
+- `cardsCompleted` (route state) drives the "X cards remaining" counter — derived from a stable counter, not `currentIndex`, to prevent flicker on refresh.
+
 ## Design System
 
 All styling uses CSS custom-property themes defined in `src/globals.css`. **Do not use hard-coded colours or Tailwind colour utilities like `text-green-600` — use theme variables instead.**
