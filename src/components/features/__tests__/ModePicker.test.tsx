@@ -125,7 +125,7 @@ describe('ModePicker', () => {
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        expect(screen.queryByText('Reset SRS progress')).not.toBeInTheDocument()
+        expect(screen.queryByText('Reset progress')).not.toBeInTheDocument()
     })
 
     it('shows reset button when SRS progress exists for this collection', () => {
@@ -133,17 +133,17 @@ describe('ModePicker', () => {
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        expect(screen.getByText('Reset SRS progress')).toBeInTheDocument()
+        expect(screen.getByText('Reset progress')).toBeInTheDocument()
     })
 
-    it('shows confirmation UI when Reset SRS progress is clicked', () => {
+    it('shows confirmation UI when Reset progress is clicked', () => {
         mockSRSState.cards = { 'test-col:1': {} }
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        fireEvent.click(screen.getByText('Reset SRS progress'))
+        fireEvent.click(screen.getByText('Reset progress'))
 
-        expect(screen.getByText('Reset SRS progress for this collection?')).toBeInTheDocument()
+        expect(screen.getByText('Reset Spaced Repetition progress for this collection?')).toBeInTheDocument()
         expect(screen.getByText('Reset')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
@@ -153,11 +153,11 @@ describe('ModePicker', () => {
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        fireEvent.click(screen.getByText('Reset SRS progress'))
+        fireEvent.click(screen.getByText('Reset progress'))
         fireEvent.click(screen.getByText('Cancel'))
 
-        expect(screen.queryByText('Reset SRS progress for this collection?')).not.toBeInTheDocument()
-        expect(screen.getByText('Reset SRS progress')).toBeInTheDocument()
+        expect(screen.queryByText('Reset Spaced Repetition progress for this collection?')).not.toBeInTheDocument()
+        expect(screen.getByText('Reset progress')).toBeInTheDocument()
     })
 
     it('shows "View cards" button and calls onViewProgress when clicked', () => {
@@ -174,7 +174,7 @@ describe('ModePicker', () => {
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
-        fireEvent.click(screen.getByText('Reset SRS progress'))
+        fireEvent.click(screen.getByText('Reset progress'))
         fireEvent.click(screen.getByText('Reset'))
 
         expect(mockSRSState.resetCollection).toHaveBeenCalledWith('test-col')

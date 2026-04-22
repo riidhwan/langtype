@@ -103,7 +103,7 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                 <div className="text-sm text-muted-foreground">
                     {confirmingReset ? (
                         <span className="flex items-center gap-3">
-                            <span>Reset SRS progress for this collection?</span>
+                            <span>Reset Spaced Repetition progress for this collection?</span>
                             <button
                                 onClick={handleReset}
                                 className="text-[var(--incorrect)] hover:opacity-80 font-medium transition-opacity"
@@ -122,7 +122,7 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                             onClick={() => setConfirmingReset(true)}
                             className="underline underline-offset-4 cursor-pointer hover:text-foreground transition-colors"
                         >
-                            Reset SRS progress
+                            Reset progress
                         </button>
                     )}
                 </div>
