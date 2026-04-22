@@ -69,6 +69,31 @@ export function computeReview(
     }
 }
 
+const INTERVAL_EF_STEPS = [
+    { maxDays: 0,        efDelta: -0.2,  resetReps: true  },
+    { maxDays: 0.05,     efDelta: -0.15, resetReps: true  },
+    { maxDays: 0.26,     efDelta: -0.1,  resetReps: false },
+    { maxDays: 0.51,     efDelta: -0.05, resetReps: false },
+    { maxDays: 1.01,     efDelta:  0,    resetReps: false },
+    { maxDays: 3.01,     efDelta: +0.1,  resetReps: false },
+    { maxDays: Infinity, efDelta: +0.15, resetReps: false },
+]
+
+export function computeReviewFromInterval(
+    card: SRSCard,
+    intervalDays: number,
+    now: number = Date.now(),
+): Partial<SRSCard> {
+    const step = INTERVAL_EF_STEPS.find((s) => intervalDays <= s.maxDays)!
+    return {
+        interval: intervalDays,
+        repetitions: step.resetReps ? 0 : card.repetitions + 1,
+        easeFactor: Math.min(4.0, Math.max(MIN_EASE_FACTOR, card.easeFactor + step.efDelta)),
+        nextReviewAt: now + intervalDays * MS_PER_DAY,
+        lastReviewedAt: now,
+    }
+}
+
 export function isCardDue(card: SRSCard, now: number = Date.now()): boolean {
     return card.nextReviewAt === 0 || card.nextReviewAt <= now
 }

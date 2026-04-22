@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
     createNewCard,
     computeReview,
+    computeReviewFromInterval,
     isCardDue,
     getDueChallengeIds,
     getNextReviewTime,
@@ -128,6 +129,69 @@ describe('computeReview — hard', () => {
     it('records lastReviewedAt', () => {
         const result = computeReview(makeCard(), 'hard', NOW)
         expect(result.lastReviewedAt).toBe(NOW)
+    })
+})
+
+describe('computeReviewFromInterval', () => {
+    it('ASAP (0 days): resets reps, applies −0.2 EF delta, sets nextReviewAt to now', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 3, easeFactor: 2.5 }), 0, NOW)
+        expect(result.interval).toBe(0)
+        expect(result.repetitions).toBe(0)
+        expect(result.easeFactor).toBeCloseTo(2.3)
+        expect(result.nextReviewAt).toBe(NOW)
+        expect(result.lastReviewedAt).toBe(NOW)
+    })
+
+    it('1h (1/24 days): resets reps, applies −0.15 EF delta', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 2, easeFactor: 2.5 }), 1 / 24, NOW)
+        expect(result.repetitions).toBe(0)
+        expect(result.easeFactor).toBeCloseTo(2.35)
+        expect(result.nextReviewAt).toBeCloseTo(NOW + (1 / 24) * DAY)
+    })
+
+    it('6h (0.25 days): increments reps, applies −0.1 EF delta', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 1, easeFactor: 2.5 }), 0.25, NOW)
+        expect(result.repetitions).toBe(2)
+        expect(result.easeFactor).toBeCloseTo(2.4)
+        expect(result.nextReviewAt).toBe(NOW + 0.25 * DAY)
+    })
+
+    it('12h (0.5 days): increments reps, applies −0.05 EF delta', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 1, easeFactor: 2.5 }), 0.5, NOW)
+        expect(result.repetitions).toBe(2)
+        expect(result.easeFactor).toBeCloseTo(2.45)
+        expect(result.nextReviewAt).toBe(NOW + 0.5 * DAY)
+    })
+
+    it('1d (1 day): increments reps, no EF change', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 1, easeFactor: 2.5 }), 1, NOW)
+        expect(result.repetitions).toBe(2)
+        expect(result.easeFactor).toBeCloseTo(2.5)
+        expect(result.nextReviewAt).toBe(NOW + DAY)
+    })
+
+    it('3d (3 days): increments reps, applies +0.1 EF delta', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 1, easeFactor: 2.5 }), 3, NOW)
+        expect(result.repetitions).toBe(2)
+        expect(result.easeFactor).toBeCloseTo(2.6)
+        expect(result.nextReviewAt).toBe(NOW + 3 * DAY)
+    })
+
+    it('1w (7 days): increments reps, applies +0.15 EF delta', () => {
+        const result = computeReviewFromInterval(makeCard({ repetitions: 1, easeFactor: 2.5 }), 7, NOW)
+        expect(result.repetitions).toBe(2)
+        expect(result.easeFactor).toBeCloseTo(2.65)
+        expect(result.nextReviewAt).toBe(NOW + 7 * DAY)
+    })
+
+    it('clamps EF to minimum 1.3 on large negative delta', () => {
+        const result = computeReviewFromInterval(makeCard({ easeFactor: 1.3 }), 0, NOW)
+        expect(result.easeFactor).toBeCloseTo(1.3)
+    })
+
+    it('clamps EF to maximum 4.0 on large positive delta', () => {
+        const result = computeReviewFromInterval(makeCard({ easeFactor: 3.95 }), 7, NOW)
+        expect(result.easeFactor).toBeCloseTo(4.0)
     })
 })
 

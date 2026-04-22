@@ -1,7 +1,8 @@
 import { useTypingEngine } from "@/hooks/useTypingEngine"
 import { useUrlSync } from "@/hooks/useUrlSync"
 import { useEffect, useMemo, useRef, useState } from "react"
-import type { SRSGrade } from "@/types/srs"
+import type { SRSIntervalChoice } from "@/types/srs"
+import { SRS_INTERVAL_DAYS, SRS_INTERVAL_LABELS } from "@/types/srs"
 import { SentenceDisplay } from "@/components/domain/SentenceDisplay"
 import { VisualTranslationInput } from "@/components/domain/VisualTranslationInput"
 import { Challenge } from "@/types/challenge"
@@ -23,6 +24,22 @@ interface Props {
     onFinished?: () => void
     srsContext?: SRSContext
 }
+
+type PillColor = 'red' | 'yellow' | 'green'
+
+const PILL_COLORS: Record<SRSIntervalChoice, PillColor> = {
+    asap: 'red', '1h': 'red', '6h': 'red',
+    '12h': 'yellow', '1d': 'yellow',
+    '3d': 'green', '1w': 'green',
+}
+
+const PILL_CLASSES: Record<PillColor, string> = {
+    red:    'border text-red-600 border-red-300 hover:bg-red-50 dark:hover:bg-red-950',
+    yellow: 'border text-yellow-600 border-yellow-400 hover:bg-amber-50 dark:hover:bg-amber-950',
+    green:  'border text-green-600 border-green-400 hover:bg-green-50 dark:hover:bg-green-950',
+}
+
+const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
 
 export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext }: Props) {
     const initialIndex = useMemo(() => {
@@ -61,26 +78,27 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         onQuestionChange
     })
 
-    // SRS: confidence override — timer is paused until the user makes an explicit choice
-    const [confidenceOverride, setConfidenceOverride] = useState<null | 'again' | 'hard' | 'good'>(null)
+    // SRS: interval choice — timer is paused until the user selects a pill
+    const [intervalChoice, setIntervalChoice] = useState<SRSIntervalChoice | null>(null)
     useEffect(() => {
-        setConfidenceOverride(null)
+        setIntervalChoice(null)
     }, [currentIndex])
 
-    const showingConfidenceButtons =
-        isCorrect && !!srsContext && !srsContext.skipRecording && confidenceOverride === null
+    const showingIntervalPills =
+        isCorrect && !!srsContext && !srsContext.skipRecording && intervalChoice === null
 
     useEffect(() => {
-        setIsPaused(showingConfidenceButtons)
-    }, [showingConfidenceButtons]) // eslint-disable-line react-hooks/exhaustive-deps
+        setIsPaused(showingIntervalPills)
+    }, [showingIntervalPills]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const handleConfidenceClick = (override: 'again' | 'hard' | 'good') => {
-        setConfidenceOverride(override)
+    const handleIntervalClick = (choice: SRSIntervalChoice) => {
+        setIntervalChoice(choice)
         setIsPaused(false)
         setTimeLeft(2)
     }
 
     const recordReview = useSRSStore((s) => s.recordReview)
+    const recordReviewWithInterval = useSRSStore((s) => s.recordReviewWithInterval)
     const hasRecordedRef = useRef(false)
 
     useEffect(() => {
@@ -94,23 +112,22 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
 
         hasRecordedRef.current = true
 
-        let grade: SRSGrade
-        if (status === 'submitted' || confidenceOverride === 'again') {
-            grade = 'incorrect'
-        } else if (confidenceOverride === 'hard') {
-            grade = 'hard'
-        } else {
-            grade = 'correct'
-        }
-
-        const passed = grade !== 'incorrect'
         const id = challenges[currentIndex].id
 
-        if (!srsContext.skipRecording) {
-            recordReview(srsContext.collectionId, id, grade)
+        if (status === 'submitted') {
+            if (!srsContext.skipRecording) {
+                recordReview(srsContext.collectionId, id, 'incorrect')
+            }
+            srsContext.onCardResult?.(id, false)
+        } else {
+            const choice = intervalChoice ?? '1d'
+            const intervalDays = SRS_INTERVAL_DAYS[choice]
+            const passed = intervalDays > 0
+            if (!srsContext.skipRecording) {
+                recordReviewWithInterval(srsContext.collectionId, id, intervalDays)
+            }
+            srsContext.onCardResult?.(id, passed)
         }
-
-        srsContext.onCardResult?.(id, passed)
     }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Detect end of session: last card done, timer expired, nothing left to advance to
@@ -163,39 +180,31 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                 />
 
                 {isCorrect && (
-                    <div className="flex flex-col items-center gap-2 mt-4">
+                    <div className="flex flex-col items-center gap-3 mt-4">
                         <div className="text-green-600 font-bold animate-pulse">
-                            {showingConfidenceButtons
-                                ? '✨ Correct! How confident were you?'
+                            {showingIntervalPills
+                                ? '✨ Correct!'
                                 : `✨ Correct! Moving to next sentence in ${timeLeft}...`}
                         </div>
                         {srsContext && !srsContext.skipRecording && (
-                            confidenceOverride !== null ? (
-                                confidenceOverride === 'again' ? (
-                                    <p className="text-sm text-muted-foreground">Showing again soon ✓</p>
-                                ) : confidenceOverride === 'hard' ? (
-                                    <p className="text-sm text-muted-foreground">Scheduling sooner ✓</p>
-                                ) : null
+                            intervalChoice !== null ? (
+                                <p className="text-sm text-muted-foreground">
+                                    Review in {SRS_INTERVAL_LABELS[intervalChoice]} ✓
+                                </p>
                             ) : (
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => handleConfidenceClick('again')}
-                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
-                                    >
-                                        Not at all
-                                    </button>
-                                    <button
-                                        onClick={() => handleConfidenceClick('hard')}
-                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
-                                    >
-                                        Somewhat
-                                    </button>
-                                    <button
-                                        onClick={() => handleConfidenceClick('good')}
-                                        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer px-3 py-2"
-                                    >
-                                        Very
-                                    </button>
+                                <div className="flex flex-col items-center gap-2">
+                                    <p className="text-sm text-muted-foreground">Review again in:</p>
+                                    <div className="flex flex-wrap justify-center gap-2">
+                                        {INTERVAL_ORDER.map((choice) => (
+                                            <button
+                                                key={choice}
+                                                onClick={() => handleIntervalClick(choice)}
+                                                className={`rounded-full px-3 py-1 text-sm cursor-pointer transition-colors ${PILL_CLASSES[PILL_COLORS[choice]]}`}
+                                            >
+                                                {SRS_INTERVAL_LABELS[choice]}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             )
                         )}

@@ -115,6 +115,48 @@ describe('useSRSStore', () => {
         })
     })
 
+    describe('recordReviewWithInterval', () => {
+        it('creates a card with the specified interval and nextReviewAt', () => {
+            const before = Date.now()
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 1)
+            const after = Date.now()
+
+            const card = useSRSStore.getState().cards['col1:ch1']
+            expect(card).toBeDefined()
+            expect(card.interval).toBe(1)
+            expect(card.repetitions).toBe(1)
+            expect(card.nextReviewAt).toBeGreaterThanOrEqual(before + 86_400_000)
+            expect(card.nextReviewAt).toBeLessThanOrEqual(after + 86_400_000)
+        })
+
+        it('sets nextReviewAt to now for ASAP (0 days)', () => {
+            const before = Date.now()
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 0)
+            const after = Date.now()
+
+            const card = useSRSStore.getState().cards['col1:ch1']
+            expect(card.interval).toBe(0)
+            expect(card.nextReviewAt).toBeGreaterThanOrEqual(before)
+            expect(card.nextReviewAt).toBeLessThanOrEqual(after)
+        })
+
+        it('resets repetitions for ASAP (0 days)', () => {
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 1)
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 0)
+
+            const card = useSRSStore.getState().cards['col1:ch1']
+            expect(card.repetitions).toBe(0)
+        })
+
+        it('increments repetitions for longer intervals', () => {
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 1)
+            useSRSStore.getState().recordReviewWithInterval('col1', 'ch1', 3)
+
+            const card = useSRSStore.getState().cards['col1:ch1']
+            expect(card.repetitions).toBe(2)
+        })
+    })
+
     describe('getCard', () => {
         it('returns undefined for a card that has not been reviewed', () => {
             const card = useSRSStore.getState().getCard('col1', 'unknown')

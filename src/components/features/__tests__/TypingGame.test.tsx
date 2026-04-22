@@ -4,10 +4,11 @@ import { TypingGame } from '../TypingGame'
 import { Challenge } from '@/types/challenge'
 
 const mockRecordReview = vi.hoisted(() => vi.fn())
+const mockRecordReviewWithInterval = vi.hoisted(() => vi.fn())
 
 vi.mock('@/store/useSRSStore', () => ({
     useSRSStore: (selector: (s: any) => any) =>
-        selector({ recordReview: mockRecordReview }),
+        selector({ recordReview: mockRecordReview, recordReviewWithInterval: mockRecordReviewWithInterval }),
 }))
 
 describe('TypingGame', () => {
@@ -20,6 +21,7 @@ describe('TypingGame', () => {
     beforeEach(() => {
         vi.useFakeTimers()
         mockRecordReview.mockClear()
+        mockRecordReviewWithInterval.mockClear()
     })
 
     afterEach(() => {
@@ -110,7 +112,7 @@ describe('TypingGame', () => {
             { id: '1', original: 'Hello', translation: 'Hallo' },
         ]
 
-        it('calls recordReview with "correct" after clicking Got it', () => {
+        it('calls recordReviewWithInterval after clicking a pill', () => {
             const onCardResult = vi.fn()
             render(
                 <TypingGame
@@ -123,13 +125,13 @@ describe('TypingGame', () => {
             fireEvent.change(input, { target: { value: 'Hallo' } })
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
 
-            // Not yet recorded — timer is paused waiting for user choice
-            expect(mockRecordReview).not.toHaveBeenCalled()
+            // Not yet recorded — timer is paused waiting for pill selection
+            expect(mockRecordReviewWithInterval).not.toHaveBeenCalled()
 
-            fireEvent.click(screen.getByText('Very'))
+            fireEvent.click(screen.getByText('1d'))
             act(() => { vi.advanceTimersByTime(2100) })
 
-            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'correct')
+            expect(mockRecordReviewWithInterval).toHaveBeenCalledWith('col', '1', 1)
             expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
@@ -151,7 +153,7 @@ describe('TypingGame', () => {
             expect(onCardResult).toHaveBeenCalledWith('1', false)
         })
 
-        it('does not call recordReview during the countdown (before timeLeft === 0)', () => {
+        it('does not record while timer is paused waiting for pill selection', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -165,6 +167,7 @@ describe('TypingGame', () => {
             act(() => { vi.advanceTimersByTime(2000) })
 
             expect(mockRecordReview).not.toHaveBeenCalled()
+            expect(mockRecordReviewWithInterval).not.toHaveBeenCalled()
         })
 
         it('does not call recordReview when skipRecording is true', () => {
@@ -185,7 +188,7 @@ describe('TypingGame', () => {
             expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
-        it('records a result only once even after clicking Got it', () => {
+        it('records a result only once after clicking a pill', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -196,10 +199,10 @@ describe('TypingGame', () => {
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'Hallo' } })
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
-            fireEvent.click(screen.getByText('Very'))
+            fireEvent.click(screen.getByText('1d'))
             act(() => { vi.advanceTimersByTime(2100) })
 
-            expect(mockRecordReview).toHaveBeenCalledOnce()
+            expect(mockRecordReviewWithInterval).toHaveBeenCalledOnce()
         })
 
         it('shows "X cards remaining" counter when srsContext is provided', () => {
@@ -225,7 +228,7 @@ describe('TypingGame', () => {
         })
     })
 
-    describe('confidence override buttons', () => {
+    describe('interval pills', () => {
         const singleChallenge: Challenge[] = [
             { id: '1', original: 'Hello', translation: 'Hallo' },
         ]
@@ -236,7 +239,7 @@ describe('TypingGame', () => {
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
         }
 
-        it('shows "How confident were you?" and all three buttons after correct answer in SRS mode', () => {
+        it('shows "✨ Correct!" heading and all 7 interval pills after correct answer in SRS mode', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -244,13 +247,18 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            expect(screen.getByText('✨ Correct! How confident were you?')).toBeInTheDocument()
-            expect(screen.getByText('Not at all')).toBeInTheDocument()
-            expect(screen.getByText('Somewhat')).toBeInTheDocument()
-            expect(screen.getByText('Very')).toBeInTheDocument()
+            expect(screen.getByText('✨ Correct!')).toBeInTheDocument()
+            expect(screen.getByText('Review again in:')).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: 'ASAP' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '1h' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '6h' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '12h' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '1d' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '3d' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '1w' })).toBeInTheDocument()
         })
 
-        it('hides the countdown number while confidence buttons are shown', () => {
+        it('hides the countdown number while pills are shown', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -261,7 +269,7 @@ describe('TypingGame', () => {
             expect(screen.queryByText(/Moving to next sentence in/)).not.toBeInTheDocument()
         })
 
-        it('does NOT auto-advance without a button click (timer is paused)', () => {
+        it('does NOT auto-advance without a pill click (timer is paused)', () => {
             const twoCards: Challenge[] = [
                 { id: '1', original: 'Hello', translation: 'Hallo' },
                 { id: '2', original: 'World', translation: 'Welt' },
@@ -281,7 +289,7 @@ describe('TypingGame', () => {
             expect(screen.getByText('Hello')).toBeInTheDocument()
         })
 
-        it('advances after clicking Got it', () => {
+        it('advances after clicking a pill', () => {
             const twoCards: Challenge[] = [
                 { id: '1', original: 'Hello', translation: 'Hallo' },
                 { id: '2', original: 'World', translation: 'Welt' },
@@ -296,19 +304,19 @@ describe('TypingGame', () => {
             fireEvent.change(input, { target: { value: 'Hallo' } })
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
 
-            fireEvent.click(screen.getByText('Very'))
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
             act(() => { vi.advanceTimersByTime(2100) })
             expect(screen.getByText('World')).toBeInTheDocument()
         })
 
-        it('does not show confidence buttons in normal (non-SRS) mode', () => {
+        it('does not show interval pills in normal (non-SRS) mode', () => {
             render(<TypingGame challenges={singleChallenge} />)
             submitCorrect()
-            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
-            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.queryByRole('button', { name: 'ASAP' })).not.toBeInTheDocument()
         })
 
-        it('does not show confidence buttons when skipRecording is true', () => {
+        it('does not show interval pills when skipRecording is true', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -316,11 +324,11 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
-            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.queryByRole('button', { name: 'ASAP' })).not.toBeInTheDocument()
         })
 
-        it('shows confidence buttons during retry phase (isRetry: true, no skipRecording)', () => {
+        it('shows interval pills during retry phase (isRetry: true, no skipRecording)', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -328,12 +336,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            expect(screen.getByText('Not at all')).toBeInTheDocument()
-            expect(screen.getByText('Somewhat')).toBeInTheDocument()
-            expect(screen.getByText('Very')).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: 'ASAP' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '1d' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '1w' })).toBeInTheDocument()
         })
 
-        it('replaces buttons with feedback text after clicking Again', () => {
+        it('replaces pills with confirmation text after clicking ASAP', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -341,12 +349,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Not at all'))
-            expect(screen.queryByText('Not at all')).not.toBeInTheDocument()
-            expect(screen.getByText('Showing again soon ✓')).toBeInTheDocument()
+            fireEvent.click(screen.getByRole('button', { name: 'ASAP' }))
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.getByText('Review in ASAP ✓')).toBeInTheDocument()
         })
 
-        it('replaces buttons with countdown and no feedback text after clicking Got it', () => {
+        it('replaces pills with confirmation text and shows countdown after clicking 1d', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -354,13 +362,13 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Very'))
-            expect(screen.queryByText('Very')).not.toBeInTheDocument()
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.getByText('Review in 1d ✓')).toBeInTheDocument()
             expect(screen.getByText(/Moving to next sentence in/)).toBeInTheDocument()
-            expect(screen.queryByText(/✓/)).not.toBeInTheDocument()
         })
 
-        it('replaces buttons with feedback text after clicking Not sure', () => {
+        it('replaces pills with confirmation text after clicking 6h', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -368,12 +376,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Somewhat'))
-            expect(screen.queryByText('Somewhat')).not.toBeInTheDocument()
-            expect(screen.getByText('Scheduling sooner ✓')).toBeInTheDocument()
+            fireEvent.click(screen.getByRole('button', { name: '6h' }))
+            expect(screen.queryByText('Review again in:')).not.toBeInTheDocument()
+            expect(screen.getByText('Review in 6h ✓')).toBeInTheDocument()
         })
 
-        it('records "incorrect" grade when Again is clicked (after 2s countdown)', () => {
+        it('calls recordReviewWithInterval(0) when ASAP is clicked', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -381,12 +389,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Not at all'))
+            fireEvent.click(screen.getByRole('button', { name: 'ASAP' }))
             act(() => { vi.advanceTimersByTime(2100) })
-            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'incorrect')
+            expect(mockRecordReviewWithInterval).toHaveBeenCalledWith('col', '1', 0)
         })
 
-        it('records "hard" grade when Not sure is clicked (after 2s countdown)', () => {
+        it('calls recordReviewWithInterval(0.25) when 6h is clicked', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -394,12 +402,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Somewhat'))
+            fireEvent.click(screen.getByRole('button', { name: '6h' }))
             act(() => { vi.advanceTimersByTime(2100) })
-            expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'hard')
+            expect(mockRecordReviewWithInterval).toHaveBeenCalledWith('col', '1', 0.25)
         })
 
-        it('Again reports passed=false via onCardResult (triggering retry queue)', () => {
+        it('ASAP reports passed=false via onCardResult (triggering retry queue)', () => {
             const onCardResult = vi.fn()
             render(
                 <TypingGame
@@ -408,12 +416,12 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Not at all'))
+            fireEvent.click(screen.getByRole('button', { name: 'ASAP' }))
             act(() => { vi.advanceTimersByTime(2100) })
             expect(onCardResult).toHaveBeenCalledWith('1', false)
         })
 
-        it('Not sure reports passed=true via onCardResult', () => {
+        it('6h reports passed=true via onCardResult', () => {
             const onCardResult = vi.fn()
             render(
                 <TypingGame
@@ -422,7 +430,7 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.click(screen.getByText('Somewhat'))
+            fireEvent.click(screen.getByRole('button', { name: '6h' }))
             act(() => { vi.advanceTimersByTime(2100) })
             expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
