@@ -93,18 +93,25 @@ export function VisualTranslationInput({
 
             {/* Visual Render Layer */}
             <div className="flex flex-wrap justify-center gap-y-4 gap-x-4">
-                {words.map((word, wIdx) => (
-                    <div key={wIdx} className="flex gap-x-1">
+                {words.map((word, wIdx) => {
+                    const wordLen = word.text.length
+                    const slotSize = wordLen >= 14
+                        ? "w-4 h-7 text-sm md:w-5 md:h-8 md:text-base"
+                        : wordLen >= 12
+                            ? "w-5 h-8 text-base md:w-6 md:h-9 md:text-lg"
+                            : "w-[26px] h-[38px] text-lg md:w-8 md:h-10 md:text-xl"
+                    const wordGap = wordLen >= 14 ? "gap-x-0.5" : "gap-x-1"
+
+                    return (
+                    <div key={wIdx} className={cn("flex", wordGap)}>
                         {word.text.split('').map((char, charOffset) => {
                             const index = word.startIndex + charOffset
                             const inputValue = value[index] || ""
                             const isTyped = index < value.length
                             const isCurrent = index === cursorIndex && status === 'typing'
 
-                            // Feedback logic
                             let statusColor = "border-muted-foreground/30 text-muted-foreground"
 
-                            // Determine if we should show a pre-filled hint (punctuation/spaces or indices from parentheses)
                             const isAutoInsert = AUTO_INSERT_CHARS.has(char)
                             const isPreFilledIdx = preFilledIndices?.has(index)
                             const isPreFilled = !inputValue && (isAutoInsert || isPreFilledIdx)
@@ -118,8 +125,6 @@ export function VisualTranslationInput({
                             } else if (isTyped) {
                                 statusColor = "border-foreground text-foreground"
                             } else if (isPreFilled) {
-                                // Keep it gray (muted) but maybe slightly different? 
-                                // Default muted is fine for pre-filled hints.
                                 statusColor = "border-muted-foreground/30 text-muted-foreground"
                             }
 
@@ -128,7 +133,8 @@ export function VisualTranslationInput({
                                     key={index}
                                     data-testid="char-slot"
                                     className={cn(
-                                        "w-[26px] h-[38px] md:w-8 md:h-10 border-b-2 flex items-center justify-center font-mono text-lg md:text-xl transition-colors select-none",
+                                        "border-b-2 flex items-center justify-center font-mono transition-colors select-none",
+                                        slotSize,
                                         statusColor,
                                         isCurrent && "outline outline-2 outline-[var(--accent)] outline-offset-[3px]"
                                     )}
@@ -138,7 +144,8 @@ export function VisualTranslationInput({
                             )
                         })}
                     </div>
-                ))}
+                    )
+                })}
             </div>
         </div>
     )

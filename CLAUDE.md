@@ -223,6 +223,8 @@ Use `IconSearch` and `IconChevronRight` from `src/components/ui/icons.tsx`. No i
 
 **Tests**: Co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests. Write tests before or alongside implementation — do not consider a task complete until `npm run test:coverage` has been run and any meaningful gaps addressed. Mock patterns: use `vi.hoisted()` for mock values referenced inside `vi.mock()` factories; wrap real module functions in `vi.fn()` when per-test overrides are needed (`vi.mock('@/lib/foo', async (orig) => { const a = await orig(); return { ...a, fn: vi.fn(a.fn) } })`).
 
+**After every implementation, always consider whether tests are needed — do not wait for the user to ask.** Write tests when the new code has non-obvious threshold values, branching logic, or derived state that could silently regress (e.g. slot-size tiers keyed on word length, tag filter predicates). If unsure, ask.
+
 **Route component tests** — export the component from the route file (e.g. `export function Home()`), then render it directly. Standard mock setup:
 
 ```typescript

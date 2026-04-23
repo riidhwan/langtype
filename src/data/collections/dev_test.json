@@ -27,6 +27,16 @@
             "id": "5",
             "original": "No",
             "translation": "Nein"
+        },
+        {
+            "id": "6",
+            "original": "Excuse me (14 chars — compact slots)",
+            "translation": "Entschuldigung"
+        },
+        {
+            "id": "7",
+            "original": "Female nurse / nurses (16+17 chars — compact slots)",
+            "translation": "die (Krankenschwester), (die) Krankenschwestern"
         }
     ]
 }

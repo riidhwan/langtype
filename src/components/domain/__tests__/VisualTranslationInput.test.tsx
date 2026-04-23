@@ -126,6 +126,44 @@ describe('VisualTranslationInput', () => {
         expect(slots[2]).not.toHaveClass('outline-[var(--accent)]') // 'r' of "der" — already typed
     })
 
+    describe('slot sizing by word length', () => {
+        it('uses normal slots for short words (≤11 chars)', () => {
+            render(<VisualTranslationInput {...defaultProps} targetText="Hallo" />)
+            const slots = screen.getAllByTestId('char-slot')
+            expect(slots[0]).toHaveClass('w-[26px]')
+        })
+
+        it('uses medium slots for 12-13 char words', () => {
+            // "Verabredungen" = 13 chars
+            render(<VisualTranslationInput {...defaultProps} targetText="Verabredungen" />)
+            const slots = screen.getAllByTestId('char-slot')
+            expect(slots[0]).toHaveClass('w-5')
+            expect(slots[0]).not.toHaveClass('w-[26px]')
+        })
+
+        it('uses compact slots for words ≥14 chars', () => {
+            // "Entschuldigung" = 14 chars
+            render(<VisualTranslationInput {...defaultProps} targetText="Entschuldigung" />)
+            const slots = screen.getAllByTestId('char-slot')
+            expect(slots[0]).toHaveClass('w-4')
+            expect(slots[0]).not.toHaveClass('w-[26px]')
+        })
+
+        it('uses tight gap for words ≥14 chars', () => {
+            render(<VisualTranslationInput {...defaultProps} targetText="Entschuldigung" />)
+            const slots = screen.getAllByTestId('char-slot')
+            expect(slots[0].parentElement).toHaveClass('gap-x-0.5')
+        })
+
+        it('applies different slot sizes per word within one challenge', () => {
+            // "die" = 3 chars (normal), "Krankenschwestern" = 17 chars (compact)
+            render(<VisualTranslationInput {...defaultProps} targetText="die Krankenschwestern" />)
+            const slots = screen.getAllByTestId('char-slot')
+            expect(slots[0]).toHaveClass('w-[26px]')  // 'd' of "die"
+            expect(slots[3]).toHaveClass('w-4')        // 'K' of "Krankenschwestern"
+        })
+    })
+
     it('marks pre-filled characters as success when submitted even if not typed', () => {
         const preFilledIndices = new Set([0, 1, 2]) // "der"
         render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" status="submitted" />)
