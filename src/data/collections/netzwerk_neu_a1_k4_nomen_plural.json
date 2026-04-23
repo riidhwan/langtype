@@ -1,0 +1,347 @@
+{
+    "id": "netzwerk_neu_a1_k3_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 4: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 4.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Fruit",
+            "translation": "das (Obst)"
+        },
+        {
+            "id": "2",
+            "original": "Apple",
+            "translation": "der (Apfel), (die) Äpfel"
+        },
+        {
+            "id": "3",
+            "original": "Banana",
+            "translation": "die (Banane), (die) Bananen"
+        },
+        {
+            "id": "4",
+            "original": "Pear",
+            "translation": "die (Birne), (die) Birnen"
+        },
+        {
+            "id": "5",
+            "original": "Vegetable",
+            "translation": "das (Gemüse), (die) Gemüse"
+        },
+        {
+            "id": "6",
+            "original": "Cucumber",
+            "translation": "die (Gurke), (die) Gurken"
+        },
+        {
+            "id": "7",
+            "original": "Potato",
+            "translation": "die (Kartoffel), (die) Kartoffeln"
+        },
+        {
+            "id": "8",
+            "original": "Salad",
+            "translation": "der (Salat), (die) Salate"
+        },
+        {
+            "id": "9",
+            "original": "Tomato",
+            "translation": "die (Tomate), (die) Tomaten"
+        },
+        {
+            "id": "10",
+            "original": "Olive",
+            "translation": "die (Olive), (die) Oliven"
+        },
+        {
+            "id": "11",
+            "original": "Onion",
+            "translation": "die (Zwiebel), (die) Zwiebeln"
+        },
+        {
+            "id": "12",
+            "original": "Bread",
+            "translation": "das (Brot), (die) Brote"
+        },
+        {
+            "id": "13",
+            "original": "",
+            "translation": "das (Brötchen), (die) Brötchen"
+        },
+        {
+            "id": "14",
+            "original": "Cookie",
+            "translation": "der (Keks), (die) Kekse"
+        },
+        {
+            "id": "15",
+            "original": "Cake",
+            "translation": "der (Kuchen), (die) Kuchen"
+        },
+        {
+            "id": "16",
+            "original": "Meat",
+            "translation": "das (Fleisch), (die) Fleische"
+        },
+        {
+            "id": "17",
+            "original": "Chicken",
+            "translation": "das (Hähnchen), (die) Hähnchen"
+        },
+        {
+            "id": "18",
+            "original": "Ham",
+            "translation": "der (Schinken), (die) Schinken"
+        },
+        {
+            "id": "19",
+            "original": "Sausage",
+            "translation": "die (Wurst), (die) Würste"
+        },
+        {
+            "id": "20",
+            "original": "",
+            "translation": "das (Würstchen), (die) Würstchen"
+        },
+        {
+            "id": "21",
+            "original": "Butter",
+            "translation": "die (Butter)"
+        },
+        {
+            "id": "22",
+            "original": "Cheese",
+            "translation": "der (Käse), (die) Käse"
+        },
+        {
+            "id": "23",
+            "original": "Milk",
+            "translation": "die (Milch)"
+        },
+        {
+            "id": "24",
+            "original": "Cream",
+            "translation": "die (Sahne)"
+        },
+        {
+            "id": "25",
+            "original": "Pepper",
+            "translation": "der (Pfeffer), (die) Pfeffer"
+        },
+        {
+            "id": "26",
+            "original": "Salt",
+            "translation": "das (Salz), (die) Salze"
+        },
+        {
+            "id": "27",
+            "original": "Sugar",
+            "translation": "der (Zucker), (die) Zucker"
+        },
+        {
+            "id": "28",
+            "original": "Vinegar",
+            "translation": "der (Essig), (die) Essige"
+        },
+        {
+            "id": "29",
+            "original": "Oil",
+            "translation": "das (Öl), (die) Öle"
+        },
+        {
+            "id": "30",
+            "original": "Noodle",
+            "translation": "die (Nudel), (die) Nudeln"
+        },
+        {
+            "id": "31",
+            "original": "Rice",
+            "translation": "der (Reis)"
+        },
+        {
+            "id": "32",
+            "original": "Egg",
+            "translation": "das (Ei), (die) Eier"
+        },
+        {
+            "id": "33",
+            "original": "Fish",
+            "translation": "der (Fisch), (die) Fische"
+        },
+        {
+            "id": "34",
+            "original": "Chocolate",
+            "translation": "die (Schokolade), (die) Schokoladen"
+        },
+        {
+            "id": "35",
+            "original": "Jam",
+            "translation": "die (Marmelade), (die) Marmeladen"
+        },
+        {
+            "id": "36",
+            "original": "",
+            "translation": "das (Müsli), (die) Müslis"
+        },
+        {
+            "id": "37",
+            "original": "Beverage",
+            "translation": "das (Getränk), (die) Getränke"
+        },
+        {
+            "id": "38",
+            "original": "Water",
+            "translation": "das (Wasser), (die) Wasser"
+        },
+        {
+            "id": "39",
+            "original": "Juice",
+            "translation": "der (Saft), (die) Säfte"
+        },
+        {
+            "id": "40",
+            "original": "Lemonade",
+            "translation": "die (Limonade), (die) Limonaden"
+        },
+        {
+            "id": "41",
+            "original": "Cola",
+            "translation": "die (Cola), (die) Colas"
+        },
+        {
+            "id": "42",
+            "original": "Coffee",
+            "translation": "der (Kaffee), (die) Kaffees"
+        },
+        {
+            "id": "43",
+            "original": "Tea",
+            "translation": "der (Tee), (die) Tees"
+        },
+        {
+            "id": "44",
+            "original": "Bakery",
+            "translation": "die (Bäckerei), (die) Bäckereien"
+        },
+        {
+            "id": "45",
+            "original": "Market",
+            "translation": "der (Markt), (die) Märkte"
+        },
+        {
+            "id": "46",
+            "original": "Butcher Shop",
+            "translation": "die (Metzgerei), (die) Metzgereien"
+        },
+        {
+            "id": "47",
+            "original": "Supermarket",
+            "translation": "der (Supermarkt), (die) Supermärkte"
+        },
+        {
+            "id": "48",
+            "original": "Pack / Box",
+            "translation": "die (Packung), (die) Packungen"
+        },
+        {
+            "id": "49",
+            "original": "Cup",
+            "translation": "der (Becher), (die) Becher"
+        },
+        {
+            "id": "50",
+            "original": "Can",
+            "translation": "die (Dose), (die) Dosen"
+        },
+        {
+            "id": "51",
+            "original": "Piece",
+            "translation": "das (Stück), (die) Stücke"
+        },
+        {
+            "id": "52",
+            "original": "Bag",
+            "translation": "die (Tüte), (die) Tüten"
+        },
+        {
+            "id": "53",
+            "original": "Gram",
+            "translation": "das (Gramm), (die) Gramm"
+        },
+        {
+            "id": "54",
+            "original": "Kilo",
+            "translation": "das (Kilo), (die) Kilos"
+        },
+        {
+            "id": "55",
+            "original": "Liter",
+            "translation": "der (Liter), (die) Liter"
+        },
+        {
+            "id": "56",
+            "original": "Breakfast",
+            "translation": "das (Frühstück), (die) Frühstücke"
+        },
+        {
+            "id": "57",
+            "original": "Lunch",
+            "translation": "das (Mittagessen), (die) Mittagessen"
+        },
+        {
+            "id": "58",
+            "original": "Dinner",
+            "translation": "das (Abendessen), (die) Abendessen"
+        },
+        {
+            "id": "59",
+            "original": "Dish",
+            "translation": "das (Gericht), (die) Gerichte"
+        },
+        {
+            "id": "60",
+            "original": "Soup",
+            "translation": "die (Suppe), (die) Suppen"
+        },
+        {
+            "id": "61",
+            "original": "Pizza",
+            "translation": "die (Pizza), (die) Pizzen"
+        },
+        {
+            "id": "62",
+            "original": "Morning",
+            "translation": "der (Morgen), (die) Morgen"
+        },
+        {
+            "id": "63",
+            "original": "Noon",
+            "translation": "der (Mittag), (die) Mittage"
+        },
+        {
+            "id": "64",
+            "original": "Afternoon",
+            "translation": "der (Nachmittag), (die) Nachmittage"
+        },
+        {
+            "id": "65",
+            "original": "Evening",
+            "translation": "der (Abend), (die) Abende"
+        },
+        {
+            "id": "66",
+            "original": "Night",
+            "translation": "die (Nacht), (die) Nächte"
+        },
+        {
+            "id": "67",
+            "original": "Invitation",
+            "translation": "die (Einladung), (die) Einladungen"
+        },
+        {
+            "id": "68",
+            "original": "Cafeteria",
+            "translation": "die (Kantine), (die) Kantinen"
+        }
+    ]
+}
