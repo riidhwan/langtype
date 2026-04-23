@@ -49,6 +49,11 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
         setInput(spacedValue)
     }
 
+    const setInputDirect = (value: string) => {
+        if (status === 'completed' || status === 'submitted') return
+        setInput(value)
+    }
+
     const submit = () => {
         if (status === 'completed' || status === 'submitted') return
 
@@ -77,6 +82,7 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
     return {
         input,
         setInput: setInputSafe,
+        setInputDirect,
         currentSentence,
         currentIndex,
         wordCount,

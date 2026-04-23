@@ -2,6 +2,7 @@
     "id": "netzwerk_neu_a1_k3_nomen_plural",
     "title": "Netzwerk Neu A1 — Kapitel 3: Artikel + Plural",
     "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 3.",
+    "freeInput": true,
     "challenges": [
         {
             "id": "1",

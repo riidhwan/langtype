@@ -193,7 +193,8 @@ describe('VisualTranslationInput', () => {
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'der' } })
             expect(input).toHaveValue('der')
-            expect(onChange).toHaveBeenCalledWith('der')
+            // onChange receives full assembled answer (gap + pre-filled) for setInputDirect
+            expect(onChange).toHaveBeenCalledWith('der Name')
             expect(screen.getByText('Name')).toBeInTheDocument()
         })
 
@@ -219,6 +220,26 @@ describe('VisualTranslationInput', () => {
             const input = screen.getByRole('textbox')
             fireEvent.keyDown(input, { key: 'Enter' })
             expect(handleSubmit).toHaveBeenCalled()
+        })
+
+        it('focuses first gap when challenge changes, even if last gap was active', () => {
+            // "Hallo Welt": gap("Hallo"), prefilled(" "), gap("Welt") — 2 gaps
+            const { rerender } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo Welt"
+            />)
+            const inputs = screen.getAllByRole('textbox')
+            // Advance to second gap
+            fireEvent.keyDown(inputs[0], { key: 'Enter' })
+            expect(inputs[1]).toHaveFocus()
+
+            // Challenge changes — new targetText also has 2 gaps
+            rerender(<VisualTranslationInput
+                {...freeProps}
+                targetText="Tschüss Welt"
+            />)
+            const newInputs = screen.getAllByRole('textbox')
+            expect(newInputs[0]).toHaveFocus()
         })
 
         it('highlights the active gap with orange outline while typing', () => {
@@ -255,7 +276,14 @@ describe('VisualTranslationInput', () => {
         })
 
         it('applies correct colour to gap on completed answer', () => {
-            const { container } = render(<VisualTranslationInput
+            const { container, rerender } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value=""
+                status="typing"
+            />)
+            fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Hallo' } })
+            rerender(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value="Hallo"
@@ -266,7 +294,14 @@ describe('VisualTranslationInput', () => {
         })
 
         it('applies incorrect colour to gap on submitted wrong answer', () => {
-            const { container } = render(<VisualTranslationInput
+            const { container, rerender } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value=""
+                status="typing"
+            />)
+            fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Helli' } })
+            rerender(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value="Helli"

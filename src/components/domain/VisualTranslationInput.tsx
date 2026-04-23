@@ -84,11 +84,14 @@ export function VisualTranslationInput({
     }, [targetText]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Focus management for free input mode.
+    // Always focuses gap 0 on a new challenge — avoids stale activeGapIdx
+    // racing with the reset effect when both fire on the same targetText change.
+    // Imperative .focus() in handleGapKeyDown handles within-challenge navigation.
     useEffect(() => {
         if (freeInput && status === 'typing') {
-            gapInputRefs.current[activeGapIdx]?.focus()
+            gapInputRefs.current[0]?.focus()
         }
-    }, [targetText, activeGapIdx, freeInput, status])
+    }, [targetText, freeInput, status])
 
     // Focus management for slot mode.
     useEffect(() => {
@@ -110,11 +113,19 @@ export function VisualTranslationInput({
         if (e.key === 'Enter' && onSubmit) onSubmit()
     }
 
+    const buildFullAnswer = (vals: string[]) => {
+        let result = ''
+        let gi = 0
+        for (const seg of segments) {
+            result += seg.type === 'prefilled' ? seg.text : (vals[gi++] ?? '')
+        }
+        return result
+    }
+
     const handleGapChange = (gapIdx: number, newVal: string) => {
         const updated = gapValues.map((v, i) => i === gapIdx ? newVal : v)
         setGapValues(updated)
-        // Pass concatenated raw values — autoMatchSpacing in the engine inserts pre-fills.
-        onChange(updated.join(''))
+        onChange(buildFullAnswer(updated))
     }
 
     const handleGapKeyDown = (gapIdx: number, e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -171,8 +182,7 @@ export function VisualTranslationInput({
                             let gapColor = 'border-muted-foreground/40 text-foreground'
                             if (status === 'submitted' || status === 'completed') {
                                 const expected = targetText.slice(seg.startIndex, seg.startIndex + seg.length)
-                                const actual = value.slice(seg.startIndex, seg.startIndex + seg.length)
-                                gapColor = actual === expected
+                                gapColor = gapVal === expected
                                     ? 'border-[var(--correct)] text-[var(--correct)]'
                                     : 'border-[var(--incorrect)] text-[var(--incorrect)]'
                             }

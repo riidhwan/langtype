@@ -40,6 +40,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
     const {
         input,
         setInput,
+        setInputDirect,
         isCorrect,
         status,
         submit,
@@ -172,7 +173,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
 
                 <VisualTranslationInput
                     value={input}
-                    onChange={setInput}
+                    onChange={freeInput ? setInputDirect : setInput}
                     onSubmit={submit}
                     targetText={currentSentence}
                     preFilledIndices={preFilledIndices}
