@@ -1,0 +1,208 @@
+{
+    "id": "netzwerk_neu_a1_k6_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 6: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 6.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Day Trip / Excursion",
+            "translation": "der (Ausflug), (die) Ausflüge"
+        },
+        {
+            "id": "2",
+            "original": "Bike Tour",
+            "translation": "die (Fahrradtour), (die) Fahrradtouren"
+        },
+        {
+            "id": "3",
+            "original": "Picnic",
+            "translation": "das (Picknick), (die) Picknicks"
+        },
+        {
+            "id": "4",
+            "original": "Festival / Celebration",
+            "translation": "das (Fest), (die) Feste"
+        },
+        {
+            "id": "5",
+            "original": "Gift / Present",
+            "translation": "das (Geschenk), (die) Geschenke"
+        },
+        {
+            "id": "6",
+            "original": "Date",
+            "translation": "das (Datum), (die) Daten"
+        },
+        {
+            "id": "7",
+            "original": "Surprise",
+            "translation": "die (Überraschung), (die) Überraschungen"
+        },
+        {
+            "id": "8",
+            "original": "Email",
+            "translation": "die (Mail), (die) Mails"
+        },
+        {
+            "id": "9",
+            "original": "Subject Line",
+            "translation": "der (Betreff), (die) Betreffe"
+        },
+        {
+            "id": "10",
+            "original": "Salutation / Greeting",
+            "translation": "die (Anrede), (die) Anreden"
+        },
+        {
+            "id": "11",
+            "original": "Spritzer / Mixed Drink",
+            "translation": "die (Schorle), (die) Schorlen"
+        },
+        {
+            "id": "12",
+            "original": "Ice Cream / Ice",
+            "translation": "das (Eis)"
+        },
+        {
+            "id": "13",
+            "original": "Salami",
+            "translation": "die (Salami)"
+        },
+        {
+            "id": "14",
+            "original": "Schnitzel",
+            "translation": "das (Schnitzel), (die) Schnitzel"
+        },
+        {
+            "id": "15",
+            "original": "Tomato Soup",
+            "translation": "die (Tomatensuppe), (die) Tomatensuppen"
+        },
+        {
+            "id": "16",
+            "original": "Sandwich",
+            "translation": "das (Sandwich), (die) Sandwiches"
+        },
+        {
+            "id": "17",
+            "original": "Thirst",
+            "translation": "der (Durst)"
+        },
+        {
+            "id": "18",
+            "original": "Hunger",
+            "translation": "der (Hunger)"
+        },
+        {
+            "id": "19",
+            "original": "Menu",
+            "translation": "die (Speisekarte), (die) Speisekarten"
+        },
+        {
+            "id": "20",
+            "original": "Order",
+            "translation": "die (Bestellung), (die) Bestellungen"
+        },
+        {
+            "id": "21",
+            "original": "Tip / Gratuity",
+            "translation": "das (Trinkgeld), (die) Trinkgelder"
+        },
+        {
+            "id": "22",
+            "original": "Fork",
+            "translation": "die (Gabel), (die) Gabeln"
+        },
+        {
+            "id": "23",
+            "original": "Knife",
+            "translation": "das (Messer), (die) Messer"
+        },
+        {
+            "id": "24",
+            "original": "Spoon",
+            "translation": "der (Löffel), (die) Löffel"
+        },
+        {
+            "id": "25",
+            "original": "Glass",
+            "translation": "das (Glas), (die) Gläser"
+        },
+        {
+            "id": "26",
+            "original": "Cup",
+            "translation": "die (Tasse), (die) Tassen"
+        },
+        {
+            "id": "27",
+            "original": "Plate",
+            "translation": "der (Teller), (die) Teller"
+        },
+        {
+            "id": "28",
+            "original": "Napkin",
+            "translation": "die (Serviette), (die) Servietten"
+        },
+        {
+            "id": "29",
+            "original": "Pub",
+            "translation": "die (Kneipe), (die) Kneipen"
+        },
+        {
+            "id": "30",
+            "original": "Café / Coffee House",
+            "translation": "das (Kaffeehaus), (die) Kaffeehäuser"
+        },
+        {
+            "id": "31",
+            "original": "Restaurant / Bar",
+            "translation": "das (Lokal), (die) Lokale"
+        },
+        {
+            "id": "32",
+            "original": "Beer Garden",
+            "translation": "der (Biergarten), (die) Biergärten"
+        },
+        {
+            "id": "33",
+            "original": "Bench",
+            "translation": "die (Bank), (die) Bänke"
+        },
+        {
+            "id": "34",
+            "original": "Self-Service",
+            "translation": "die (Selbstbedienung)"
+        },
+        {
+            "id": "35",
+            "original": "Programme / Schedule",
+            "translation": "das (Programm), (die) Programme"
+        },
+        {
+            "id": "36",
+            "original": "Meeting Point",
+            "translation": "der (Treffpunkt), (die) Treffpunkte"
+        },
+        {
+            "id": "37",
+            "original": "Admission / Entry",
+            "translation": "der (Eintritt), (die) Eintritte"
+        },
+        {
+            "id": "38",
+            "original": "Registration",
+            "translation": "die (Anmeldung), (die) Anmeldungen"
+        },
+        {
+            "id": "39",
+            "original": "Card / Ticket / Map",
+            "translation": "die (Karte), (die) Karten"
+        },
+        {
+            "id": "40",
+            "original": "Playground",
+            "translation": "der (Spielplatz), (die) Spielplätze"
+        }
+    ]
+}

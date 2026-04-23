@@ -1,0 +1,248 @@
+{
+    "id": "netzwerk_neu_a1_k5_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 5: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 5.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Message / News",
+            "translation": "die (Nachricht), (die) Nachrichten"
+        },
+        {
+            "id": "2",
+            "original": "University",
+            "translation": "die (Uni), (die) Unis"
+        },
+        {
+            "id": "3",
+            "original": "University Cafeteria",
+            "translation": "die (Mensa), (die) Mensen"
+        },
+        {
+            "id": "4",
+            "original": "Library",
+            "translation": "die (Bibliothek), (die) Bibliotheken"
+        },
+        {
+            "id": "5",
+            "original": "Music School",
+            "translation": "die (Musikschule), (die) Musikschulen"
+        },
+        {
+            "id": "6",
+            "original": "Homework",
+            "translation": "die (Hausaufgabe), (die) Hausaufgaben"
+        },
+        {
+            "id": "7",
+            "original": "Newspaper",
+            "translation": "die (Zeitung), (die) Zeitungen"
+        },
+        {
+            "id": "8",
+            "original": "Homepage / Website",
+            "translation": "die (Homepage), (die) Homepages"
+        },
+        {
+            "id": "9",
+            "original": "Stress",
+            "translation": "der (Stress)"
+        },
+        {
+            "id": "10",
+            "original": "Clock / Watch",
+            "translation": "die (Uhr), (die) Uhren"
+        },
+        {
+            "id": "11",
+            "original": "Second",
+            "translation": "die (Sekunde), (die) Sekunden"
+        },
+        {
+            "id": "12",
+            "original": "Minute",
+            "translation": "die (Minute), (die) Minuten"
+        },
+        {
+            "id": "13",
+            "original": "Hour",
+            "translation": "die (Stunde), (die) Stunden"
+        },
+        {
+            "id": "14",
+            "original": "Family",
+            "translation": "die (Familie), (die) Familien"
+        },
+        {
+            "id": "15",
+            "original": "Baby",
+            "translation": "das (Baby), (die) Babys"
+        },
+        {
+            "id": "16",
+            "original": "Child",
+            "translation": "das (Kind), (die) Kinder"
+        },
+        {
+            "id": "17",
+            "original": "Boy",
+            "translation": "der (Junge), (die) Jungen"
+        },
+        {
+            "id": "18",
+            "original": "Girl",
+            "translation": "das (Mädchen), (die) Mädchen"
+        },
+        {
+            "id": "19",
+            "original": "Son",
+            "translation": "der (Sohn), (die) Söhne"
+        },
+        {
+            "id": "20",
+            "original": "Daughter",
+            "translation": "die (Tochter), (die) Töchter"
+        },
+        {
+            "id": "21",
+            "original": "Mother",
+            "translation": "die (Mutter), (die) Mütter"
+        },
+        {
+            "id": "22",
+            "original": "Father",
+            "translation": "der (Vater), (die) Väter"
+        },
+        {
+            "id": "23",
+            "original": "Parents",
+            "translation": "die (Eltern)"
+        },
+        {
+            "id": "24",
+            "original": "Brother",
+            "translation": "der (Bruder), (die) Brüder"
+        },
+        {
+            "id": "25",
+            "original": "Sister",
+            "translation": "die (Schwester), (die) Schwestern"
+        },
+        {
+            "id": "26",
+            "original": "Siblings",
+            "translation": "die (Geschwister)"
+        },
+        {
+            "id": "27",
+            "original": "Grandmother",
+            "translation": "die (Großmutter), (die) Großmütter"
+        },
+        {
+            "id": "28",
+            "original": "Grandma",
+            "translation": "die (Oma), (die) Omas"
+        },
+        {
+            "id": "29",
+            "original": "Grandfather",
+            "translation": "der (Großvater), (die) Großväter"
+        },
+        {
+            "id": "30",
+            "original": "Grandpa",
+            "translation": "der (Opa), (die) Opas"
+        },
+        {
+            "id": "31",
+            "original": "Grandparents",
+            "translation": "die (Großeltern)"
+        },
+        {
+            "id": "32",
+            "original": "Man / Husband",
+            "translation": "der (Mann), (die) Männer"
+        },
+        {
+            "id": "33",
+            "original": "Woman / Wife",
+            "translation": "die (Frau), (die) Frauen"
+        },
+        {
+            "id": "34",
+            "original": "Time",
+            "translation": "die (Zeit), (die) Zeiten"
+        },
+        {
+            "id": "35",
+            "original": "Party",
+            "translation": "die (Party), (die) Partys"
+        },
+        {
+            "id": "36",
+            "original": "Bar",
+            "translation": "die (Bar), (die) Bars"
+        },
+        {
+            "id": "37",
+            "original": "Calendar",
+            "translation": "der (Kalender), (die) Kalender"
+        },
+        {
+            "id": "38",
+            "original": "Meeting",
+            "translation": "die (Besprechung), (die) Besprechungen"
+        },
+        {
+            "id": "39",
+            "original": "Sport / Exercise",
+            "translation": "der (Sport)"
+        },
+        {
+            "id": "40",
+            "original": "Ball",
+            "translation": "der (Ball), (die) Bälle"
+        },
+        {
+            "id": "41",
+            "original": "Motorcycle",
+            "translation": "das (Motorrad), (die) Motorräder"
+        },
+        {
+            "id": "42",
+            "original": "Violin",
+            "translation": "die (Geige), (die) Geigen"
+        },
+        {
+            "id": "43",
+            "original": "Saxophone",
+            "translation": "das (Saxofon), (die) Saxofone"
+        },
+        {
+            "id": "44",
+            "original": "Trumpet",
+            "translation": "die (Trompete), (die) Trompeten"
+        },
+        {
+            "id": "45",
+            "original": "Dog",
+            "translation": "der (Hund), (die) Hunde"
+        },
+        {
+            "id": "46",
+            "original": "Idea",
+            "translation": "die (Idee), (die) Ideen"
+        },
+        {
+            "id": "47",
+            "original": "Problem",
+            "translation": "das (Problem), (die) Probleme"
+        },
+        {
+            "id": "48",
+            "original": "Practice / Doctor's Office",
+            "translation": "die (Praxis), (die) Praxen"
+        }
+    ]
+}

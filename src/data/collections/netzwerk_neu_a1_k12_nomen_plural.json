@@ -1,0 +1,338 @@
+{
+    "id": "netzwerk_neu_a1_k12_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 12: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 12.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Beach Holiday",
+            "translation": "der (Badeurlaub), (die) die Badeurlaube"
+        },
+        {
+            "id": "2",
+            "original": "Camping Holiday",
+            "translation": "der (Campingurlaub), (die) die Campingurlaube"
+        },
+        {
+            "id": "3",
+            "original": "City Break",
+            "translation": "der (Stadturlaub), (die) die Stadturlaube"
+        },
+        {
+            "id": "4",
+            "original": "Mountain",
+            "translation": "der (Berg), (die) die Berge"
+        },
+        {
+            "id": "5",
+            "original": "Island",
+            "translation": "die (Insel), (die) die Inseln"
+        },
+        {
+            "id": "6",
+            "original": "Sight / Tourist Attraction",
+            "translation": "die (Sehenswürdigkeit), (die) die Sehenswürdigkeiten"
+        },
+        {
+            "id": "7",
+            "original": "City Tour",
+            "translation": "die (Stadtführung), (die) die Stadtführungen"
+        },
+        {
+            "id": "8",
+            "original": "Beach",
+            "translation": "der (Strand), (die) die Strände"
+        },
+        {
+            "id": "9",
+            "original": "Zoo",
+            "translation": "der (Zoo), (die) die Zoos"
+        },
+        {
+            "id": "10",
+            "original": "Postcard",
+            "translation": "die (Postkarte), (die) die Postkarten"
+        },
+        {
+            "id": "11",
+            "original": "Luggage / Baggage",
+            "translation": "das (Gepäck)"
+        },
+        {
+            "id": "12",
+            "original": "Travel Bag",
+            "translation": "die (Reisetasche), (die) die Reisetaschen"
+        },
+        {
+            "id": "13",
+            "original": "Swimsuit",
+            "translation": "der (Badeanzug), (die) die Badeanzüge"
+        },
+        {
+            "id": "14",
+            "original": "Swimming Trunks",
+            "translation": "die (Badehose), (die) die Badehosen"
+        },
+        {
+            "id": "15",
+            "original": "Bikini",
+            "translation": "der (Bikini), (die) die Bikinis"
+        },
+        {
+            "id": "16",
+            "original": "Rain Jacket",
+            "translation": "die (Regenjacke), (die) die Regenjacken"
+        },
+        {
+            "id": "17",
+            "original": "Umbrella",
+            "translation": "der (Regenschirm), (die) die Regenschirme"
+        },
+        {
+            "id": "18",
+            "original": "Travel Guide / Guidebook",
+            "translation": "der (Reiseführer), (die) die Reiseführer"
+        },
+        {
+            "id": "19",
+            "original": "Soap",
+            "translation": "die (Seife), (die) die Seifen"
+        },
+        {
+            "id": "20",
+            "original": "Sunglasses",
+            "translation": "die (Sonnenbrille), (die) die Sonnenbrillen"
+        },
+        {
+            "id": "21",
+            "original": "Sunscreen",
+            "translation": "die (Sonnencreme), (die) die Sonnencremes"
+        },
+        {
+            "id": "22",
+            "original": "Dishes / Crockery",
+            "translation": "das (Geschirr)"
+        },
+        {
+            "id": "23",
+            "original": "Sleeping Bag",
+            "translation": "der (Schlafsack), (die) die Schlafsäcke"
+        },
+        {
+            "id": "24",
+            "original": "Tent",
+            "translation": "das (Zelt), (die) die Zelte"
+        },
+        {
+            "id": "25",
+            "original": "Registration / Check-in",
+            "translation": "die (Anmeldung), (die) die Anmeldungen"
+        },
+        {
+            "id": "26",
+            "original": "ID Card",
+            "translation": "der (Ausweis), (die) die Ausweise"
+        },
+        {
+            "id": "27",
+            "original": "Documents / Papers",
+            "translation": "die (Papiere)"
+        },
+        {
+            "id": "28",
+            "original": "Passport",
+            "translation": "der (Pass), (die) die Pässe"
+        },
+        {
+            "id": "29",
+            "original": "Double Room",
+            "translation": "das (Doppelzimmer), (die) die Doppelzimmer"
+        },
+        {
+            "id": "30",
+            "original": "Single Room",
+            "translation": "das (Einzelzimmer), (die) die Einzelzimmer"
+        },
+        {
+            "id": "31",
+            "original": "Reception",
+            "translation": "die (Rezeption), (die) die Rezeptionen"
+        },
+        {
+            "id": "32",
+            "original": "Youth Hostel",
+            "translation": "die (Jugendherberge), (die) die Jugendherbergen"
+        },
+        {
+            "id": "33",
+            "original": "Guesthouse / B&B",
+            "translation": "die (Pension), (die) die Pensionen"
+        },
+        {
+            "id": "34",
+            "original": "Card / Map / Ticket",
+            "translation": "die (Karte), (die) die Karten"
+        },
+        {
+            "id": "35",
+            "original": "Journey / Trip",
+            "translation": "die (Reise), (die) die Reisen"
+        },
+        {
+            "id": "36",
+            "original": "Flight",
+            "translation": "der (Flug), (die) die Flüge"
+        },
+        {
+            "id": "37",
+            "original": "Airport",
+            "translation": "der (Flughafen), (die) die Flughäfen"
+        },
+        {
+            "id": "38",
+            "original": "Platform",
+            "translation": "der (Bahnsteig), (die) die Bahnsteige"
+        },
+        {
+            "id": "39",
+            "original": "Track / Rail",
+            "translation": "das (Gleis), (die) die Gleise"
+        },
+        {
+            "id": "40",
+            "original": "Stop / Bus Stop",
+            "translation": "die (Haltestelle), (die) die Haltestellen"
+        },
+        {
+            "id": "41",
+            "original": "Departure",
+            "translation": "die (Abfahrt), (die) die Abfahrten"
+        },
+        {
+            "id": "42",
+            "original": "Arrival",
+            "translation": "die (Ankunft), (die) die Ankünfte"
+        },
+        {
+            "id": "43",
+            "original": "Number",
+            "translation": "die (Nummer), (die) die Nummern"
+        },
+        {
+            "id": "44",
+            "original": "Exit",
+            "translation": "der (Ausgang), (die) die Ausgänge"
+        },
+        {
+            "id": "45",
+            "original": "Place / Seat / Square",
+            "translation": "der (Platz), (die) die Plätze"
+        },
+        {
+            "id": "46",
+            "original": "Corner",
+            "translation": "die (Ecke), (die) die Ecken"
+        },
+        {
+            "id": "47",
+            "original": "Sun",
+            "translation": "die (Sonne), (die) die Sonnen"
+        },
+        {
+            "id": "48",
+            "original": "Heat",
+            "translation": "die (Hitze)"
+        },
+        {
+            "id": "49",
+            "original": "Cloud",
+            "translation": "die (Wolke), (die) die Wolken"
+        },
+        {
+            "id": "50",
+            "original": "Rain",
+            "translation": "der (Regen)"
+        },
+        {
+            "id": "51",
+            "original": "Snow",
+            "translation": "der (Schnee)"
+        },
+        {
+            "id": "52",
+            "original": "Wind",
+            "translation": "der (Wind), (die) die Winde"
+        },
+        {
+            "id": "53",
+            "original": "Weather Forecast",
+            "translation": "der (Wetterbericht), (die) die Wetterberichte"
+        },
+        {
+            "id": "54",
+            "original": "Cardinal Direction",
+            "translation": "die (Himmelsrichtung), (die) die Himmelsrichtungen"
+        },
+        {
+            "id": "55",
+            "original": "North",
+            "translation": "der (Norden)"
+        },
+        {
+            "id": "56",
+            "original": "East",
+            "translation": "der (Osten)"
+        },
+        {
+            "id": "57",
+            "original": "South",
+            "translation": "der (Süden)"
+        },
+        {
+            "id": "58",
+            "original": "West",
+            "translation": "der (Westen)"
+        },
+        {
+            "id": "59",
+            "original": "Culture",
+            "translation": "die (Kultur), (die) die Kulturen"
+        },
+        {
+            "id": "60",
+            "original": "Art",
+            "translation": "die (Kunst), (die) die Künste"
+        },
+        {
+            "id": "61",
+            "original": "Landscape / Scenery",
+            "translation": "die (Landschaft), (die) die Landschaften"
+        },
+        {
+            "id": "62",
+            "original": "Village",
+            "translation": "das (Dorf), (die) die Dörfer"
+        },
+        {
+            "id": "63",
+            "original": "Dream",
+            "translation": "der (Traum), (die) die Träume"
+        },
+        {
+            "id": "64",
+            "original": "Acquaintance",
+            "translation": "der/die (Bekannte), (die) die Bekannten"
+        },
+        {
+            "id": "65",
+            "original": "Aunt",
+            "translation": "die (Tante), (die) die Tanten"
+        },
+        {
+            "id": "66",
+            "original": "Suggestion / Proposal",
+            "translation": "der (Vorschlag), (die) die Vorschläge"
+        }
+    ]
+}

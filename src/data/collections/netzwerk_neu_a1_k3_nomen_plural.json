@@ -6,7 +6,7 @@
     "challenges": [
         {
             "id": "1",
-            "original": "human",
+            "original": "Human",
             "translation": "der (Mensch), (die) Menschen"
         },
         {
@@ -96,7 +96,7 @@
         },
         {
             "id": "19",
-            "original": "",
+            "original": "Tram",
             "translation": "die (Straßenbahn), (die) Straßenbahnen"
         },
         {
@@ -121,17 +121,17 @@
         },
         {
             "id": "24",
-            "original": "",
+            "original": "Way / Path",
             "translation": "der (Weg), (die) Wege"
         },
         {
             "id": "25",
             "original": "Middle",
-            "translation": "die (Mitte), (die) Mitten"
+            "translation": "die (Mitte)"
         },
         {
             "id": "26",
-            "original": "Map / Plan / Blueprint",
+            "original": "Map / Plan",
             "translation": "der (Plan), (die) Pläne"
         },
         {
@@ -156,136 +156,141 @@
         },
         {
             "id": "31",
+            "original": "Audience",
+            "translation": "das (Publikum)"
+        },
+        {
+            "id": "32",
             "original": "Visitor (Male)",
             "translation": "der (Besucher), (die) Besucher"
         },
         {
-            "id": "32",
+            "id": "33",
             "original": "Visitor (Female)",
             "translation": "die (Besucherin), (die) Besucherinnen"
         },
         {
-            "id": "33",
+            "id": "34",
             "original": "Guest",
             "translation": "der (Gast), (die) Gäste"
         },
         {
-            "id": "34",
+            "id": "35",
             "original": "Concert",
             "translation": "das (Konzert), (die) Konzerte"
         },
         {
-            "id": "35",
+            "id": "36",
             "original": "Orchestra",
             "translation": "das (Orchester), (die) Orchester"
         },
         {
-            "id": "36",
+            "id": "37",
             "original": "Choir",
-            "translation": "der (Chor), (die) Chore"
+            "translation": "der (Chor), (die) Chöre"
         },
         {
-            "id": "37",
+            "id": "38",
             "original": "Concert Ticket",
             "translation": "die (Konzertkarte), (die) Konzertkarten"
         },
         {
-            "id": "38",
+            "id": "39",
             "original": "Movie",
             "translation": "der (Film), (die) Filme"
         },
         {
-            "id": "39",
+            "id": "40",
             "original": "Actor",
             "translation": "der (Schauspieler), (die) Schauspieler"
         },
         {
-            "id": "40",
+            "id": "41",
             "original": "Actress",
             "translation": "die (Schauspielerin), (die) Schauspielerinnen"
         },
         {
-            "id": "41",
+            "id": "42",
             "original": "Celebrity",
-            "translation": "der (Star), (die) Stare"
+            "translation": "der (Star), (die) Stars"
         },
         {
-            "id": "42",
+            "id": "43",
             "original": "Director (Male)",
             "translation": "der (Regisseur), (die) Regisseure"
         },
         {
-            "id": "43",
+            "id": "44",
             "original": "Director (Female)",
             "translation": "die (Regisseurin), (die) Regisseurinnen"
         },
         {
-            "id": "44",
+            "id": "45",
             "original": "Exhibition",
             "translation": "die (Ausstellung), (die) Ausstellungen"
         },
         {
-            "id": "45",
+            "id": "46",
             "original": "Season",
             "translation": "die (Jahreszeit), (die) Jahreszeiten"
         },
         {
-            "id": "46",
+            "id": "47",
             "original": "Spring",
             "translation": "der (Frühling), (die) Frühlinge"
         },
         {
-            "id": "47",
+            "id": "48",
             "original": "Summer",
             "translation": "der (Sommer), (die) Sommer"
         },
         {
-            "id": "48",
+            "id": "49",
             "original": "Autumn",
             "translation": "der (Herbst), (die) Herbste"
         },
         {
-            "id": "49",
+            "id": "50",
             "original": "Winter",
             "translation": "der (Winter), (die) Winter"
         },
         {
-            "id": "50",
+            "id": "51",
             "original": "Month",
             "translation": "der (Monat), (die) Monate"
         },
         {
-            "id": "51",
+            "id": "52",
             "original": "January",
-            "translation": "der (Januar), (die) Januare"
+            "translation": "der (Januar)"
         },
         {
-            "id": "52",
+            "id": "53",
             "original": "Group",
             "translation": "die (Gruppe), (die) Gruppen"
         },
         {
-            "id": "53",
+            "id": "54",
             "original": "Picture",
             "translation": "das (Bild), (die) Bilder"
         },
         {
-            "id": "54",
-            "original": "Billboard",
+            "id": "55",
+            "original": "Poster",
             "translation": "das (Plakat), (die) Plakate"
         },
         {
-            "id": "55",
-            "original": "Luck / Happy / Fortune",
-            "translation": "das (Glück), (die) Glücke"
+            "id": "56",
+            "original": "Luck / Fortune",
+            "translation": "das (Glück)"
         },
         {
-            "id": "56",
+            "id": "57",
             "original": "World",
             "translation": "die (Welt), (die) Welten"
         },
         {
-            "id": "57",
+            "id": "58",
             "original": "Answer / Solution",
             "translation": "die (Lösung), (die) Lösungen"
         }

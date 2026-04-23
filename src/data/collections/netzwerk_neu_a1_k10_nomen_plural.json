@@ -1,0 +1,293 @@
+{
+    "id": "netzwerk_neu_a1_k10_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 10: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 10.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Workplace / Job",
+            "translation": "der (Arbeitsplatz), (die) Arbeitsplätze"
+        },
+        {
+            "id": "2",
+            "original": "Position / Job",
+            "translation": "die (Stelle), (die) Stellen"
+        },
+        {
+            "id": "3",
+            "original": "Job",
+            "translation": "der (Job), (die) Jobs"
+        },
+        {
+            "id": "4",
+            "original": "Seasonal Job",
+            "translation": "der (Saison-Job), (die) Saison-Jobs"
+        },
+        {
+            "id": "5",
+            "original": "Career",
+            "translation": "die (Karriere), (die) Karrieren"
+        },
+        {
+            "id": "6",
+            "original": "Project",
+            "translation": "das (Projekt), (die) Projekte"
+        },
+        {
+            "id": "7",
+            "original": "Task / Assignment",
+            "translation": "die (Aufgabe), (die) Aufgaben"
+        },
+        {
+            "id": "8",
+            "original": "Application",
+            "translation": "die (Bewerbung), (die) Bewerbungen"
+        },
+        {
+            "id": "9",
+            "original": "Profile",
+            "translation": "das (Profil), (die) Profile"
+        },
+        {
+            "id": "10",
+            "original": "Internet",
+            "translation": "das (Internet)"
+        },
+        {
+            "id": "11",
+            "original": "End of the Workday",
+            "translation": "der (Feierabend), (die) Feierabende"
+        },
+        {
+            "id": "12",
+            "original": "Dealer / Trader (Male)",
+            "translation": "der (Händler), (die) Händler"
+        },
+        {
+            "id": "13",
+            "original": "Dealer / Trader (Female)",
+            "translation": "die (Händlerin), (die) Händlerinnen"
+        },
+        {
+            "id": "14",
+            "original": "Goods / Merchandise",
+            "translation": "die (Ware), (die) Waren"
+        },
+        {
+            "id": "15",
+            "original": "Artist (Male)",
+            "translation": "der (Künstler), (die) Künstler"
+        },
+        {
+            "id": "16",
+            "original": "Artist (Female)",
+            "translation": "die (Künstlerin), (die) Künstlerinnen"
+        },
+        {
+            "id": "17",
+            "original": "Professor (Male)",
+            "translation": "der (Professor), (die) Professoren"
+        },
+        {
+            "id": "18",
+            "original": "Professor (Female)",
+            "translation": "die (Professorin), (die) Professorinnen"
+        },
+        {
+            "id": "19",
+            "original": "Sailing Instructor (Male)",
+            "translation": "der (Segellehrer), (die) Segellehrer"
+        },
+        {
+            "id": "20",
+            "original": "Sailing Instructor (Female)",
+            "translation": "die (Segellehrerin), (die) Segellehrerinnen"
+        },
+        {
+            "id": "21",
+            "original": "Secretary (Male)",
+            "translation": "der (Sekretär), (die) Sekretäre"
+        },
+        {
+            "id": "22",
+            "original": "Secretary (Female)",
+            "translation": "die (Sekretärin), (die) Sekretärinnen"
+        },
+        {
+            "id": "23",
+            "original": "Hotel Manager (Male)",
+            "translation": "der (Hotelchef), (die) Hotelchefs"
+        },
+        {
+            "id": "24",
+            "original": "Hotel Manager (Female)",
+            "translation": "die (Hotelchefin), (die) Hotelchefinnen"
+        },
+        {
+            "id": "25",
+            "original": "Construction Site",
+            "translation": "die (Baustelle), (die) Baustellen"
+        },
+        {
+            "id": "26",
+            "original": "Computer Company",
+            "translation": "die (Computerfirma), (die) Computerfirmen"
+        },
+        {
+            "id": "27",
+            "original": "Department Store",
+            "translation": "das (Kaufhaus), (die) Kaufhäuser"
+        },
+        {
+            "id": "28",
+            "original": "Workshop / Garage",
+            "translation": "die (Werkstatt), (die) Werkstätten"
+        },
+        {
+            "id": "29",
+            "original": "Studies / Degree Programme",
+            "translation": "das (Studium), (die) Studien"
+        },
+        {
+            "id": "30",
+            "original": "Semester",
+            "translation": "das (Semester), (die) Semester"
+        },
+        {
+            "id": "31",
+            "original": "Lessons / Class",
+            "translation": "der (Unterricht)"
+        },
+        {
+            "id": "32",
+            "original": "Exam / Test",
+            "translation": "die (Prüfung), (die) Prüfungen"
+        },
+        {
+            "id": "33",
+            "original": "Statistics",
+            "translation": "die (Statistik), (die) Statistiken"
+        },
+        {
+            "id": "34",
+            "original": "List",
+            "translation": "die (Liste), (die) Listen"
+        },
+        {
+            "id": "35",
+            "original": "Phone Call",
+            "translation": "der (Anruf), (die) Anrufe"
+        },
+        {
+            "id": "36",
+            "original": "Connection / Extension",
+            "translation": "der (Anschluss), (die) Anschlüsse"
+        },
+        {
+            "id": "37",
+            "original": "Direct Dial / Extension",
+            "translation": "die (Durchwahl), (die) Durchwahlen"
+        },
+        {
+            "id": "38",
+            "original": "Event",
+            "translation": "die (Veranstaltung), (die) Veranstaltungen"
+        },
+        {
+            "id": "39",
+            "original": "Carousel / Merry-Go-Round",
+            "translation": "das (Karussell), (die) Karussells"
+        },
+        {
+            "id": "40",
+            "original": "Christmas Market",
+            "translation": "der (Weihnachtsmarkt), (die) Weihnachtsmärkte"
+        },
+        {
+            "id": "41",
+            "original": "Attraction",
+            "translation": "die (Attraktion), (die) Attraktionen"
+        },
+        {
+            "id": "42",
+            "original": "Stage",
+            "translation": "die (Bühne), (die) Bühnen"
+        },
+        {
+            "id": "43",
+            "original": "Extra / Supernumerary (Male)",
+            "translation": "der (Statist), (die) Statisten"
+        },
+        {
+            "id": "44",
+            "original": "Extra / Supernumerary (Female)",
+            "translation": "die (Statistin), (die) Statistinnen"
+        },
+        {
+            "id": "45",
+            "original": "Spectator / Viewer (Male)",
+            "translation": "der (Zuschauer), (die) Zuschauer"
+        },
+        {
+            "id": "46",
+            "original": "Spectator / Viewer (Female)",
+            "translation": "die (Zuschauerin), (die) Zuschauerinnen"
+        },
+        {
+            "id": "47",
+            "original": "Opera",
+            "translation": "die (Oper), (die) Opern"
+        },
+        {
+            "id": "48",
+            "original": "Beginning / Start",
+            "translation": "der (Anfang), (die) Anfänge"
+        },
+        {
+            "id": "49",
+            "original": "End",
+            "translation": "das (Ende), (die) Enden"
+        },
+        {
+            "id": "50",
+            "original": "Home / Homeland",
+            "translation": "die (Heimat), (die) Heimaten"
+        },
+        {
+            "id": "51",
+            "original": "Foreign Country / Abroad",
+            "translation": "das (Ausland)"
+        },
+        {
+            "id": "52",
+            "original": "Wife",
+            "translation": "die (Ehefrau), (die) Ehefrauen"
+        },
+        {
+            "id": "53",
+            "original": "Husband",
+            "translation": "der (Ehemann), (die) Ehemänner"
+        },
+        {
+            "id": "54",
+            "original": "News",
+            "translation": "die (Nachrichten)"
+        },
+        {
+            "id": "55",
+            "original": "Radio Programme",
+            "translation": "die (Radiosendung), (die) Radiosendungen"
+        },
+        {
+            "id": "56",
+            "original": "Walk / Stroll",
+            "translation": "der (Spaziergang), (die) Spaziergänge"
+        },
+        {
+            "id": "57",
+            "original": "Tennis Court",
+            "translation": "der (Tennisplatz), (die) Tennisplätze"
+        }
+    ]
+}

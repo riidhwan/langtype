@@ -1,0 +1,283 @@
+{
+    "id": "netzwerk_neu_a1_k11_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 11: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 11.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Clothing",
+            "translation": "die (Kleidung)"
+        },
+        {
+            "id": "2",
+            "original": "Clothes",
+            "translation": "die (Klamotten)"
+        },
+        {
+            "id": "3",
+            "original": "Trousers / Pants",
+            "translation": "die (Hose), (die) Hosen"
+        },
+        {
+            "id": "4",
+            "original": "Jeans",
+            "translation": "die (Jeans), (die) Jeans"
+        },
+        {
+            "id": "5",
+            "original": "T-Shirt",
+            "translation": "das (T-Shirt), (die) T-Shirts"
+        },
+        {
+            "id": "6",
+            "original": "Shirt",
+            "translation": "das (Hemd), (die) Hemden"
+        },
+        {
+            "id": "7",
+            "original": "Jumper / Sweater",
+            "translation": "der (Pullover), (die) Pullover"
+        },
+        {
+            "id": "8",
+            "original": "Jumper / Sweater",
+            "translation": "der (Pulli), (die) Pullis"
+        },
+        {
+            "id": "9",
+            "original": "Sweatshirt",
+            "translation": "das (Sweatshirt), (die) Sweatshirts"
+        },
+        {
+            "id": "10",
+            "original": "Skirt",
+            "translation": "der (Rock), (die) Röcke"
+        },
+        {
+            "id": "11",
+            "original": "Blouse",
+            "translation": "die (Bluse), (die) Blusen"
+        },
+        {
+            "id": "12",
+            "original": "Dress",
+            "translation": "das (Kleid), (die) Kleider"
+        },
+        {
+            "id": "13",
+            "original": "Suit",
+            "translation": "der (Anzug), (die) Anzüge"
+        },
+        {
+            "id": "14",
+            "original": "Tie",
+            "translation": "die (Krawatte), (die) Krawatten"
+        },
+        {
+            "id": "15",
+            "original": "Coat",
+            "translation": "der (Mantel), (die) Mäntel"
+        },
+        {
+            "id": "16",
+            "original": "Jacket",
+            "translation": "die (Jacke), (die) Jacken"
+        },
+        {
+            "id": "17",
+            "original": "Shoe",
+            "translation": "der (Schuh), (die) Schuhe"
+        },
+        {
+            "id": "18",
+            "original": "Boot",
+            "translation": "der (Stiefel), (die) Stiefel"
+        },
+        {
+            "id": "19",
+            "original": "Hat / Beanie",
+            "translation": "die (Mütze), (die) Mützen"
+        },
+        {
+            "id": "20",
+            "original": "Hat",
+            "translation": "der (Hut), (die) Hüte"
+        },
+        {
+            "id": "21",
+            "original": "Scarf",
+            "translation": "der (Schal), (die) Schals"
+        },
+        {
+            "id": "22",
+            "original": "Cloth / Scarf",
+            "translation": "das (Tuch), (die) Tücher"
+        },
+        {
+            "id": "23",
+            "original": "Bag / Pocket",
+            "translation": "die (Tasche), (die) Taschen"
+        },
+        {
+            "id": "24",
+            "original": "Clock / Watch",
+            "translation": "die (Uhr), (die) Uhren"
+        },
+        {
+            "id": "25",
+            "original": "Jewellery",
+            "translation": "der (Schmuck)"
+        },
+        {
+            "id": "26",
+            "original": "Clothes Shop",
+            "translation": "das (Kleidergeschäft), (die) Kleidergeschäfte"
+        },
+        {
+            "id": "27",
+            "original": "Department Store",
+            "translation": "das (Kaufhaus), (die) Kaufhäuser"
+        },
+        {
+            "id": "28",
+            "original": "Shop / Store",
+            "translation": "der (Laden), (die) Läden"
+        },
+        {
+            "id": "29",
+            "original": "Bookshop",
+            "translation": "der (Buchladen), (die) Buchläden"
+        },
+        {
+            "id": "30",
+            "original": "Second-Hand Shop",
+            "translation": "der (Secondhand-Laden), (die) Secondhand-Läden"
+        },
+        {
+            "id": "31",
+            "original": "Shop",
+            "translation": "der (Shop), (die) Shops"
+        },
+        {
+            "id": "32",
+            "original": "Checkout / Cash Register",
+            "translation": "die (Kasse), (die) Kassen"
+        },
+        {
+            "id": "33",
+            "original": "Fashion",
+            "translation": "die (Mode), (die) Moden"
+        },
+        {
+            "id": "34",
+            "original": "Product",
+            "translation": "das (Produkt), (die) Produkte"
+        },
+        {
+            "id": "35",
+            "original": "Paper",
+            "translation": "das (Papier), (die) Papiere"
+        },
+        {
+            "id": "36",
+            "original": "Ballpoint Pen",
+            "translation": "der (Kugelschreiber), (die) Kugelschreiber"
+        },
+        {
+            "id": "37",
+            "original": "Pencil",
+            "translation": "der (Bleistift), (die) Bleistifte"
+        },
+        {
+            "id": "38",
+            "original": "Magazine",
+            "translation": "die (Zeitschrift), (die) Zeitschriften"
+        },
+        {
+            "id": "39",
+            "original": "Cosmetics",
+            "translation": "die (Kosmetik)"
+        },
+        {
+            "id": "40",
+            "original": "Perfume",
+            "translation": "das (Parfüm), (die) Parfüms"
+        },
+        {
+            "id": "41",
+            "original": "Shower Gel",
+            "translation": "das (Duschgel), (die) Duschgels"
+        },
+        {
+            "id": "42",
+            "original": "Camera",
+            "translation": "die (Kamera), (die) Kameras"
+        },
+        {
+            "id": "43",
+            "original": "USB Stick",
+            "translation": "der (USB-Stick), (die) USB-Sticks"
+        },
+        {
+            "id": "44",
+            "original": "Household",
+            "translation": "der (Haushalt), (die) Haushalte"
+        },
+        {
+            "id": "45",
+            "original": "Basement / Lower Floor",
+            "translation": "das (Untergeschoss), (die) Untergeschosse"
+        },
+        {
+            "id": "46",
+            "original": "Opening Hours",
+            "translation": "die (Öffnungszeiten)"
+        },
+        {
+            "id": "47",
+            "original": "Sign",
+            "translation": "das (Schild), (die) Schilder"
+        },
+        {
+            "id": "48",
+            "original": "Capital City",
+            "translation": "die (Hauptstadt), (die) Hauptstädte"
+        },
+        {
+            "id": "49",
+            "original": "Design",
+            "translation": "das (Design), (die) Designs"
+        },
+        {
+            "id": "50",
+            "original": "Architecture",
+            "translation": "die (Architektur), (die) Architekturen"
+        },
+        {
+            "id": "51",
+            "original": "Souvenir",
+            "translation": "das (Souvenir), (die) Souvenirs"
+        },
+        {
+            "id": "52",
+            "original": "Invention",
+            "translation": "die (Erfindung), (die) Erfindungen"
+        },
+        {
+            "id": "53",
+            "original": "Thing / Matter",
+            "translation": "die (Sache), (die) Sachen"
+        },
+        {
+            "id": "54",
+            "original": "Courtyard / Farm",
+            "translation": "der (Hof), (die) Höfe"
+        },
+        {
+            "id": "55",
+            "original": "Young Person / Teenager",
+            "translation": "der/die (Jugendliche), (die) Jugendlichen"
+        }
+    ]
+}

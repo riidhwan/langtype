@@ -1,0 +1,278 @@
+{
+    "id": "netzwerk_neu_a1_k8_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 8: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 8.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Sweet / Candy",
+            "translation": "die (Süßigkeit), (die) Süßigkeiten"
+        },
+        {
+            "id": "2",
+            "original": "Age",
+            "translation": "das (Alter)"
+        },
+        {
+            "id": "3",
+            "original": "Height / Size",
+            "translation": "die (Größe), (die) Größen"
+        },
+        {
+            "id": "4",
+            "original": "Weight",
+            "translation": "das (Gewicht), (die) Gewichte"
+        },
+        {
+            "id": "5",
+            "original": "Body",
+            "translation": "der (Körper), (die) Körper"
+        },
+        {
+            "id": "6",
+            "original": "Head",
+            "translation": "der (Kopf), (die) Köpfe"
+        },
+        {
+            "id": "7",
+            "original": "Neck / Throat",
+            "translation": "der (Hals), (die) Hälse"
+        },
+        {
+            "id": "8",
+            "original": "Stomach / Belly",
+            "translation": "der (Bauch), (die) Bäuche"
+        },
+        {
+            "id": "9",
+            "original": "Back",
+            "translation": "der (Rücken), (die) Rücken"
+        },
+        {
+            "id": "10",
+            "original": "Arm",
+            "translation": "der (Arm), (die) Arme"
+        },
+        {
+            "id": "11",
+            "original": "Hand",
+            "translation": "die (Hand), (die) Hände"
+        },
+        {
+            "id": "12",
+            "original": "Finger",
+            "translation": "der (Finger), (die) Finger"
+        },
+        {
+            "id": "13",
+            "original": "Leg",
+            "translation": "das (Bein), (die) Beine"
+        },
+        {
+            "id": "14",
+            "original": "Knee",
+            "translation": "das (Knie), (die) Knie"
+        },
+        {
+            "id": "15",
+            "original": "Foot",
+            "translation": "der (Fuß), (die) Füße"
+        },
+        {
+            "id": "16",
+            "original": "Face",
+            "translation": "das (Gesicht), (die) Gesichter"
+        },
+        {
+            "id": "17",
+            "original": "Mouth",
+            "translation": "der (Mund), (die) Münder"
+        },
+        {
+            "id": "18",
+            "original": "Tooth",
+            "translation": "der (Zahn), (die) Zähne"
+        },
+        {
+            "id": "19",
+            "original": "Eye",
+            "translation": "das (Auge), (die) Augen"
+        },
+        {
+            "id": "20",
+            "original": "Ear",
+            "translation": "das (Ohr), (die) Ohren"
+        },
+        {
+            "id": "21",
+            "original": "Nose",
+            "translation": "die (Nase), (die) Nasen"
+        },
+        {
+            "id": "22",
+            "original": "Hair",
+            "translation": "das (Haar), (die) Haare"
+        },
+        {
+            "id": "23",
+            "original": "Accident",
+            "translation": "der (Unfall), (die) Unfälle"
+        },
+        {
+            "id": "24",
+            "original": "Injured Person",
+            "translation": "der/die (Verletzte), (die) Verletzten"
+        },
+        {
+            "id": "25",
+            "original": "Pain",
+            "translation": "der (Schmerz), (die) Schmerzen"
+        },
+        {
+            "id": "26",
+            "original": "Wound",
+            "translation": "die (Wunde), (die) Wunden"
+        },
+        {
+            "id": "27",
+            "original": "Bandage / Dressing",
+            "translation": "der (Verband), (die) Verbände"
+        },
+        {
+            "id": "28",
+            "original": "Plaster / Band-Aid",
+            "translation": "das (Pflaster), (die) Pflaster"
+        },
+        {
+            "id": "29",
+            "original": "Ointment / Cream",
+            "translation": "die (Salbe), (die) Salben"
+        },
+        {
+            "id": "30",
+            "original": "Prescription / Recipe",
+            "translation": "das (Rezept), (die) Rezepte"
+        },
+        {
+            "id": "31",
+            "original": "Pharmacy",
+            "translation": "die (Apotheke), (die) Apotheken"
+        },
+        {
+            "id": "32",
+            "original": "Doctor",
+            "translation": "der (Doktor), (die) Doktoren"
+        },
+        {
+            "id": "33",
+            "original": "Illness / Disease",
+            "translation": "die (Krankheit), (die) Krankheiten"
+        },
+        {
+            "id": "34",
+            "original": "Cold / Runny Nose",
+            "translation": "der (Schnupfen), (die) Schnupfen"
+        },
+        {
+            "id": "35",
+            "original": "Fever",
+            "translation": "das (Fieber)"
+        },
+        {
+            "id": "36",
+            "original": "Tablet / Pill",
+            "translation": "die (Tablette), (die) Tabletten"
+        },
+        {
+            "id": "37",
+            "original": "Juice",
+            "translation": "der (Saft), (die) Säfte"
+        },
+        {
+            "id": "38",
+            "original": "Drop / Drops",
+            "translation": "der (Tropfen), (die) Tropfen"
+        },
+        {
+            "id": "39",
+            "original": "Injection / Syringe",
+            "translation": "die (Spritze), (die) Spritzen"
+        },
+        {
+            "id": "40",
+            "original": "Home Remedy",
+            "translation": "das (Hausmittel), (die) Hausmittel"
+        },
+        {
+            "id": "41",
+            "original": "Check-Up / Check",
+            "translation": "die (Kontrolle), (die) Kontrollen"
+        },
+        {
+            "id": "42",
+            "original": "Emergency Doctor",
+            "translation": "der (Notarzt), (die) Notärzte"
+        },
+        {
+            "id": "43",
+            "original": "Physiotherapist",
+            "translation": "die (Physiotherapeutin), (die) Physiotherapeutinnen"
+        },
+        {
+            "id": "44",
+            "original": "Exercise",
+            "translation": "die (Übung), (die) Übungen"
+        },
+        {
+            "id": "45",
+            "original": "Male Nurse",
+            "translation": "der (Krankenpfleger), (die) Krankenpfleger"
+        },
+        {
+            "id": "46",
+            "original": "Lab Technician",
+            "translation": "die (Laborantin), (die) Laborantinnen"
+        },
+        {
+            "id": "47",
+            "original": "Blood",
+            "translation": "das (Blut)"
+        },
+        {
+            "id": "48",
+            "original": "Result",
+            "translation": "das (Ergebnis), (die) Ergebnisse"
+        },
+        {
+            "id": "49",
+            "original": "Board / Blackboard",
+            "translation": "die (Tafel), (die) Tafeln"
+        },
+        {
+            "id": "50",
+            "original": "Window",
+            "translation": "das (Fenster), (die) Fenster"
+        },
+        {
+            "id": "51",
+            "original": "Leisure Time / Free Time",
+            "translation": "die (Freizeit)"
+        },
+        {
+            "id": "52",
+            "original": "Experiment",
+            "translation": "das (Experiment), (die) Experimente"
+        },
+        {
+            "id": "53",
+            "original": "Tip / Hint",
+            "translation": "der (Tipp), (die) Tipps"
+        },
+        {
+            "id": "54",
+            "original": "App",
+            "translation": "die (App), (die) Apps"
+        }
+    ]
+}

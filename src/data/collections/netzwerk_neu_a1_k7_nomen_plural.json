@@ -1,0 +1,223 @@
+{
+    "id": "netzwerk_neu_a1_k7_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 7: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 7.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Working Day / Daily Routine",
+            "translation": "der (Arbeitsalltag), (die) Arbeitsalltage"
+        },
+        {
+            "id": "2",
+            "original": "Baker",
+            "translation": "der (Bäcker), (die) Bäcker"
+        },
+        {
+            "id": "3",
+            "original": "Dentist",
+            "translation": "der (Zahnarzt), (die) Zahnärzte"
+        },
+        {
+            "id": "4",
+            "original": "Caretaker / Janitor",
+            "translation": "der (Hausmeister), (die) Hausmeister"
+        },
+        {
+            "id": "5",
+            "original": "Employee / Colleague",
+            "translation": "der (Mitarbeiter), (die) Mitarbeiter"
+        },
+        {
+            "id": "6",
+            "original": "Employee / Colleague",
+            "translation": "die (Mitarbeiterin), (die) Mitarbeiterinnen"
+        },
+        {
+            "id": "7",
+            "original": "Internship",
+            "translation": "das (Praktikum), (die) Praktika"
+        },
+        {
+            "id": "8",
+            "original": "Report",
+            "translation": "der (Bericht), (die) Berichte"
+        },
+        {
+            "id": "9",
+            "original": "Presentation",
+            "translation": "die (Präsentation), (die) Präsentationen"
+        },
+        {
+            "id": "10",
+            "original": "Mistake / Error",
+            "translation": "der (Fehler), (die) Fehler"
+        },
+        {
+            "id": "11",
+            "original": "Break",
+            "translation": "die (Pause), (die) Pausen"
+        },
+        {
+            "id": "12",
+            "original": "Holiday / Vacation",
+            "translation": "der (Urlaub), (die) Urlaube"
+        },
+        {
+            "id": "13",
+            "original": "Media",
+            "translation": "die (Medien)"
+        },
+        {
+            "id": "14",
+            "original": "Printer",
+            "translation": "der (Drucker), (die) Drucker"
+        },
+        {
+            "id": "15",
+            "original": "Password",
+            "translation": "das (Passwort), (die) Passwörter"
+        },
+        {
+            "id": "16",
+            "original": "Blog",
+            "translation": "der (Blog), (die) Blogs"
+        },
+        {
+            "id": "17",
+            "original": "Battery / Rechargeable Battery",
+            "translation": "der (Akku), (die) Akkus"
+        },
+        {
+            "id": "18",
+            "original": "Wi-Fi",
+            "translation": "das (WLAN)"
+        },
+        {
+            "id": "19",
+            "original": "Network / Net",
+            "translation": "das (Netz), (die) Netze"
+        },
+        {
+            "id": "20",
+            "original": "Bank",
+            "translation": "die (Bank), (die) Banken"
+        },
+        {
+            "id": "21",
+            "original": "Machine / Vending Machine",
+            "translation": "der (Automat), (die) Automaten"
+        },
+        {
+            "id": "22",
+            "original": "Account Number",
+            "translation": "die (Kontonummer), (die) Kontonummern"
+        },
+        {
+            "id": "23",
+            "original": "Credit Card",
+            "translation": "die (Kreditkarte), (die) Kreditkarten"
+        },
+        {
+            "id": "24",
+            "original": "Letter",
+            "translation": "der (Brief), (die) Briefe"
+        },
+        {
+            "id": "25",
+            "original": "Post / Mail",
+            "translation": "die (Post)"
+        },
+        {
+            "id": "26",
+            "original": "Sender",
+            "translation": "der (Absender), (die) Absender"
+        },
+        {
+            "id": "27",
+            "original": "Recipient",
+            "translation": "der (Empfänger), (die) Empfänger"
+        },
+        {
+            "id": "28",
+            "original": "Signature",
+            "translation": "die (Unterschrift), (die) Unterschriften"
+        },
+        {
+            "id": "29",
+            "original": "Contact",
+            "translation": "der (Kontakt), (die) Kontakte"
+        },
+        {
+            "id": "30",
+            "original": "Song",
+            "translation": "das (Lied), (die) Lieder"
+        },
+        {
+            "id": "31",
+            "original": "Music Group / Band",
+            "translation": "die (Musikgruppe), (die) Musikgruppen"
+        },
+        {
+            "id": "32",
+            "original": "Speciality",
+            "translation": "die (Spezialität), (die) Spezialitäten"
+        },
+        {
+            "id": "33",
+            "original": "Small Talk",
+            "translation": "der (Small Talk), (die) Small Talks"
+        },
+        {
+            "id": "34",
+            "original": "Life",
+            "translation": "das (Leben), (die) Leben"
+        },
+        {
+            "id": "35",
+            "original": "Elevator / Lift",
+            "translation": "der (Aufzug), (die) Aufzüge"
+        },
+        {
+            "id": "36",
+            "original": "Politics",
+            "translation": "die (Politik)"
+        },
+        {
+            "id": "37",
+            "original": "Series / TV Show",
+            "translation": "die (Serie), (die) Serien"
+        },
+        {
+            "id": "38",
+            "original": "Religion",
+            "translation": "die (Religion), (die) Religionen"
+        },
+        {
+            "id": "39",
+            "original": "Adult",
+            "translation": "der/die (Erwachsene), (die) Erwachsene"
+        },
+        {
+            "id": "40",
+            "original": "Neighbour",
+            "translation": "der (Nachbar), (die) Nachbarn"
+        },
+        {
+            "id": "41",
+            "original": "Neighbour",
+            "translation": "die (Nachbarin), (die) Nachbarinnen"
+        },
+        {
+            "id": "42",
+            "original": "Package / Parcel",
+            "translation": "das (Paket), (die) Pakete"
+        },
+        {
+            "id": "43",
+            "original": "Language School / Language Institute",
+            "translation": "das (Sprachinstitut), (die) Sprachinstitute"
+        }
+    ]
+}

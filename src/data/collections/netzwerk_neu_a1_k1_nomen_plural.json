@@ -31,91 +31,106 @@
         },
         {
             "id": "6",
+            "original": "Switzerland",
+            "translation": "die (Schweiz)"
+        },
+        {
+            "id": "7",
+            "original": "Turkey",
+            "translation": "die (Türkei)"
+        },
+        {
+            "id": "8",
+            "original": "USA",
+            "translation": "die (USA)"
+        },
+        {
+            "id": "9",
             "original": "Country",
             "translation": "das (Land), (die) Länder"
         },
         {
-            "id": "7",
+            "id": "10",
             "original": "Language",
             "translation": "die (Sprache), (die) Sprachen"
         },
         {
-            "id": "8",
-            "original": "Number",
+            "id": "11",
+            "original": "Numeral",
             "translation": "die (Zahl), (die) Zahlen"
         },
         {
-            "id": "9",
+            "id": "12",
             "original": "Answer",
             "translation": "die (Antwort), (die) Antworten"
         },
         {
-            "id": "10",
+            "id": "13",
             "original": "Male Partner",
             "translation": "der (Partner), (die) Partner"
         },
         {
-            "id": "11",
+            "id": "14",
             "original": "Female Partner",
             "translation": "die (Partnerin), (die) Partnerinnen"
         },
         {
-            "id": "12",
+            "id": "15",
             "original": "Person",
             "translation": "die (Person), (die) Personen"
         },
         {
-            "id": "13",
+            "id": "16",
             "original": "Text",
             "translation": "der (Text), (die) Texte"
         },
         {
-            "id": "14",
+            "id": "17",
             "original": "Word",
             "translation": "das (Wort), (die) Wörter"
         },
         {
-            "id": "15",
+            "id": "18",
             "original": "Highway",
             "translation": "die (Autobahn), (die) Autobahnen"
         },
         {
-            "id": "16",
+            "id": "19",
             "original": "Bottle",
             "translation": "die (Flasche), (die) Flaschen"
         },
         {
-            "id": "17",
+            "id": "20",
             "original": "Kindergarten",
             "translation": "der (Kindergarten), (die) Kindergärten"
         },
         {
-            "id": "18",
+            "id": "21",
             "original": "Suitcase",
             "translation": "der (Koffer), (die) Koffer"
         },
         {
-            "id": "19",
+            "id": "22",
             "original": "Noodle",
             "translation": "die (Nudel), (die) Nudeln"
         },
         {
-            "id": "20",
-            "original": "Sick Man",
-            "translation": "der (Kranke), (die) Kranken"
+            "id": "23",
+            "original": "Sick Person",
+            "translation": "der (Kranke), (die) Kranke"
         },
         {
-            "id": "21",
+            "id": "24",
             "original": "Bread",
             "translation": "das (Brot), (die) Brote"
         },
         {
-            "id": "22",
+            "id": "25",
             "original": "Sausage",
             "translation": "das (Würstchen), (die) Würstchen"
         },
         {
-            "id": "23",
+            "id": "26",
             "original": "Towel",
             "translation": "das (Handtuch), (die) Handtücher"
         }

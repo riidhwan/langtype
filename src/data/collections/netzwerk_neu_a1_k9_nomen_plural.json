@@ -1,0 +1,293 @@
+{
+    "id": "netzwerk_neu_a1_k9_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 9: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 9.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "Apartment / Flat",
+            "translation": "die (Wohnung), (die) Wohnungen"
+        },
+        {
+            "id": "2",
+            "original": "High-rise Building",
+            "translation": "das (Hochhaus), (die) Hochhäuser"
+        },
+        {
+            "id": "3",
+            "original": "Shared Flat",
+            "translation": "die (WG), (die) WGs"
+        },
+        {
+            "id": "4",
+            "original": "Apartment",
+            "translation": "das (Apartment), (die) Apartments"
+        },
+        {
+            "id": "5",
+            "original": "Terraced House",
+            "translation": "das (Reihenhaus), (die) Reihenhäuser"
+        },
+        {
+            "id": "6",
+            "original": "Room / Space",
+            "translation": "der (Raum), (die) Räume"
+        },
+        {
+            "id": "7",
+            "original": "Bathroom",
+            "translation": "das (Bad), (die) Bäder"
+        },
+        {
+            "id": "8",
+            "original": "Shower",
+            "translation": "die (Dusche), (die) Duschen"
+        },
+        {
+            "id": "9",
+            "original": "Hallway / Corridor",
+            "translation": "der (Flur), (die) Flure"
+        },
+        {
+            "id": "10",
+            "original": "Kitchen",
+            "translation": "die (Küche), (die) Küchen"
+        },
+        {
+            "id": "11",
+            "original": "Bedroom",
+            "translation": "das (Schlafzimmer), (die) Schlafzimmer"
+        },
+        {
+            "id": "12",
+            "original": "Living Room",
+            "translation": "das (Wohnzimmer), (die) Wohnzimmer"
+        },
+        {
+            "id": "13",
+            "original": "Children's Room",
+            "translation": "das (Kinderzimmer), (die) Kinderzimmer"
+        },
+        {
+            "id": "14",
+            "original": "Balcony",
+            "translation": "der (Balkon), (die) Balkone"
+        },
+        {
+            "id": "15",
+            "original": "Terrace / Patio",
+            "translation": "die (Terrasse), (die) Terrassen"
+        },
+        {
+            "id": "16",
+            "original": "Garden",
+            "translation": "der (Garten), (die) Gärten"
+        },
+        {
+            "id": "17",
+            "original": "Staircase / Steps",
+            "translation": "die (Treppe), (die) Treppen"
+        },
+        {
+            "id": "18",
+            "original": "Door",
+            "translation": "die (Tür), (die) Türen"
+        },
+        {
+            "id": "19",
+            "original": "Ceiling / Blanket",
+            "translation": "die (Decke), (die) Decken"
+        },
+        {
+            "id": "20",
+            "original": "Ground Floor",
+            "translation": "das (Erdgeschoss), (die) Erdgeschosse"
+        },
+        {
+            "id": "21",
+            "original": "Floor / Storey",
+            "translation": "der (Stock), (die) Stockwerke"
+        },
+        {
+            "id": "22",
+            "original": "Location / Position",
+            "translation": "die (Lage), (die) Lagen"
+        },
+        {
+            "id": "23",
+            "original": "Proximity / Vicinity",
+            "translation": "die (Nähe)"
+        },
+        {
+            "id": "24",
+            "original": "Centre / Downtown",
+            "translation": "das (Zentrum), (die) Zentren"
+        },
+        {
+            "id": "25",
+            "original": "View / Glance",
+            "translation": "der (Blick), (die) Blicke"
+        },
+        {
+            "id": "26",
+            "original": "Furniture",
+            "translation": "die (Möbel)"
+        },
+        {
+            "id": "27",
+            "original": "Device / Appliance",
+            "translation": "das (Gerät), (die) Geräte"
+        },
+        {
+            "id": "28",
+            "original": "Lamp / Light",
+            "translation": "die (Lampe), (die) Lampen"
+        },
+        {
+            "id": "29",
+            "original": "Light",
+            "translation": "das (Licht), (die) Lichter"
+        },
+        {
+            "id": "30",
+            "original": "Plant",
+            "translation": "die (Pflanze), (die) Pflanzen"
+        },
+        {
+            "id": "31",
+            "original": "Shelf / Bookcase",
+            "translation": "das (Regal), (die) Regale"
+        },
+        {
+            "id": "32",
+            "original": "Wardrobe / Cabinet",
+            "translation": "der (Schrank), (die) Schränke"
+        },
+        {
+            "id": "33",
+            "original": "Desk",
+            "translation": "der (Schreibtisch), (die) Schreibtische"
+        },
+        {
+            "id": "34",
+            "original": "Armchair",
+            "translation": "der (Sessel), (die) Sessel"
+        },
+        {
+            "id": "35",
+            "original": "Sofa",
+            "translation": "das (Sofa), (die) Sofas"
+        },
+        {
+            "id": "36",
+            "original": "Chair",
+            "translation": "der (Stuhl), (die) Stühle"
+        },
+        {
+            "id": "37",
+            "original": "Table",
+            "translation": "der (Tisch), (die) Tische"
+        },
+        {
+            "id": "38",
+            "original": "Carpet / Rug",
+            "translation": "der (Teppich), (die) Teppiche"
+        },
+        {
+            "id": "39",
+            "original": "Bed",
+            "translation": "das (Bett), (die) Betten"
+        },
+        {
+            "id": "40",
+            "original": "Television",
+            "translation": "der (Fernseher), (die) Fernseher"
+        },
+        {
+            "id": "41",
+            "original": "Stove / Cooker",
+            "translation": "der (Herd), (die) Herde"
+        },
+        {
+            "id": "42",
+            "original": "Coffee Machine",
+            "translation": "die (Kaffeemaschine), (die) Kaffeemaschinen"
+        },
+        {
+            "id": "43",
+            "original": "Fridge / Refrigerator",
+            "translation": "der (Kühlschrank), (die) Kühlschränke"
+        },
+        {
+            "id": "44",
+            "original": "Dishwasher",
+            "translation": "die (Spülmaschine), (die) Spülmaschinen"
+        },
+        {
+            "id": "45",
+            "original": "Washing Machine",
+            "translation": "die (Waschmaschine), (die) Waschmaschinen"
+        },
+        {
+            "id": "46",
+            "original": "Advertisement / Notice",
+            "translation": "die (Anzeige), (die) Anzeigen"
+        },
+        {
+            "id": "47",
+            "original": "Contract",
+            "translation": "der (Vertrag), (die) Verträge"
+        },
+        {
+            "id": "48",
+            "original": "Rent",
+            "translation": "die (Miete), (die) Mieten"
+        },
+        {
+            "id": "49",
+            "original": "Landlord",
+            "translation": "der (Vermieter), (die) Vermieter"
+        },
+        {
+            "id": "50",
+            "original": "Move / Relocation",
+            "translation": "der (Umzug), (die) Umzüge"
+        },
+        {
+            "id": "51",
+            "original": "Celebration / Party",
+            "translation": "die (Feier), (die) Feiern"
+        },
+        {
+            "id": "52",
+            "original": "Flower",
+            "translation": "die (Blume), (die) Blumen"
+        },
+        {
+            "id": "53",
+            "original": "Tree",
+            "translation": "der (Baum), (die) Bäume"
+        },
+        {
+            "id": "54",
+            "original": "Wood",
+            "translation": "das (Holz), (die) Hölzer"
+        },
+        {
+            "id": "55",
+            "original": "Notebook / Exercise Book",
+            "translation": "das (Heft), (die) Hefte"
+        },
+        {
+            "id": "56",
+            "original": "Wish / Desire",
+            "translation": "der (Wunsch), (die) Wünsche"
+        },
+        {
+            "id": "57",
+            "original": "Congratulation",
+            "translation": "der (Glückwunsch), (die) Glückwünsche"
+        }
+    ]
+}
