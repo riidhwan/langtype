@@ -1,0 +1,292 @@
+{
+    "id": "netzwerk_neu_a1_k3_nomen_plural",
+    "title": "Netzwerk Neu A1 — Kapitel 3: Artikel + Plural",
+    "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 3.",
+    "challenges": [
+        {
+            "id": "1",
+            "original": "human",
+            "translation": "der (Mensch), (die) Menschen"
+        },
+        {
+            "id": "2",
+            "original": "House",
+            "translation": "das (Haus), (die) Häuser"
+        },
+        {
+            "id": "3",
+            "original": "Town Hall",
+            "translation": "das (Rathaus), (die) Rathäuser"
+        },
+        {
+            "id": "4",
+            "original": "Church",
+            "translation": "die (Kirche), (die) Kirchen"
+        },
+        {
+            "id": "5",
+            "original": "Tower",
+            "translation": "der (Turm), (die) Türme"
+        },
+        {
+            "id": "6",
+            "original": "Hotel",
+            "translation": "das (Hotel), (die) Hotels"
+        },
+        {
+            "id": "7",
+            "original": "Bridge",
+            "translation": "die (Brücke), (die) Brücken"
+        },
+        {
+            "id": "8",
+            "original": "Park",
+            "translation": "der (Park), (die) Parks"
+        },
+        {
+            "id": "9",
+            "original": "Market",
+            "translation": "der (Markt), (die) Märkte"
+        },
+        {
+            "id": "10",
+            "original": "Train Station",
+            "translation": "der (Bahnhof), (die) Bahnhöfe"
+        },
+        {
+            "id": "11",
+            "original": "Port",
+            "translation": "der (Hafen), (die) Häfen"
+        },
+        {
+            "id": "12",
+            "original": "Lake",
+            "translation": "der (See), (die) Seen"
+        },
+        {
+            "id": "13",
+            "original": "River",
+            "translation": "der (Fluss), (die) Flüsse"
+        },
+        {
+            "id": "14",
+            "original": "Sea",
+            "translation": "das (Meer), (die) Meere"
+        },
+        {
+            "id": "15",
+            "original": "Station",
+            "translation": "die (Station), (die) Stationen"
+        },
+        {
+            "id": "16",
+            "original": "Meter",
+            "translation": "der (Meter), (die) Meter"
+        },
+        {
+            "id": "17",
+            "original": "Bicycle",
+            "translation": "das (Fahrrad), (die) Fahrräder"
+        },
+        {
+            "id": "18",
+            "original": "Bus",
+            "translation": "der (Bus), (die) Busse"
+        },
+        {
+            "id": "19",
+            "original": "",
+            "translation": "die (Straßenbahn), (die) Straßenbahnen"
+        },
+        {
+            "id": "20",
+            "original": "Train",
+            "translation": "der (Zug), (die) Züge"
+        },
+        {
+            "id": "21",
+            "original": "Ship",
+            "translation": "das (Schiff), (die) Schiffe"
+        },
+        {
+            "id": "22",
+            "original": "Airplane",
+            "translation": "das (Flugzeug), (die) Flugzeuge"
+        },
+        {
+            "id": "23",
+            "original": "Ticket",
+            "translation": "die (Fahrkarte), (die) Fahrkarten"
+        },
+        {
+            "id": "24",
+            "original": "",
+            "translation": "der (Weg), (die) Wege"
+        },
+        {
+            "id": "25",
+            "original": "Middle",
+            "translation": "die (Mitte), (die) Mitten"
+        },
+        {
+            "id": "26",
+            "original": "Map / Plan / Blueprint",
+            "translation": "der (Plan), (die) Pläne"
+        },
+        {
+            "id": "27",
+            "original": "Start",
+            "translation": "der (Start), (die) Starts"
+        },
+        {
+            "id": "28",
+            "original": "Aim / Goal",
+            "translation": "das (Ziel), (die) Ziele"
+        },
+        {
+            "id": "29",
+            "original": "Celebration",
+            "translation": "das (Fest), (die) Feste"
+        },
+        {
+            "id": "30",
+            "original": "Ticket",
+            "translation": "das (Ticket), (die) Tickets"
+        },
+        {
+            "id": "31",
+            "original": "Visitor (Male)",
+            "translation": "der (Besucher), (die) Besucher"
+        },
+        {
+            "id": "32",
+            "original": "Visitor (Female)",
+            "translation": "die (Besucherin), (die) Besucherinnen"
+        },
+        {
+            "id": "33",
+            "original": "Guest",
+            "translation": "der (Gast), (die) Gäste"
+        },
+        {
+            "id": "34",
+            "original": "Concert",
+            "translation": "das (Konzert), (die) Konzerte"
+        },
+        {
+            "id": "35",
+            "original": "Orchestra",
+            "translation": "das (Orchester), (die) Orchester"
+        },
+        {
+            "id": "36",
+            "original": "Choir",
+            "translation": "der (Chor), (die) Chore"
+        },
+        {
+            "id": "37",
+            "original": "Concert Ticket",
+            "translation": "die (Konzertkarte), (die) Konzertkarten"
+        },
+        {
+            "id": "38",
+            "original": "Movie",
+            "translation": "der (Film), (die) Filme"
+        },
+        {
+            "id": "39",
+            "original": "Actor",
+            "translation": "der (Schauspieler), (die) Schauspieler"
+        },
+        {
+            "id": "40",
+            "original": "Actress",
+            "translation": "die (Schauspielerin), (die) Schauspielerinnen"
+        },
+        {
+            "id": "41",
+            "original": "Celebrity",
+            "translation": "der (Star), (die) Stare"
+        },
+        {
+            "id": "42",
+            "original": "Director (Male)",
+            "translation": "der (Regisseur), (die) Regisseure"
+        },
+        {
+            "id": "43",
+            "original": "Director (Female)",
+            "translation": "die (Regisseurin), (die) Regisseurinnen"
+        },
+        {
+            "id": "44",
+            "original": "Exhibition",
+            "translation": "die (Ausstellung), (die) Ausstellungen"
+        },
+        {
+            "id": "45",
+            "original": "Season",
+            "translation": "die (Jahreszeit), (die) Jahreszeiten"
+        },
+        {
+            "id": "46",
+            "original": "Spring",
+            "translation": "der (Frühling), (die) Frühlinge"
+        },
+        {
+            "id": "47",
+            "original": "Summer",
+            "translation": "der (Sommer), (die) Sommer"
+        },
+        {
+            "id": "48",
+            "original": "Autumn",
+            "translation": "der (Herbst), (die) Herbste"
+        },
+        {
+            "id": "49",
+            "original": "Winter",
+            "translation": "der (Winter), (die) Winter"
+        },
+        {
+            "id": "50",
+            "original": "Month",
+            "translation": "der (Monat), (die) Monate"
+        },
+        {
+            "id": "51",
+            "original": "January",
+            "translation": "der (Januar), (die) Januare"
+        },
+        {
+            "id": "52",
+            "original": "Group",
+            "translation": "die (Gruppe), (die) Gruppen"
+        },
+        {
+            "id": "53",
+            "original": "Picture",
+            "translation": "das (Bild), (die) Bilder"
+        },
+        {
+            "id": "54",
+            "original": "Billboard",
+            "translation": "das (Plakat), (die) Plakate"
+        },
+        {
+            "id": "55",
+            "original": "Luck / Happy / Fortune",
+            "translation": "das (Glück), (die) Glücke"
+        },
+        {
+            "id": "56",
+            "original": "World",
+            "translation": "die (Welt), (die) Welten"
+        },
+        {
+            "id": "57",
+            "original": "Answer / Solution",
+            "translation": "die (Lösung), (die) Lösungen"
+        }
+    ]
+}

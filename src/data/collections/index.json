@@ -47,21 +47,27 @@
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
-        "id": "netzwerk_neu_a1_k2_nomen_plural",
-        "title": "Netzwerk Neu A1 — Kapitel 2: Artikel + Plural",
-        "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 2.",
-        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
-    },
-    {
         "id": "netzwerk_neu_a1_k2_artikel",
         "title": "Netzwerk Neu A1 — Kapitel 2: Artikel",
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 2.",
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
+        "id": "netzwerk_neu_a1_k2_nomen_plural",
+        "title": "Netzwerk Neu A1 — Kapitel 2: Artikel + Plural",
+        "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 2.",
+        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
+    },
+    {
         "id": "netzwerk_neu_a1_k3_artikel",
         "title": "Netzwerk Neu A1 — Kapitel 3: Artikel",
         "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 3.",
+        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
+    },
+    {
+        "id": "netzwerk_neu_a1_k3_nomen_plural",
+        "title": "Netzwerk Neu A1 — Kapitel 3: Artikel + Plural",
+        "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 3.",
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
