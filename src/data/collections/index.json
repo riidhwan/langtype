@@ -35,21 +35,9 @@
         "description": "Read the German context and type the correct dative pronoun (mir, dir, ihm, ihr, uns, euch, ihnen, Ihnen)."
     },
     {
-        "id": "netzwerk_neu_a1_k1_artikel",
-        "title": "Netzwerk Neu A1 — Kapitel 1: Artikel",
-        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 1.",
-        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
-    },
-    {
         "id": "netzwerk_neu_a1_k1_nomen_plural",
         "title": "Netzwerk Neu A1 — Kapitel 1: Artikel + Plural",
         "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 1.",
-        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
-    },
-    {
-        "id": "netzwerk_neu_a1_k2_artikel",
-        "title": "Netzwerk Neu A1 — Kapitel 2: Artikel",
-        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 2.",
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
@@ -59,21 +47,9 @@
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
-        "id": "netzwerk_neu_a1_k3_artikel",
-        "title": "Netzwerk Neu A1 — Kapitel 3: Artikel",
-        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 3.",
-        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
-    },
-    {
         "id": "netzwerk_neu_a1_k3_nomen_plural",
         "title": "Netzwerk Neu A1 — Kapitel 3: Artikel + Plural",
         "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 3.",
-        "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
-    },
-    {
-        "id": "netzwerk_neu_a1_k4_artikel",
-        "title": "Netzwerk Neu A1 — Kapitel 4: Artikel",
-        "description": "Type the article (der/die/das) for each noun from Netzwerk Neu A1, Kapitel 4.",
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
     },
     {
