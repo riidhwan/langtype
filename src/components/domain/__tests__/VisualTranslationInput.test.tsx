@@ -164,6 +164,119 @@ describe('VisualTranslationInput', () => {
         })
     })
 
+    describe('free input mode', () => {
+        const freeProps = { ...defaultProps, freeInput: true }
+
+        it('does not render char slots', () => {
+            render(<VisualTranslationInput {...freeProps} targetText="Hallo" />)
+            expect(screen.queryAllByTestId('char-slot')).toHaveLength(0)
+        })
+
+        it('renders pre-filled indices as static text upfront', () => {
+            render(<VisualTranslationInput
+                {...freeProps}
+                targetText="der Name"
+                preFilledIndices={new Set([4, 5, 6, 7])}
+            />)
+            expect(screen.getByText('Name')).toBeInTheDocument()
+        })
+
+        it('shows typed characters in the gap input', () => {
+            const onChange = vi.fn()
+            render(<VisualTranslationInput
+                {...freeProps}
+                targetText="der Name"
+                preFilledIndices={new Set([4, 5, 6, 7])}
+                value=""
+                onChange={onChange}
+            />)
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'der' } })
+            expect(input).toHaveValue('der')
+            expect(onChange).toHaveBeenCalledWith('der')
+            expect(screen.getByText('Name')).toBeInTheDocument()
+        })
+
+        it('Enter on non-last gap moves focus to next gap', () => {
+            // "Hallo Welt": gap("Hallo"), prefilled(" "), gap("Welt") — 2 gap inputs
+            render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo Welt"
+            />)
+            const inputs = screen.getAllByRole('textbox')
+            expect(inputs).toHaveLength(2)
+            fireEvent.keyDown(inputs[0], { key: 'Enter' })
+            expect(inputs[1]).toHaveFocus()
+        })
+
+        it('Enter on last gap calls onSubmit', () => {
+            const handleSubmit = vi.fn()
+            render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                onSubmit={handleSubmit}
+            />)
+            const input = screen.getByRole('textbox')
+            fireEvent.keyDown(input, { key: 'Enter' })
+            expect(handleSubmit).toHaveBeenCalled()
+        })
+
+        it('highlights the active gap with orange outline while typing', () => {
+            const { container } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value=""
+                status="typing"
+            />)
+            const gap = container.querySelector('.border-b-2')
+            expect(gap).toHaveClass('outline-[var(--accent)]')
+        })
+
+        it('keeps orange outline on the last gap after all characters are typed', () => {
+            const { container } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value="Hallo"
+                status="typing"
+            />)
+            const gap = container.querySelector('.border-b-2')
+            expect(gap).toHaveClass('outline-[var(--accent)]')
+        })
+
+        it('does not show orange outline after submission', () => {
+            const { container } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value="Hallo"
+                status="completed"
+            />)
+            const gap = container.querySelector('.border-b-2')
+            expect(gap).not.toHaveClass('outline-[var(--accent)]')
+        })
+
+        it('applies correct colour to gap on completed answer', () => {
+            const { container } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value="Hallo"
+                status="completed"
+            />)
+            const gap = container.querySelector('.border-b-2')
+            expect(gap).toHaveClass('text-[var(--correct)]')
+        })
+
+        it('applies incorrect colour to gap on submitted wrong answer', () => {
+            const { container } = render(<VisualTranslationInput
+                {...freeProps}
+                targetText="Hallo"
+                value="Helli"
+                status="submitted"
+            />)
+            const gap = container.querySelector('.border-b-2')
+            expect(gap).toHaveClass('text-[var(--incorrect)]')
+        })
+    })
+
     it('marks pre-filled characters as success when submitted even if not typed', () => {
         const preFilledIndices = new Set([0, 1, 2]) // "der"
         render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" status="submitted" />)

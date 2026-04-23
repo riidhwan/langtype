@@ -9,5 +9,6 @@ export interface Collection {
     title: string
     description?: string
     tags?: string[]
+    freeInput?: boolean
     challenges?: Challenge[]
 }

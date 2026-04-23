@@ -11,7 +11,7 @@ const collections = import.meta.glob<{ default: Collection }>([
 export async function getCollections(): Promise<Collection[]> {
     const all = indexData as Collection[]
     if (import.meta.env.DEV) {
-        return [...all, { id: 'dev_test', title: '[DEV] Test Collection', description: 'Small set for testing features in development.' }]
+        return [...all, { id: 'dev_test', title: '[DEV] Test Collection', description: 'Small set for testing features in development.', freeInput: true }]
     }
     return all
 }

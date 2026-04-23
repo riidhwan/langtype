@@ -214,6 +214,7 @@ export function CollectionGamePage() {
             <TypingGame
                 key={`${mode}-${retryCount}`}
                 challenges={challenges}
+                freeInput={collection.freeInput}
                 initialQuestionId={questionId ? String(questionId) : undefined}
                 onQuestionChange={(newId) => {
                     const numericId = Number(newId)

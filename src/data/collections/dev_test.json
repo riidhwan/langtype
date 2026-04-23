@@ -2,6 +2,7 @@
     "id": "dev_test",
     "title": "[DEV] Test Collection",
     "description": "Small set for testing features in development.",
+    "freeInput": true,
     "challenges": [
         {
             "id": "1",

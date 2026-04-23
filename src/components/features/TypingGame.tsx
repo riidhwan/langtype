@@ -23,11 +23,12 @@ interface Props {
     onQuestionChange?: (questionId: string) => void
     onFinished?: () => void
     srsContext?: SRSContext
+    freeInput?: boolean
 }
 
 const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
 
-export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext }: Props) {
+export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext, freeInput }: Props) {
     const initialIndex = useMemo(() => {
         if (!initialQuestionId) return 0
         const idx = challenges.findIndex((c) => c.id === initialQuestionId)
@@ -176,6 +177,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                     targetText={currentSentence}
                     preFilledIndices={preFilledIndices}
                     status={status}
+                    freeInput={freeInput}
                 />
 
                 <p className="text-center text-[12px] text-muted-foreground font-mono">

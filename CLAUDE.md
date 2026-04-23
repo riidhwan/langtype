@@ -223,7 +223,7 @@ Use `IconSearch` and `IconChevronRight` from `src/components/ui/icons.tsx`. No i
 
 **Tests**: Co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests. Write tests before or alongside implementation — do not consider a task complete until `npm run test:coverage` has been run and any meaningful gaps addressed. Mock patterns: use `vi.hoisted()` for mock values referenced inside `vi.mock()` factories; wrap real module functions in `vi.fn()` when per-test overrides are needed (`vi.mock('@/lib/foo', async (orig) => { const a = await orig(); return { ...a, fn: vi.fn(a.fn) } })`).
 
-**After every implementation, always consider whether tests are needed — do not wait for the user to ask.** Write tests when the new code has non-obvious threshold values, branching logic, or derived state that could silently regress (e.g. slot-size tiers keyed on word length, tag filter predicates). If unsure, ask.
+**After every implementation, always consider whether unit tests and/or E2E tests are needed — do not wait for the user to ask.** Write unit tests when the new code has non-obvious threshold values, branching logic, or derived state that could silently regress. Write E2E tests when the change affects visual layout, positioning, or CSS properties that jsdom cannot verify. If unsure, ask.
 
 **Route component tests** — export the component from the route file (e.g. `export function Home()`), then render it directly. Standard mock setup:
 
@@ -257,6 +257,49 @@ vi.mock('@/store/useSRSStore', () => ({
 See `src/routes/__tests__/index.test.tsx` and `src/routes/__tests__/collections.$id.test.tsx` for complete examples.
 
 **Bug fixes must include a regression test.** After fixing a bug, always add a test that would have caught it. The test documents the invariant and prevents the same issue from silently reappearing through future refactors.
+
+**E2E tests** — live in `e2e/`, run with `npm run test:e2e`. Use Playwright + Chromium only (consistent screenshot rendering). Update baselines with `npx playwright test --update-snapshots`; commit new PNGs alongside the code change. Baseline files live in `e2e/*.spec.ts-snapshots/`.
+
+*When to write an E2E test over a unit test:* visual layout (element positions, alignment), computed CSS that jsdom ignores, pixel-level screenshot regression. jsdom does not compute layout — class-name assertions cannot catch alignment bugs.
+
+*Standard test setup:*
+
+```typescript
+import { test, expect } from '@playwright/test'
+
+test.beforeEach(async ({ page }) => {
+    // Set a known theme before the page loads (prevents FOUC from interfering)
+    await page.addInitScript(() => localStorage.setItem('lt_theme', 'warm'))
+    await page.goto('/collections/dev_test?mode=normal&questionId=4')
+    await page.waitForSelector('[data-testid="visual-translation-input"]')
+    // Wait for web fonts before measuring or screenshotting
+    await page.evaluate(() => document.fonts.ready)
+})
+
+// Bounding-box alignment assertion
+test('elements align vertically', async ({ page }) => {
+    const a = await page.locator('[data-testid="..."] input').first().boundingBox()
+    const b = await page.locator('[data-testid="..."] span').first().boundingBox()
+    expect(Math.abs(a!.y - b!.y)).toBeLessThan(2)
+})
+
+// Screenshot regression
+test('renders correctly', async ({ page }) => {
+    await expect(page.locator('[data-testid="..."]')).toHaveScreenshot('name.png')
+})
+```
+
+*Key gotchas:*
+- `reuseExistingServer: !process.env.CI` — if a dev server is already running when tests start, Playwright reuses it (including any stale build). Kill the server before running tests after code changes, or Playwright will start a fresh one on the next run.
+- `@playwright/test` is the test runner; `playwright` (also installed) is the browser library — they are separate packages.
+- Prefer `data-testid` selectors over CSS class selectors (classes change with styling).
+
+*`data-testid` inventory — keep this updated when adding or removing attributes:*
+
+| Attribute | Element | Component |
+|---|---|---|
+| `visual-translation-input` | root `div` | `VisualTranslationInput` |
+| `char-slot` | per-character `div` | `VisualTranslationInput` (slot mode only) |
 
 **Git**: Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`. Never run `git commit` or `git push` unless explicitly asked — always wait for the user to request it.
 
