@@ -47,3 +47,5 @@ dist/
 
 src/data/collections/raw/*
 scripts/*
+
+.vscode
