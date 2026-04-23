@@ -165,7 +165,7 @@ export function VisualTranslationInput({
         >
             {freeInput ? (
                 /* Free input mode — pre-filled shown as static text, gaps as individual inputs */
-                <div className="flex flex-wrap justify-center gap-x-1 gap-y-2">
+                <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
                     {(() => {
                         let gapIdx = 0
                         return segments.map((seg, i) => {
