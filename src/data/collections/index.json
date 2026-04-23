@@ -105,5 +105,11 @@
         "title": "Netzwerk Neu A1 — Kapitel 12: Artikel + Plural",
         "description": "Type the article (der/die/das) and the plural form for each noun from Netzwerk Neu A1, Kapitel 12.",
         "tags": ["Netzwerk Neu", "Netzwerk Neu A1", "A1"]
+    },
+    {
+        "id": "german_verbs_top50",
+        "title": "Top 50 German Verbs — Conjugation & Perfekt",
+        "description": "Practice present tense conjugations and Perfekt forms for the 50 most common German verbs.",
+        "tags": ["A1", "A2", "Verbs"]
     }
 ]

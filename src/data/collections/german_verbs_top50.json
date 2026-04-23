@@ -1,0 +1,1758 @@
+{
+    "id": "german_verbs_top50",
+    "title": "Top 50 German Verbs — Conjugation & Perfekt",
+    "description": "Practice present tense conjugations and Perfekt forms for the 50 most common German verbs.",
+    "freeInput": true,
+    "challenges": [
+        {
+            "id": "1",
+            "original": "sein",
+            "translation": "(ich) bin"
+        },
+        {
+            "id": "2",
+            "original": "sein",
+            "translation": "(du) bist"
+        },
+        {
+            "id": "3",
+            "original": "sein",
+            "translation": "(er) ist"
+        },
+        {
+            "id": "4",
+            "original": "sein",
+            "translation": "(wir) sind"
+        },
+        {
+            "id": "5",
+            "original": "sein",
+            "translation": "(ihr) seid"
+        },
+        {
+            "id": "6",
+            "original": "sein",
+            "translation": "(sie) sind"
+        },
+        {
+            "id": "7",
+            "original": "sein",
+            "translation": "(ich) (bin) gewesen"
+        },
+        {
+            "id": "8",
+            "original": "haben",
+            "translation": "(ich) habe"
+        },
+        {
+            "id": "9",
+            "original": "haben",
+            "translation": "(du) hast"
+        },
+        {
+            "id": "10",
+            "original": "haben",
+            "translation": "(er) hat"
+        },
+        {
+            "id": "11",
+            "original": "haben",
+            "translation": "(wir) haben"
+        },
+        {
+            "id": "12",
+            "original": "haben",
+            "translation": "(ihr) habt"
+        },
+        {
+            "id": "13",
+            "original": "haben",
+            "translation": "(sie) haben"
+        },
+        {
+            "id": "14",
+            "original": "haben",
+            "translation": "(ich) (habe) gehabt"
+        },
+        {
+            "id": "15",
+            "original": "werden",
+            "translation": "(ich) werde"
+        },
+        {
+            "id": "16",
+            "original": "werden",
+            "translation": "(du) wirst"
+        },
+        {
+            "id": "17",
+            "original": "werden",
+            "translation": "(er) wird"
+        },
+        {
+            "id": "18",
+            "original": "werden",
+            "translation": "(wir) werden"
+        },
+        {
+            "id": "19",
+            "original": "werden",
+            "translation": "(ihr) werdet"
+        },
+        {
+            "id": "20",
+            "original": "werden",
+            "translation": "(sie) werden"
+        },
+        {
+            "id": "21",
+            "original": "werden",
+            "translation": "(ich) (bin) geworden"
+        },
+        {
+            "id": "22",
+            "original": "können",
+            "translation": "(ich) kann"
+        },
+        {
+            "id": "23",
+            "original": "können",
+            "translation": "(du) kannst"
+        },
+        {
+            "id": "24",
+            "original": "können",
+            "translation": "(er) kann"
+        },
+        {
+            "id": "25",
+            "original": "können",
+            "translation": "(wir) können"
+        },
+        {
+            "id": "26",
+            "original": "können",
+            "translation": "(ihr) könnt"
+        },
+        {
+            "id": "27",
+            "original": "können",
+            "translation": "(sie) können"
+        },
+        {
+            "id": "28",
+            "original": "können",
+            "translation": "(ich) (habe) gekonnt"
+        },
+        {
+            "id": "29",
+            "original": "müssen",
+            "translation": "(ich) muss"
+        },
+        {
+            "id": "30",
+            "original": "müssen",
+            "translation": "(du) musst"
+        },
+        {
+            "id": "31",
+            "original": "müssen",
+            "translation": "(er) muss"
+        },
+        {
+            "id": "32",
+            "original": "müssen",
+            "translation": "(wir) müssen"
+        },
+        {
+            "id": "33",
+            "original": "müssen",
+            "translation": "(ihr) müsst"
+        },
+        {
+            "id": "34",
+            "original": "müssen",
+            "translation": "(sie) müssen"
+        },
+        {
+            "id": "35",
+            "original": "müssen",
+            "translation": "(ich) (habe) gemusst"
+        },
+        {
+            "id": "36",
+            "original": "wollen",
+            "translation": "(ich) will"
+        },
+        {
+            "id": "37",
+            "original": "wollen",
+            "translation": "(du) willst"
+        },
+        {
+            "id": "38",
+            "original": "wollen",
+            "translation": "(er) will"
+        },
+        {
+            "id": "39",
+            "original": "wollen",
+            "translation": "(wir) wollen"
+        },
+        {
+            "id": "40",
+            "original": "wollen",
+            "translation": "(ihr) wollt"
+        },
+        {
+            "id": "41",
+            "original": "wollen",
+            "translation": "(sie) wollen"
+        },
+        {
+            "id": "42",
+            "original": "wollen",
+            "translation": "(ich) (habe) gewollt"
+        },
+        {
+            "id": "43",
+            "original": "sollen",
+            "translation": "(ich) soll"
+        },
+        {
+            "id": "44",
+            "original": "sollen",
+            "translation": "(du) sollst"
+        },
+        {
+            "id": "45",
+            "original": "sollen",
+            "translation": "(er) soll"
+        },
+        {
+            "id": "46",
+            "original": "sollen",
+            "translation": "(wir) sollen"
+        },
+        {
+            "id": "47",
+            "original": "sollen",
+            "translation": "(ihr) sollt"
+        },
+        {
+            "id": "48",
+            "original": "sollen",
+            "translation": "(sie) sollen"
+        },
+        {
+            "id": "49",
+            "original": "sollen",
+            "translation": "(ich) (habe) gesollt"
+        },
+        {
+            "id": "50",
+            "original": "dürfen",
+            "translation": "(ich) darf"
+        },
+        {
+            "id": "51",
+            "original": "dürfen",
+            "translation": "(du) darfst"
+        },
+        {
+            "id": "52",
+            "original": "dürfen",
+            "translation": "(er) darf"
+        },
+        {
+            "id": "53",
+            "original": "dürfen",
+            "translation": "(wir) dürfen"
+        },
+        {
+            "id": "54",
+            "original": "dürfen",
+            "translation": "(ihr) dürft"
+        },
+        {
+            "id": "55",
+            "original": "dürfen",
+            "translation": "(sie) dürfen"
+        },
+        {
+            "id": "56",
+            "original": "dürfen",
+            "translation": "(ich) (habe) gedurft"
+        },
+        {
+            "id": "57",
+            "original": "mögen",
+            "translation": "(ich) mag"
+        },
+        {
+            "id": "58",
+            "original": "mögen",
+            "translation": "(du) magst"
+        },
+        {
+            "id": "59",
+            "original": "mögen",
+            "translation": "(er) mag"
+        },
+        {
+            "id": "60",
+            "original": "mögen",
+            "translation": "(wir) mögen"
+        },
+        {
+            "id": "61",
+            "original": "mögen",
+            "translation": "(ihr) mögt"
+        },
+        {
+            "id": "62",
+            "original": "mögen",
+            "translation": "(sie) mögen"
+        },
+        {
+            "id": "63",
+            "original": "mögen",
+            "translation": "(ich) (habe) gemocht"
+        },
+        {
+            "id": "64",
+            "original": "machen",
+            "translation": "(ich) mache"
+        },
+        {
+            "id": "65",
+            "original": "machen",
+            "translation": "(du) machst"
+        },
+        {
+            "id": "66",
+            "original": "machen",
+            "translation": "(er) macht"
+        },
+        {
+            "id": "67",
+            "original": "machen",
+            "translation": "(wir) machen"
+        },
+        {
+            "id": "68",
+            "original": "machen",
+            "translation": "(ihr) macht"
+        },
+        {
+            "id": "69",
+            "original": "machen",
+            "translation": "(sie) machen"
+        },
+        {
+            "id": "70",
+            "original": "machen",
+            "translation": "(ich) (habe) gemacht"
+        },
+        {
+            "id": "71",
+            "original": "gehen",
+            "translation": "(ich) gehe"
+        },
+        {
+            "id": "72",
+            "original": "gehen",
+            "translation": "(du) gehst"
+        },
+        {
+            "id": "73",
+            "original": "gehen",
+            "translation": "(er) geht"
+        },
+        {
+            "id": "74",
+            "original": "gehen",
+            "translation": "(wir) gehen"
+        },
+        {
+            "id": "75",
+            "original": "gehen",
+            "translation": "(ihr) geht"
+        },
+        {
+            "id": "76",
+            "original": "gehen",
+            "translation": "(sie) gehen"
+        },
+        {
+            "id": "77",
+            "original": "gehen",
+            "translation": "(ich) (bin) gegangen"
+        },
+        {
+            "id": "78",
+            "original": "kommen",
+            "translation": "(ich) komme"
+        },
+        {
+            "id": "79",
+            "original": "kommen",
+            "translation": "(du) kommst"
+        },
+        {
+            "id": "80",
+            "original": "kommen",
+            "translation": "(er) kommt"
+        },
+        {
+            "id": "81",
+            "original": "kommen",
+            "translation": "(wir) kommen"
+        },
+        {
+            "id": "82",
+            "original": "kommen",
+            "translation": "(ihr) kommt"
+        },
+        {
+            "id": "83",
+            "original": "kommen",
+            "translation": "(sie) kommen"
+        },
+        {
+            "id": "84",
+            "original": "kommen",
+            "translation": "(ich) (bin) gekommen"
+        },
+        {
+            "id": "85",
+            "original": "sagen",
+            "translation": "(ich) sage"
+        },
+        {
+            "id": "86",
+            "original": "sagen",
+            "translation": "(du) sagst"
+        },
+        {
+            "id": "87",
+            "original": "sagen",
+            "translation": "(er) sagt"
+        },
+        {
+            "id": "88",
+            "original": "sagen",
+            "translation": "(wir) sagen"
+        },
+        {
+            "id": "89",
+            "original": "sagen",
+            "translation": "(ihr) sagt"
+        },
+        {
+            "id": "90",
+            "original": "sagen",
+            "translation": "(sie) sagen"
+        },
+        {
+            "id": "91",
+            "original": "sagen",
+            "translation": "(ich) (habe) gesagt"
+        },
+        {
+            "id": "92",
+            "original": "sehen",
+            "translation": "(ich) sehe"
+        },
+        {
+            "id": "93",
+            "original": "sehen",
+            "translation": "(du) siehst"
+        },
+        {
+            "id": "94",
+            "original": "sehen",
+            "translation": "(er) sieht"
+        },
+        {
+            "id": "95",
+            "original": "sehen",
+            "translation": "(wir) sehen"
+        },
+        {
+            "id": "96",
+            "original": "sehen",
+            "translation": "(ihr) seht"
+        },
+        {
+            "id": "97",
+            "original": "sehen",
+            "translation": "(sie) sehen"
+        },
+        {
+            "id": "98",
+            "original": "sehen",
+            "translation": "(ich) (habe) gesehen"
+        },
+        {
+            "id": "99",
+            "original": "geben",
+            "translation": "(ich) gebe"
+        },
+        {
+            "id": "100",
+            "original": "geben",
+            "translation": "(du) gibst"
+        },
+        {
+            "id": "101",
+            "original": "geben",
+            "translation": "(er) gibt"
+        },
+        {
+            "id": "102",
+            "original": "geben",
+            "translation": "(wir) geben"
+        },
+        {
+            "id": "103",
+            "original": "geben",
+            "translation": "(ihr) gebt"
+        },
+        {
+            "id": "104",
+            "original": "geben",
+            "translation": "(sie) geben"
+        },
+        {
+            "id": "105",
+            "original": "geben",
+            "translation": "(ich) (habe) gegeben"
+        },
+        {
+            "id": "106",
+            "original": "nehmen",
+            "translation": "(ich) nehme"
+        },
+        {
+            "id": "107",
+            "original": "nehmen",
+            "translation": "(du) nimmst"
+        },
+        {
+            "id": "108",
+            "original": "nehmen",
+            "translation": "(er) nimmt"
+        },
+        {
+            "id": "109",
+            "original": "nehmen",
+            "translation": "(wir) nehmen"
+        },
+        {
+            "id": "110",
+            "original": "nehmen",
+            "translation": "(ihr) nehmt"
+        },
+        {
+            "id": "111",
+            "original": "nehmen",
+            "translation": "(sie) nehmen"
+        },
+        {
+            "id": "112",
+            "original": "nehmen",
+            "translation": "(ich) (habe) genommen"
+        },
+        {
+            "id": "113",
+            "original": "wissen",
+            "translation": "(ich) weiß"
+        },
+        {
+            "id": "114",
+            "original": "wissen",
+            "translation": "(du) weißt"
+        },
+        {
+            "id": "115",
+            "original": "wissen",
+            "translation": "(er) weiß"
+        },
+        {
+            "id": "116",
+            "original": "wissen",
+            "translation": "(wir) wissen"
+        },
+        {
+            "id": "117",
+            "original": "wissen",
+            "translation": "(ihr) wisst"
+        },
+        {
+            "id": "118",
+            "original": "wissen",
+            "translation": "(sie) wissen"
+        },
+        {
+            "id": "119",
+            "original": "wissen",
+            "translation": "(ich) (habe) gewusst"
+        },
+        {
+            "id": "120",
+            "original": "stehen",
+            "translation": "(ich) stehe"
+        },
+        {
+            "id": "121",
+            "original": "stehen",
+            "translation": "(du) stehst"
+        },
+        {
+            "id": "122",
+            "original": "stehen",
+            "translation": "(er) steht"
+        },
+        {
+            "id": "123",
+            "original": "stehen",
+            "translation": "(wir) stehen"
+        },
+        {
+            "id": "124",
+            "original": "stehen",
+            "translation": "(ihr) steht"
+        },
+        {
+            "id": "125",
+            "original": "stehen",
+            "translation": "(sie) stehen"
+        },
+        {
+            "id": "126",
+            "original": "stehen",
+            "translation": "(ich) (habe) gestanden"
+        },
+        {
+            "id": "127",
+            "original": "finden",
+            "translation": "(ich) finde"
+        },
+        {
+            "id": "128",
+            "original": "finden",
+            "translation": "(du) findest"
+        },
+        {
+            "id": "129",
+            "original": "finden",
+            "translation": "(er) findet"
+        },
+        {
+            "id": "130",
+            "original": "finden",
+            "translation": "(wir) finden"
+        },
+        {
+            "id": "131",
+            "original": "finden",
+            "translation": "(ihr) findet"
+        },
+        {
+            "id": "132",
+            "original": "finden",
+            "translation": "(sie) finden"
+        },
+        {
+            "id": "133",
+            "original": "finden",
+            "translation": "(ich) (habe) gefunden"
+        },
+        {
+            "id": "134",
+            "original": "denken",
+            "translation": "(ich) denke"
+        },
+        {
+            "id": "135",
+            "original": "denken",
+            "translation": "(du) denkst"
+        },
+        {
+            "id": "136",
+            "original": "denken",
+            "translation": "(er) denkt"
+        },
+        {
+            "id": "137",
+            "original": "denken",
+            "translation": "(wir) denken"
+        },
+        {
+            "id": "138",
+            "original": "denken",
+            "translation": "(ihr) denkt"
+        },
+        {
+            "id": "139",
+            "original": "denken",
+            "translation": "(sie) denken"
+        },
+        {
+            "id": "140",
+            "original": "denken",
+            "translation": "(ich) (habe) gedacht"
+        },
+        {
+            "id": "141",
+            "original": "lassen",
+            "translation": "(ich) lasse"
+        },
+        {
+            "id": "142",
+            "original": "lassen",
+            "translation": "(du) lässt"
+        },
+        {
+            "id": "143",
+            "original": "lassen",
+            "translation": "(er) lässt"
+        },
+        {
+            "id": "144",
+            "original": "lassen",
+            "translation": "(wir) lassen"
+        },
+        {
+            "id": "145",
+            "original": "lassen",
+            "translation": "(ihr) lasst"
+        },
+        {
+            "id": "146",
+            "original": "lassen",
+            "translation": "(sie) lassen"
+        },
+        {
+            "id": "147",
+            "original": "lassen",
+            "translation": "(ich) (habe) gelassen"
+        },
+        {
+            "id": "148",
+            "original": "bleiben",
+            "translation": "(ich) bleibe"
+        },
+        {
+            "id": "149",
+            "original": "bleiben",
+            "translation": "(du) bleibst"
+        },
+        {
+            "id": "150",
+            "original": "bleiben",
+            "translation": "(er) bleibt"
+        },
+        {
+            "id": "151",
+            "original": "bleiben",
+            "translation": "(wir) bleiben"
+        },
+        {
+            "id": "152",
+            "original": "bleiben",
+            "translation": "(ihr) bleibt"
+        },
+        {
+            "id": "153",
+            "original": "bleiben",
+            "translation": "(sie) bleiben"
+        },
+        {
+            "id": "154",
+            "original": "bleiben",
+            "translation": "(ich) (bin) geblieben"
+        },
+        {
+            "id": "155",
+            "original": "liegen",
+            "translation": "(ich) liege"
+        },
+        {
+            "id": "156",
+            "original": "liegen",
+            "translation": "(du) liegst"
+        },
+        {
+            "id": "157",
+            "original": "liegen",
+            "translation": "(er) liegt"
+        },
+        {
+            "id": "158",
+            "original": "liegen",
+            "translation": "(wir) liegen"
+        },
+        {
+            "id": "159",
+            "original": "liegen",
+            "translation": "(ihr) liegt"
+        },
+        {
+            "id": "160",
+            "original": "liegen",
+            "translation": "(sie) liegen"
+        },
+        {
+            "id": "161",
+            "original": "liegen",
+            "translation": "(ich) (habe) gelegen"
+        },
+        {
+            "id": "162",
+            "original": "heißen",
+            "translation": "(ich) heiße"
+        },
+        {
+            "id": "163",
+            "original": "heißen",
+            "translation": "(du) heißt"
+        },
+        {
+            "id": "164",
+            "original": "heißen",
+            "translation": "(er) heißt"
+        },
+        {
+            "id": "165",
+            "original": "heißen",
+            "translation": "(wir) heißen"
+        },
+        {
+            "id": "166",
+            "original": "heißen",
+            "translation": "(ihr) heißt"
+        },
+        {
+            "id": "167",
+            "original": "heißen",
+            "translation": "(sie) heißen"
+        },
+        {
+            "id": "168",
+            "original": "heißen",
+            "translation": "(ich) (habe) geheißen"
+        },
+        {
+            "id": "169",
+            "original": "sprechen",
+            "translation": "(ich) spreche"
+        },
+        {
+            "id": "170",
+            "original": "sprechen",
+            "translation": "(du) sprichst"
+        },
+        {
+            "id": "171",
+            "original": "sprechen",
+            "translation": "(er) spricht"
+        },
+        {
+            "id": "172",
+            "original": "sprechen",
+            "translation": "(wir) sprechen"
+        },
+        {
+            "id": "173",
+            "original": "sprechen",
+            "translation": "(ihr) sprecht"
+        },
+        {
+            "id": "174",
+            "original": "sprechen",
+            "translation": "(sie) sprechen"
+        },
+        {
+            "id": "175",
+            "original": "sprechen",
+            "translation": "(ich) (habe) gesprochen"
+        },
+        {
+            "id": "176",
+            "original": "bringen",
+            "translation": "(ich) bringe"
+        },
+        {
+            "id": "177",
+            "original": "bringen",
+            "translation": "(du) bringst"
+        },
+        {
+            "id": "178",
+            "original": "bringen",
+            "translation": "(er) bringt"
+        },
+        {
+            "id": "179",
+            "original": "bringen",
+            "translation": "(wir) bringen"
+        },
+        {
+            "id": "180",
+            "original": "bringen",
+            "translation": "(ihr) bringt"
+        },
+        {
+            "id": "181",
+            "original": "bringen",
+            "translation": "(sie) bringen"
+        },
+        {
+            "id": "182",
+            "original": "bringen",
+            "translation": "(ich) (habe) gebracht"
+        },
+        {
+            "id": "183",
+            "original": "fahren",
+            "translation": "(ich) fahre"
+        },
+        {
+            "id": "184",
+            "original": "fahren",
+            "translation": "(du) fährst"
+        },
+        {
+            "id": "185",
+            "original": "fahren",
+            "translation": "(er) fährt"
+        },
+        {
+            "id": "186",
+            "original": "fahren",
+            "translation": "(wir) fahren"
+        },
+        {
+            "id": "187",
+            "original": "fahren",
+            "translation": "(ihr) fahrt"
+        },
+        {
+            "id": "188",
+            "original": "fahren",
+            "translation": "(sie) fahren"
+        },
+        {
+            "id": "189",
+            "original": "fahren",
+            "translation": "(ich) (bin) gefahren"
+        },
+        {
+            "id": "190",
+            "original": "essen",
+            "translation": "(ich) esse"
+        },
+        {
+            "id": "191",
+            "original": "essen",
+            "translation": "(du) isst"
+        },
+        {
+            "id": "192",
+            "original": "essen",
+            "translation": "(er) isst"
+        },
+        {
+            "id": "193",
+            "original": "essen",
+            "translation": "(wir) essen"
+        },
+        {
+            "id": "194",
+            "original": "essen",
+            "translation": "(ihr) esst"
+        },
+        {
+            "id": "195",
+            "original": "essen",
+            "translation": "(sie) essen"
+        },
+        {
+            "id": "196",
+            "original": "essen",
+            "translation": "(ich) (habe) gegessen"
+        },
+        {
+            "id": "197",
+            "original": "trinken",
+            "translation": "(ich) trinke"
+        },
+        {
+            "id": "198",
+            "original": "trinken",
+            "translation": "(du) trinkst"
+        },
+        {
+            "id": "199",
+            "original": "trinken",
+            "translation": "(er) trinkt"
+        },
+        {
+            "id": "200",
+            "original": "trinken",
+            "translation": "(wir) trinken"
+        },
+        {
+            "id": "201",
+            "original": "trinken",
+            "translation": "(ihr) trinkt"
+        },
+        {
+            "id": "202",
+            "original": "trinken",
+            "translation": "(sie) trinken"
+        },
+        {
+            "id": "203",
+            "original": "trinken",
+            "translation": "(ich) (habe) getrunken"
+        },
+        {
+            "id": "204",
+            "original": "schreiben",
+            "translation": "(ich) schreibe"
+        },
+        {
+            "id": "205",
+            "original": "schreiben",
+            "translation": "(du) schreibst"
+        },
+        {
+            "id": "206",
+            "original": "schreiben",
+            "translation": "(er) schreibt"
+        },
+        {
+            "id": "207",
+            "original": "schreiben",
+            "translation": "(wir) schreiben"
+        },
+        {
+            "id": "208",
+            "original": "schreiben",
+            "translation": "(ihr) schreibt"
+        },
+        {
+            "id": "209",
+            "original": "schreiben",
+            "translation": "(sie) schreiben"
+        },
+        {
+            "id": "210",
+            "original": "schreiben",
+            "translation": "(ich) (habe) geschrieben"
+        },
+        {
+            "id": "211",
+            "original": "lesen",
+            "translation": "(ich) lese"
+        },
+        {
+            "id": "212",
+            "original": "lesen",
+            "translation": "(du) liest"
+        },
+        {
+            "id": "213",
+            "original": "lesen",
+            "translation": "(er) liest"
+        },
+        {
+            "id": "214",
+            "original": "lesen",
+            "translation": "(wir) lesen"
+        },
+        {
+            "id": "215",
+            "original": "lesen",
+            "translation": "(ihr) lest"
+        },
+        {
+            "id": "216",
+            "original": "lesen",
+            "translation": "(sie) lesen"
+        },
+        {
+            "id": "217",
+            "original": "lesen",
+            "translation": "(ich) (habe) gelesen"
+        },
+        {
+            "id": "218",
+            "original": "arbeiten",
+            "translation": "(ich) arbeite"
+        },
+        {
+            "id": "219",
+            "original": "arbeiten",
+            "translation": "(du) arbeitest"
+        },
+        {
+            "id": "220",
+            "original": "arbeiten",
+            "translation": "(er) arbeitet"
+        },
+        {
+            "id": "221",
+            "original": "arbeiten",
+            "translation": "(wir) arbeiten"
+        },
+        {
+            "id": "222",
+            "original": "arbeiten",
+            "translation": "(ihr) arbeitet"
+        },
+        {
+            "id": "223",
+            "original": "arbeiten",
+            "translation": "(sie) arbeiten"
+        },
+        {
+            "id": "224",
+            "original": "arbeiten",
+            "translation": "(ich) (habe) gearbeitet"
+        },
+        {
+            "id": "225",
+            "original": "kaufen",
+            "translation": "(ich) kaufe"
+        },
+        {
+            "id": "226",
+            "original": "kaufen",
+            "translation": "(du) kaufst"
+        },
+        {
+            "id": "227",
+            "original": "kaufen",
+            "translation": "(er) kauft"
+        },
+        {
+            "id": "228",
+            "original": "kaufen",
+            "translation": "(wir) kaufen"
+        },
+        {
+            "id": "229",
+            "original": "kaufen",
+            "translation": "(ihr) kauft"
+        },
+        {
+            "id": "230",
+            "original": "kaufen",
+            "translation": "(sie) kaufen"
+        },
+        {
+            "id": "231",
+            "original": "kaufen",
+            "translation": "(ich) (habe) gekauft"
+        },
+        {
+            "id": "232",
+            "original": "spielen",
+            "translation": "(ich) spiele"
+        },
+        {
+            "id": "233",
+            "original": "spielen",
+            "translation": "(du) spielst"
+        },
+        {
+            "id": "234",
+            "original": "spielen",
+            "translation": "(er) spielt"
+        },
+        {
+            "id": "235",
+            "original": "spielen",
+            "translation": "(wir) spielen"
+        },
+        {
+            "id": "236",
+            "original": "spielen",
+            "translation": "(ihr) spielt"
+        },
+        {
+            "id": "237",
+            "original": "spielen",
+            "translation": "(sie) spielen"
+        },
+        {
+            "id": "238",
+            "original": "spielen",
+            "translation": "(ich) (habe) gespielt"
+        },
+        {
+            "id": "239",
+            "original": "lernen",
+            "translation": "(ich) lerne"
+        },
+        {
+            "id": "240",
+            "original": "lernen",
+            "translation": "(du) lernst"
+        },
+        {
+            "id": "241",
+            "original": "lernen",
+            "translation": "(er) lernt"
+        },
+        {
+            "id": "242",
+            "original": "lernen",
+            "translation": "(wir) lernen"
+        },
+        {
+            "id": "243",
+            "original": "lernen",
+            "translation": "(ihr) lernt"
+        },
+        {
+            "id": "244",
+            "original": "lernen",
+            "translation": "(sie) lernen"
+        },
+        {
+            "id": "245",
+            "original": "lernen",
+            "translation": "(ich) (habe) gelernt"
+        },
+        {
+            "id": "246",
+            "original": "helfen",
+            "translation": "(ich) helfe"
+        },
+        {
+            "id": "247",
+            "original": "helfen",
+            "translation": "(du) hilfst"
+        },
+        {
+            "id": "248",
+            "original": "helfen",
+            "translation": "(er) hilft"
+        },
+        {
+            "id": "249",
+            "original": "helfen",
+            "translation": "(wir) helfen"
+        },
+        {
+            "id": "250",
+            "original": "helfen",
+            "translation": "(ihr) helft"
+        },
+        {
+            "id": "251",
+            "original": "helfen",
+            "translation": "(sie) helfen"
+        },
+        {
+            "id": "252",
+            "original": "helfen",
+            "translation": "(ich) (habe) geholfen"
+        },
+        {
+            "id": "253",
+            "original": "kennen",
+            "translation": "(ich) kenne"
+        },
+        {
+            "id": "254",
+            "original": "kennen",
+            "translation": "(du) kennst"
+        },
+        {
+            "id": "255",
+            "original": "kennen",
+            "translation": "(er) kennt"
+        },
+        {
+            "id": "256",
+            "original": "kennen",
+            "translation": "(wir) kennen"
+        },
+        {
+            "id": "257",
+            "original": "kennen",
+            "translation": "(ihr) kennt"
+        },
+        {
+            "id": "258",
+            "original": "kennen",
+            "translation": "(sie) kennen"
+        },
+        {
+            "id": "259",
+            "original": "kennen",
+            "translation": "(ich) (habe) gekannt"
+        },
+        {
+            "id": "260",
+            "original": "zeigen",
+            "translation": "(ich) zeige"
+        },
+        {
+            "id": "261",
+            "original": "zeigen",
+            "translation": "(du) zeigst"
+        },
+        {
+            "id": "262",
+            "original": "zeigen",
+            "translation": "(er) zeigt"
+        },
+        {
+            "id": "263",
+            "original": "zeigen",
+            "translation": "(wir) zeigen"
+        },
+        {
+            "id": "264",
+            "original": "zeigen",
+            "translation": "(ihr) zeigt"
+        },
+        {
+            "id": "265",
+            "original": "zeigen",
+            "translation": "(sie) zeigen"
+        },
+        {
+            "id": "266",
+            "original": "zeigen",
+            "translation": "(ich) (habe) gezeigt"
+        },
+        {
+            "id": "267",
+            "original": "hören",
+            "translation": "(ich) höre"
+        },
+        {
+            "id": "268",
+            "original": "hören",
+            "translation": "(du) hörst"
+        },
+        {
+            "id": "269",
+            "original": "hören",
+            "translation": "(er) hört"
+        },
+        {
+            "id": "270",
+            "original": "hören",
+            "translation": "(wir) hören"
+        },
+        {
+            "id": "271",
+            "original": "hören",
+            "translation": "(ihr) hört"
+        },
+        {
+            "id": "272",
+            "original": "hören",
+            "translation": "(sie) hören"
+        },
+        {
+            "id": "273",
+            "original": "hören",
+            "translation": "(ich) (habe) gehört"
+        },
+        {
+            "id": "274",
+            "original": "fragen",
+            "translation": "(ich) frage"
+        },
+        {
+            "id": "275",
+            "original": "fragen",
+            "translation": "(du) fragst"
+        },
+        {
+            "id": "276",
+            "original": "fragen",
+            "translation": "(er) fragt"
+        },
+        {
+            "id": "277",
+            "original": "fragen",
+            "translation": "(wir) fragen"
+        },
+        {
+            "id": "278",
+            "original": "fragen",
+            "translation": "(ihr) fragt"
+        },
+        {
+            "id": "279",
+            "original": "fragen",
+            "translation": "(sie) fragen"
+        },
+        {
+            "id": "280",
+            "original": "fragen",
+            "translation": "(ich) (habe) gefragt"
+        },
+        {
+            "id": "281",
+            "original": "wohnen",
+            "translation": "(ich) wohne"
+        },
+        {
+            "id": "282",
+            "original": "wohnen",
+            "translation": "(du) wohnst"
+        },
+        {
+            "id": "283",
+            "original": "wohnen",
+            "translation": "(er) wohnt"
+        },
+        {
+            "id": "284",
+            "original": "wohnen",
+            "translation": "(wir) wohnen"
+        },
+        {
+            "id": "285",
+            "original": "wohnen",
+            "translation": "(ihr) wohnt"
+        },
+        {
+            "id": "286",
+            "original": "wohnen",
+            "translation": "(sie) wohnen"
+        },
+        {
+            "id": "287",
+            "original": "wohnen",
+            "translation": "(ich) (habe) gewohnt"
+        },
+        {
+            "id": "288",
+            "original": "leben",
+            "translation": "(ich) lebe"
+        },
+        {
+            "id": "289",
+            "original": "leben",
+            "translation": "(du) lebst"
+        },
+        {
+            "id": "290",
+            "original": "leben",
+            "translation": "(er) lebt"
+        },
+        {
+            "id": "291",
+            "original": "leben",
+            "translation": "(wir) leben"
+        },
+        {
+            "id": "292",
+            "original": "leben",
+            "translation": "(ihr) lebt"
+        },
+        {
+            "id": "293",
+            "original": "leben",
+            "translation": "(sie) leben"
+        },
+        {
+            "id": "294",
+            "original": "leben",
+            "translation": "(ich) (habe) gelebt"
+        },
+        {
+            "id": "295",
+            "original": "laufen",
+            "translation": "(ich) laufe"
+        },
+        {
+            "id": "296",
+            "original": "laufen",
+            "translation": "(du) läufst"
+        },
+        {
+            "id": "297",
+            "original": "laufen",
+            "translation": "(er) läuft"
+        },
+        {
+            "id": "298",
+            "original": "laufen",
+            "translation": "(wir) laufen"
+        },
+        {
+            "id": "299",
+            "original": "laufen",
+            "translation": "(ihr) lauft"
+        },
+        {
+            "id": "300",
+            "original": "laufen",
+            "translation": "(sie) laufen"
+        },
+        {
+            "id": "301",
+            "original": "laufen",
+            "translation": "(ich) (bin) gelaufen"
+        },
+        {
+            "id": "302",
+            "original": "fallen",
+            "translation": "(ich) falle"
+        },
+        {
+            "id": "303",
+            "original": "fallen",
+            "translation": "(du) fällst"
+        },
+        {
+            "id": "304",
+            "original": "fallen",
+            "translation": "(er) fällt"
+        },
+        {
+            "id": "305",
+            "original": "fallen",
+            "translation": "(wir) fallen"
+        },
+        {
+            "id": "306",
+            "original": "fallen",
+            "translation": "(ihr) fallt"
+        },
+        {
+            "id": "307",
+            "original": "fallen",
+            "translation": "(sie) fallen"
+        },
+        {
+            "id": "308",
+            "original": "fallen",
+            "translation": "(ich) (bin) gefallen"
+        },
+        {
+            "id": "309",
+            "original": "schlafen",
+            "translation": "(ich) schlafe"
+        },
+        {
+            "id": "310",
+            "original": "schlafen",
+            "translation": "(du) schläfst"
+        },
+        {
+            "id": "311",
+            "original": "schlafen",
+            "translation": "(er) schläft"
+        },
+        {
+            "id": "312",
+            "original": "schlafen",
+            "translation": "(wir) schlafen"
+        },
+        {
+            "id": "313",
+            "original": "schlafen",
+            "translation": "(ihr) schlaft"
+        },
+        {
+            "id": "314",
+            "original": "schlafen",
+            "translation": "(sie) schlafen"
+        },
+        {
+            "id": "315",
+            "original": "schlafen",
+            "translation": "(ich) (habe) geschlafen"
+        },
+        {
+            "id": "316",
+            "original": "öffnen",
+            "translation": "(ich) öffne"
+        },
+        {
+            "id": "317",
+            "original": "öffnen",
+            "translation": "(du) öffnest"
+        },
+        {
+            "id": "318",
+            "original": "öffnen",
+            "translation": "(er) öffnet"
+        },
+        {
+            "id": "319",
+            "original": "öffnen",
+            "translation": "(wir) öffnen"
+        },
+        {
+            "id": "320",
+            "original": "öffnen",
+            "translation": "(ihr) öffnet"
+        },
+        {
+            "id": "321",
+            "original": "öffnen",
+            "translation": "(sie) öffnen"
+        },
+        {
+            "id": "322",
+            "original": "öffnen",
+            "translation": "(ich) (habe) geöffnet"
+        },
+        {
+            "id": "323",
+            "original": "beginnen",
+            "translation": "(ich) beginne"
+        },
+        {
+            "id": "324",
+            "original": "beginnen",
+            "translation": "(du) beginnst"
+        },
+        {
+            "id": "325",
+            "original": "beginnen",
+            "translation": "(er) beginnt"
+        },
+        {
+            "id": "326",
+            "original": "beginnen",
+            "translation": "(wir) beginnen"
+        },
+        {
+            "id": "327",
+            "original": "beginnen",
+            "translation": "(ihr) beginnt"
+        },
+        {
+            "id": "328",
+            "original": "beginnen",
+            "translation": "(sie) beginnen"
+        },
+        {
+            "id": "329",
+            "original": "beginnen",
+            "translation": "(ich) (habe) begonnen"
+        },
+        {
+            "id": "330",
+            "original": "verstehen",
+            "translation": "(ich) verstehe"
+        },
+        {
+            "id": "331",
+            "original": "verstehen",
+            "translation": "(du) verstehst"
+        },
+        {
+            "id": "332",
+            "original": "verstehen",
+            "translation": "(er) versteht"
+        },
+        {
+            "id": "333",
+            "original": "verstehen",
+            "translation": "(wir) verstehen"
+        },
+        {
+            "id": "334",
+            "original": "verstehen",
+            "translation": "(ihr) versteht"
+        },
+        {
+            "id": "335",
+            "original": "verstehen",
+            "translation": "(sie) verstehen"
+        },
+        {
+            "id": "336",
+            "original": "verstehen",
+            "translation": "(ich) (habe) verstanden"
+        },
+        {
+            "id": "337",
+            "original": "brauchen",
+            "translation": "(ich) brauche"
+        },
+        {
+            "id": "338",
+            "original": "brauchen",
+            "translation": "(du) brauchst"
+        },
+        {
+            "id": "339",
+            "original": "brauchen",
+            "translation": "(er) braucht"
+        },
+        {
+            "id": "340",
+            "original": "brauchen",
+            "translation": "(wir) brauchen"
+        },
+        {
+            "id": "341",
+            "original": "brauchen",
+            "translation": "(ihr) braucht"
+        },
+        {
+            "id": "342",
+            "original": "brauchen",
+            "translation": "(sie) brauchen"
+        },
+        {
+            "id": "343",
+            "original": "brauchen",
+            "translation": "(ich) (habe) gebraucht"
+        },
+        {
+            "id": "344",
+            "original": "treffen",
+            "translation": "(ich) treffe"
+        },
+        {
+            "id": "345",
+            "original": "treffen",
+            "translation": "(du) triffst"
+        },
+        {
+            "id": "346",
+            "original": "treffen",
+            "translation": "(er) trifft"
+        },
+        {
+            "id": "347",
+            "original": "treffen",
+            "translation": "(wir) treffen"
+        },
+        {
+            "id": "348",
+            "original": "treffen",
+            "translation": "(ihr) trefft"
+        },
+        {
+            "id": "349",
+            "original": "treffen",
+            "translation": "(sie) treffen"
+        },
+        {
+            "id": "350",
+            "original": "treffen",
+            "translation": "(ich) (habe) getroffen"
+        }
+    ]
+}
