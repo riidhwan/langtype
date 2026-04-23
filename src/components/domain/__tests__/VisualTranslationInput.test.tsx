@@ -155,12 +155,12 @@ describe('VisualTranslationInput', () => {
             expect(slots[0].parentElement).toHaveClass('gap-x-0.5')
         })
 
-        it('applies different slot sizes per word within one challenge', () => {
-            // "die" = 3 chars (normal), "Krankenschwestern" = 17 chars (compact)
+        it('applies compact slots to all words when any word is ≥14 chars', () => {
+            // "die" = 3 chars, "Krankenschwestern" = 17 chars — longest word drives the tier
             render(<VisualTranslationInput {...defaultProps} targetText="die Krankenschwestern" />)
             const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0]).toHaveClass('w-[26px]')  // 'd' of "die"
-            expect(slots[3]).toHaveClass('w-4')        // 'K' of "Krankenschwestern"
+            expect(slots[0]).toHaveClass('w-4')  // 'd' of "die" — same compact tier as the long word
+            expect(slots[3]).toHaveClass('w-4')  // 'K' of "Krankenschwestern"
         })
     })
 

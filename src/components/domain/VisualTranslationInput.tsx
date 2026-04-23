@@ -71,6 +71,15 @@ export function VisualTranslationInput({
         cursorIndex++
     }
 
+    // Slot size is determined by the longest word in the challenge so all words render uniformly.
+    const maxWordLen = Math.max(...words.map(w => w.text.length))
+    const slotSize = maxWordLen >= 14
+        ? "w-4 h-7 text-sm md:w-5 md:h-8 md:text-base"
+        : maxWordLen >= 12
+            ? "w-5 h-8 text-base md:w-6 md:h-9 md:text-lg"
+            : "w-[26px] h-[38px] text-lg md:w-8 md:h-10 md:text-xl"
+    const wordGap = maxWordLen >= 14 ? "gap-x-0.5" : "gap-x-1"
+
     return (
         <div
             className="relative w-full max-w-2xl cursor-text font-mono"
@@ -93,16 +102,7 @@ export function VisualTranslationInput({
 
             {/* Visual Render Layer */}
             <div className="flex flex-wrap justify-center gap-y-4 gap-x-4">
-                {words.map((word, wIdx) => {
-                    const wordLen = word.text.length
-                    const slotSize = wordLen >= 14
-                        ? "w-4 h-7 text-sm md:w-5 md:h-8 md:text-base"
-                        : wordLen >= 12
-                            ? "w-5 h-8 text-base md:w-6 md:h-9 md:text-lg"
-                            : "w-[26px] h-[38px] text-lg md:w-8 md:h-10 md:text-xl"
-                    const wordGap = wordLen >= 14 ? "gap-x-0.5" : "gap-x-1"
-
-                    return (
+                {words.map((word, wIdx) => (
                     <div key={wIdx} className={cn("flex", wordGap)}>
                         {word.text.split('').map((char, charOffset) => {
                             const index = word.startIndex + charOffset
@@ -144,8 +144,7 @@ export function VisualTranslationInput({
                             )
                         })}
                     </div>
-                    )
-                })}
+                ))}
             </div>
         </div>
     )
