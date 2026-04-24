@@ -2,7 +2,7 @@
   "name": "langtype",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && tsc --noEmit",
