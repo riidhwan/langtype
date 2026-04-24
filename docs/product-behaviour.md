@@ -28,23 +28,16 @@ Back button always navigates to `?` (clears params) → mode picker. Retry state
 ```
 [Mode picker] → startSRS() → mode=srs
     ↓
-[Game] — due cards only, shuffled
-  • correct answer → 7 interval pills shown, timer paused
-      → user picks interval (or presses 1–7) → recordReviewWithInterval()
-      → ASAP (0 days) → passed=false; all others → passed=true
-  • wrong answer   → recordReview('incorrect'), nextReviewAt=now → passed=false
-  • onCardResult(id, passed) — route accumulates passed=false IDs in pendingMissedIds ref
+[Game] — due cards only, shuffled into sessionQueue
+  • correct, non-ASAP answer → recordReviewWithInterval(), timer resumes → advance
+  • correct, ASAP answer     → recordReviewWithInterval(0) → card reinserted 1–5 ahead in sessionQueue
+  • wrong answer             → recordReview('incorrect'), nextReviewAt=now → card reinserted 1–5 ahead
     ↓
-[handleFinished — last card done]
-  if pendingMissedIds.length > 0:
-    → setMissedIds, retryCount++ → navigate clears questionId (replace:true, keeps mode)
-    → challenges recomputes → TypingGame re-mounts (isRetry=true, initialQuestionId=undefined)
-  else:
-    → goToPicker()
+[Card keeps reappearing until answered with a non-ASAP interval]
+  If user keeps answering wrong or picks ASAP, card is reinserted again each time.
     ↓
-[Retry phase — isRetry=true in srsContext]
-  Same game flow; "X cards remaining" shows "Reviewing X missed cards"
-  handleFinished again → if still misses → another retry; else → goToPicker()
+[handleFinished — currentIndex reaches end of sessionQueue with no pending reinsertion]
+  → goToPicker()
     ↓
 [All done screen — shown when mode=srs but challenges.length===0]
   Reached if: 0 cards due at session start, OR navigating back during session.
@@ -69,4 +62,6 @@ All collection challenges shuffled. Game receives no `srsContext` — no SRS rec
 - Status lifecycle: `typing` → `completed` (correct) or `submitted` (incorrect) → auto-advance (or wait for pill in SRS mode)
 - In SRS mode, correct answer pauses the timer (`setIsPaused(true)`) until a pill is selected, then restarts with a 2-second countdown.
 - Recording fires exactly once per card via `hasRecordedRef` (reset on `status=typing`), triggered when `timeLeft === 0`.
-- `cardsCompleted` (route state) drives the "X cards remaining" counter — derived from a stable counter, not `currentIndex`, to prevent flicker on refresh.
+- `sessionQueue` (internal state in `TypingGame`) starts equal to `challenges` and grows as cards are reinserted. The "X cards remaining" counter is `sessionQueue.length - currentIndex - 1`.
+- Wrong answers and ASAP interval reinsert the card at a random position 1–5 ahead in `sessionQueue` (capped at the end). `pendingReinsertRef` prevents `onFinished` from firing in the same render as a reinsertion.
+- Normal mode also uses reinsertion for wrong answers. The session ends when `currentIndex` reaches `sessionQueue.length - 1` without a reinsertion.

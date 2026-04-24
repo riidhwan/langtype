@@ -10,11 +10,7 @@ import { useSRSStore } from "@/store/useSRSStore"
 
 interface SRSContext {
     collectionId: string
-    totalDue: number
-    cardsCompleted?: number
-    isRetry?: boolean
     skipRecording?: boolean
-    onCardResult?: (challengeId: string, passed: boolean) => void
 }
 
 interface Props {
@@ -28,6 +24,14 @@ interface Props {
 
 const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
 
+function reinsertChallenge(queue: Challenge[], fromIndex: number, challenge: Challenge): Challenge[] {
+    const offset = Math.floor(Math.random() * 4) + 2 // 2–5 positions ahead (always skip at least 1 card)
+    const insertAt = Math.min(fromIndex + offset, queue.length)
+    const next = [...queue]
+    next.splice(insertAt, 0, challenge)
+    return next
+}
+
 export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext, freeInput }: Props) {
     const initialIndex = useMemo(() => {
         if (!initialQuestionId) return 0
@@ -35,7 +39,25 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         return idx !== -1 ? idx : 0
     }, [challenges, initialQuestionId])
 
-    const translations = useMemo(() => challenges.map((c) => c.translation), [challenges])
+    // sessionQueue starts equal to challenges and grows as missed/ASAP cards are reinserted
+    const [sessionQueue, setSessionQueue] = useState<Challenge[]>(challenges)
+
+    // Guards against onFinished firing in the same render as a reinsertion.
+    // Effects run in declaration order: recording effect sets this before onFinished effect checks it.
+    const pendingReinsertRef = useRef(false)
+
+    // Sync sessionQueue when challenges prop changes (new session start)
+    useEffect(() => {
+        setSessionQueue(challenges)
+        pendingReinsertRef.current = false
+    }, [challenges])
+
+    // Reset pendingReinsertRef after reinsertion state settles in the next render
+    useEffect(() => {
+        pendingReinsertRef.current = false
+    }, [sessionQueue])
+
+    const translations = useMemo(() => sessionQueue.map((c) => c.translation), [sessionQueue])
 
     const {
         input,
@@ -56,8 +78,11 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         initialIndex,
     )
 
-    const currentChallenge = challenges[currentIndex]
+    const currentChallenge = sessionQueue[currentIndex]
 
+    // Pass the original challenges prop (not sessionQueue) to useUrlSync.
+    // sessionQueue contains duplicate card IDs after reinsertions — passing it would cause
+    // the incoming sync to find the first occurrence of a duplicate and jump back to that index.
     useUrlSync({
         currentIndex,
         challenges,
@@ -102,6 +127,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
     const recordReviewWithInterval = useSRSStore((s) => s.recordReviewWithInterval)
     const hasRecordedRef = useRef(false)
 
+    // SRS recording + reinsertion for wrong answers and ASAP interval
     useEffect(() => {
         if (status === 'typing') {
             hasRecordedRef.current = false
@@ -113,13 +139,14 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
 
         hasRecordedRef.current = true
 
-        const id = challenges[currentIndex].id
+        const id = sessionQueue[currentIndex].id
 
         if (status === 'submitted') {
             if (!srsContext.skipRecording) {
                 recordReview(srsContext.collectionId, id, 'incorrect')
             }
-            srsContext.onCardResult?.(id, false)
+            pendingReinsertRef.current = true
+            setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
         } else {
             const choice = intervalChoice ?? '1d'
             const intervalDays = SRS_INTERVAL_DAYS[choice]
@@ -127,11 +154,30 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
             if (!srsContext.skipRecording) {
                 recordReviewWithInterval(srsContext.collectionId, id, intervalDays)
             }
-            srsContext.onCardResult?.(id, passed)
+            if (!passed) {
+                // ASAP: reinsert so user sees it again within 1–5 cards
+                pendingReinsertRef.current = true
+                setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
+            }
         }
     }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Detect end of session: last card done, timer expired, nothing left to advance to
+    // Normal-mode reinsertion: wrong answers reappear within 1–5 positions
+    const hasReinsertedRef = useRef(false)
+    useEffect(() => {
+        hasReinsertedRef.current = false
+    }, [currentIndex])
+
+    useEffect(() => {
+        if (srsContext) return
+        if (status !== 'submitted' || timeLeft !== 0) return
+        if (hasReinsertedRef.current) return
+        hasReinsertedRef.current = true
+        pendingReinsertRef.current = true
+        setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
+    }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Detect end of session: reached the last card in the queue, timer done, no pending reinsertion
     const hasCalledOnFinished = useRef(false)
     useEffect(() => {
         hasCalledOnFinished.current = false
@@ -141,19 +187,18 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         if (
             onFinished &&
             !hasCalledOnFinished.current &&
+            !pendingReinsertRef.current &&
             status !== 'typing' &&
             timeLeft === 0 &&
-            challenges.length > 0 &&
-            currentIndex === challenges.length - 1
+            sessionQueue.length > 0 &&
+            currentIndex === sessionQueue.length - 1
         ) {
             hasCalledOnFinished.current = true
             onFinished()
         }
-    }, [status, timeLeft, currentIndex, challenges.length]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [status, timeLeft, currentIndex, sessionQueue.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const cardsRemaining = srsContext
-        ? srsContext.totalDue - (srsContext.cardsCompleted ?? currentIndex)
-        : null
+    const cardsRemaining = srsContext ? sessionQueue.length - currentIndex - 1 : null
 
     return (
         <div className="w-full max-w-2xl flex flex-col items-center gap-4 md:gap-8">
@@ -165,9 +210,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
             <div className="w-full flex flex-col items-center gap-4">
                 {srsContext && cardsRemaining !== null && (
                     <p className="mono-label">
-                        {srsContext.isRetry
-                            ? `Reviewing ${Math.max(0, cardsRemaining)} missed ${cardsRemaining === 1 ? 'card' : 'cards'}`
-                            : `${Math.max(0, cardsRemaining)} ${cardsRemaining === 1 ? 'card' : 'cards'} remaining`}
+                        {Math.max(0, cardsRemaining)} {cardsRemaining === 1 ? 'card' : 'cards'} remaining
                     </p>
                 )}
 

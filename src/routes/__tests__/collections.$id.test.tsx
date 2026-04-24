@@ -17,39 +17,14 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
     }
 })
 
-// TypingGame mock exposes onFinished, srsContext.onCardResult, srsContext.isRetry,
-// and srsContext.cardsCompleted so tests can assert on counter state.
 vi.mock('@/components/features/TypingGame', () => ({
-    TypingGame: ({ onQuestionChange, onFinished, srsContext, initialQuestionId }: any) => (
+    TypingGame: ({ onQuestionChange, onFinished, initialQuestionId }: any) => (
         <div
             data-testid="typing-game"
-            data-is-retry={String(srsContext?.isRetry ?? false)}
-            data-cards-completed={String(srsContext?.cardsCompleted ?? 0)}
             data-initial-question-id={initialQuestionId ?? ''}
         >
             <button onClick={() => onQuestionChange?.('next-id')} data-testid="next-question-btn">
                 Next Question
-            </button>
-            <button
-                onClick={() => srsContext?.onCardResult?.('1', true)}
-                data-testid="record-pass-btn"
-            >
-                Record Pass
-            </button>
-            <button
-                onClick={() => srsContext?.onCardResult?.('1', false)}
-                data-testid="record-miss-btn"
-            >
-                Record Miss
-            </button>
-            <button
-                onClick={() => {
-                    srsContext?.onCardResult?.('1', false)
-                    onFinished?.()
-                }}
-                data-testid="miss-and-finish-btn"
-            >
-                Miss and Finish
             </button>
             <button onClick={() => onFinished?.()} data-testid="finish-btn">
                 Finish
@@ -74,7 +49,6 @@ vi.mock('@/store/useSRSStore', () => {
     }
 })
 
-// Wrap getDueChallengeIds in a vi.fn so it can be overridden per-test
 vi.mock('@/lib/srsAlgorithm', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@/lib/srsAlgorithm')>()
     return {
@@ -151,146 +125,33 @@ describe('CollectionGamePage', () => {
         expect(updatedSearch).toMatchObject({ questionId: 'next-id', mode: 'normal' })
     })
 
-    describe('SRS retry logic', () => {
-        beforeEach(() => {
-            vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' } as any)
-            vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
-        })
+    it('navigates to picker when SRS session finishes', () => {
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' } as any)
+        vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
 
-        it('starts in normal SRS phase (isRetry=false)', () => {
-            render(<CollectionGamePage />)
+        render(<CollectionGamePage />)
 
-            expect(screen.getByTestId('typing-game').dataset.isRetry).toBe('false')
-        })
+        fireEvent.click(screen.getByTestId('finish-btn'))
 
-        it('transitions to retry phase when a card is missed and the session finishes', () => {
-            render(<CollectionGamePage />)
-
-            fireEvent.click(screen.getByTestId('miss-and-finish-btn'))
-
-            expect(screen.getByTestId('typing-game').dataset.isRetry).toBe('true')
-        })
-
-        it('navigates to picker when the session finishes with no missed cards', () => {
-            render(<CollectionGamePage />)
-
-            fireEvent.click(screen.getByTestId('finish-btn'))
-
-            expect(mockNavigate).toHaveBeenCalledWith(
-                expect.objectContaining({ search: expect.any(Function) })
-            )
-            const callArg = mockNavigate.mock.calls[0][0]
-            expect(callArg.search({})).toEqual({})
-        })
+        expect(mockNavigate).toHaveBeenCalledWith(
+            expect.objectContaining({ search: expect.any(Function) })
+        )
+        const callArg = mockNavigate.mock.calls[0][0]
+        expect(callArg.search({})).toEqual({})
     })
 
-    describe('SRS completedCount / cards remaining', () => {
-        beforeEach(() => {
-            vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' } as any)
-            vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
-        })
+    it('passes initialQuestionId from URL to TypingGame', () => {
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: '1', mode: 'srs' } as any)
+        vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
 
-        it('passes cardsCompleted=0 at the start of a session', () => {
-            render(<CollectionGamePage />)
+        render(<CollectionGamePage />)
 
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('0')
-        })
-
-        it('increments cardsCompleted each time onCardResult is called', () => {
-            render(<CollectionGamePage />)
-
-            fireEvent.click(screen.getByTestId('record-pass-btn'))
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('1')
-
-            fireEvent.click(screen.getByTestId('record-pass-btn'))
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('2')
-        })
-
-        it('resets cardsCompleted to 0 at the start of a retry phase', () => {
-            render(<CollectionGamePage />)
-
-            fireEvent.click(screen.getByTestId('record-pass-btn'))
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('1')
-
-            // Finish with a missed card → triggers retry
-            fireEvent.click(screen.getByTestId('miss-and-finish-btn'))
-
-            expect(screen.getByTestId('typing-game').dataset.isRetry).toBe('true')
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('0')
-        })
-
-        it('resets cardsCompleted to 0 when mode changes to picker and a new session is started', () => {
-            const { rerender } = render(<CollectionGamePage />)
-
-            // Complete some cards mid-session
-            fireEvent.click(screen.getByTestId('record-pass-btn'))
-            fireEvent.click(screen.getByTestId('record-pass-btn'))
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('2')
-
-            // Navigate back to picker
-            vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined } as any)
-            rerender(<CollectionGamePage />)
-
-            // Start a new SRS session
-            vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' } as any)
-            rerender(<CollectionGamePage />)
-
-            expect(screen.getByTestId('typing-game').dataset.cardsCompleted).toBe('0')
-        })
-
-        it('pendingMissedIds is populated before handleFinished reads it (ordering guarantee)', () => {
-            // onCardResult must run before onFinished so handleFinished sees the missed IDs
-            render(<CollectionGamePage />)
-
-            // miss-and-finish-btn simulates the real TypingGame ordering:
-            // onCardResult fires first, then onFinished.
-            fireEvent.click(screen.getByTestId('miss-and-finish-btn'))
-
-            // If ordering was wrong, handleFinished would see no missed IDs and go to the picker.
-            // Correct ordering means retry phase is triggered instead (typing-game still visible).
-            expect(screen.getByTestId('typing-game').dataset.isRetry).toBe('true')
-            expect(screen.queryByTestId('mode-picker')).not.toBeInTheDocument()
-        })
+        expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('1')
     })
 
-    describe('retry phase initialQuestionId fix', () => {
-        beforeEach(() => {
-            vi.mocked(Route.useSearch).mockReturnValue({ questionId: '1', mode: 'srs' } as any)
-            vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
-        })
+    it('passes no initialQuestionId when questionId is absent', () => {
+        render(<CollectionGamePage />)
 
-        it('passes initialQuestionId from URL in the normal SRS phase', () => {
-            render(<CollectionGamePage />)
-
-            expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('1')
-        })
-
-        it('does not pass initialQuestionId to TypingGame in the retry phase', () => {
-            // Bug: after a miss, retry phase starts. The stale questionId in the URL (pointing
-            // to the last card of the previous phase) could land at a non-zero index in the
-            // shuffled retry list, silently skipping earlier cards and causing the session to
-            // end with those cards still due.
-            render(<CollectionGamePage />)
-
-            expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('1')
-
-            fireEvent.click(screen.getByTestId('miss-and-finish-btn'))
-
-            expect(screen.getByTestId('typing-game').dataset.isRetry).toBe('true')
-            expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('')
-        })
-
-        it('clears questionId from the URL when retry starts', () => {
-            render(<CollectionGamePage />)
-
-            fireEvent.click(screen.getByTestId('miss-and-finish-btn'))
-
-            expect(mockNavigate).toHaveBeenCalledWith(
-                expect.objectContaining({ replace: true })
-            )
-            const callArg = mockNavigate.mock.calls[0][0]
-            const updatedSearch = callArg.search({ mode: 'srs', questionId: '1' })
-            expect(updatedSearch).toEqual({ mode: 'srs' })
-        })
+        expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('')
     })
 })

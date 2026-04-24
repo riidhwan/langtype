@@ -113,11 +113,10 @@ describe('TypingGame', () => {
         ]
 
         it('calls recordReviewWithInterval after clicking a pill', () => {
-            const onCardResult = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
@@ -132,15 +131,13 @@ describe('TypingGame', () => {
             act(() => { vi.advanceTimersByTime(2100) })
 
             expect(mockRecordReviewWithInterval).toHaveBeenCalledWith('col', '1', 1)
-            expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
         it('calls recordReview with "incorrect" after countdown expires on wrong answer', () => {
-            const onCardResult = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
@@ -150,14 +147,13 @@ describe('TypingGame', () => {
             act(() => { vi.advanceTimersByTime(5100) })
 
             expect(mockRecordReview).toHaveBeenCalledWith('col', '1', 'incorrect')
-            expect(onCardResult).toHaveBeenCalledWith('1', false)
         })
 
         it('does not record while timer is paused waiting for pill selection', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
@@ -171,11 +167,10 @@ describe('TypingGame', () => {
         })
 
         it('does not call recordReview when skipRecording is true', () => {
-            const onCardResult = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, skipRecording: true, onCardResult }}
+                    srsContext={{ collectionId: 'col', skipRecording: true }}
                 />
             )
 
@@ -185,14 +180,13 @@ describe('TypingGame', () => {
             act(() => { vi.advanceTimersByTime(5100) })
 
             expect(mockRecordReview).not.toHaveBeenCalled()
-            expect(onCardResult).toHaveBeenCalledWith('1', true)
         })
 
         it('records a result only once after clicking a pill', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
@@ -209,22 +203,12 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
-            expect(screen.getByText('3 cards remaining')).toBeInTheDocument()
-        })
-
-        it('shows "Reviewing X missed cards" during retry phase', () => {
-            render(
-                <TypingGame
-                    challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, isRetry: true }}
-                />
-            )
-
-            expect(screen.getByText('Reviewing 1 missed card')).toBeInTheDocument()
+            // At index 0, sessionQueue.length=3: 3 - 0 - 1 = 2 remaining
+            expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
         })
     })
 
@@ -239,11 +223,11 @@ describe('TypingGame', () => {
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
         }
 
-        it('shows "✨ Correct!" heading and all 7 interval pills after correct answer in SRS mode', () => {
+        it('shows "✓ correct" and all 7 interval pills after correct answer in SRS mode', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -262,7 +246,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -273,7 +257,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -286,7 +270,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -302,7 +286,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={twoCards}
-                    srsContext={{ collectionId: 'col', totalDue: 2 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             const input = screen.getByRole('textbox')
@@ -322,7 +306,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={twoCards}
-                    srsContext={{ collectionId: 'col', totalDue: 2 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             const input = screen.getByRole('textbox')
@@ -345,7 +329,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, skipRecording: true }}
+                    srsContext={{ collectionId: 'col', skipRecording: true }}
                 />
             )
             submitCorrect()
@@ -353,24 +337,11 @@ describe('TypingGame', () => {
             expect(screen.queryByRole('button', { name: 'ASAP' })).not.toBeInTheDocument()
         })
 
-        it('shows interval pills during retry phase (isRetry: true, no skipRecording)', () => {
-            render(
-                <TypingGame
-                    challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, isRetry: true }}
-                />
-            )
-            submitCorrect()
-            expect(screen.getByRole('button', { name: 'ASAP' })).toBeInTheDocument()
-            expect(screen.getByRole('button', { name: '1d' })).toBeInTheDocument()
-            expect(screen.getByRole('button', { name: '1w' })).toBeInTheDocument()
-        })
-
         it('replaces pills with confirmation text after clicking ASAP', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -383,7 +354,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -397,7 +368,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -410,7 +381,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -423,7 +394,7 @@ describe('TypingGame', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1 }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
             submitCorrect()
@@ -431,33 +402,168 @@ describe('TypingGame', () => {
             act(() => { vi.advanceTimersByTime(2100) })
             expect(mockRecordReviewWithInterval).toHaveBeenCalledWith('col', '1', 0.25)
         })
+    })
 
-        it('ASAP reports passed=false via onCardResult (triggering retry queue)', () => {
-            const onCardResult = vi.fn()
+    describe('reinsertion', () => {
+        const singleChallenge: Challenge[] = [
+            { id: '1', original: 'Hello', translation: 'Hallo' },
+        ]
+        const twoCards: Challenge[] = [
+            { id: '1', original: 'Hello', translation: 'Hallo' },
+            { id: '2', original: 'World', translation: 'Welt' },
+        ]
+
+        it('SRS: wrong answer reinserts the card — it reappears before the session ends', () => {
+            const onFinished = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
-            submitCorrect()
-            fireEvent.click(screen.getByRole('button', { name: 'ASAP' }))
-            act(() => { vi.advanceTimersByTime(2100) })
-            expect(onCardResult).toHaveBeenCalledWith('1', false)
+
+            const input = screen.getByRole('textbox')
+            // Answer wrong — should reinsert, not end the session
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            // onFinished must NOT have fired — card was reinserted
+            expect(onFinished).not.toHaveBeenCalled()
+            // Should be back on the same card (Hello)
+            expect(screen.getByText('Hello')).toBeInTheDocument()
         })
 
-        it('6h reports passed=true via onCardResult', () => {
-            const onCardResult = vi.fn()
+        it('SRS: ASAP interval reinserts the card — it reappears before the session ends', () => {
+            const onFinished = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
-            submitCorrect()
-            fireEvent.click(screen.getByRole('button', { name: '6h' }))
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByRole('button', { name: 'ASAP' }))
             act(() => { vi.advanceTimersByTime(2100) })
-            expect(onCardResult).toHaveBeenCalledWith('1', true)
+
+            expect(onFinished).not.toHaveBeenCalled()
+            expect(screen.getByText('Hello')).toBeInTheDocument()
+        })
+
+        it('SRS: non-ASAP correct answer does NOT reinsert — session ends normally', () => {
+            const onFinished = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
+            act(() => { vi.advanceTimersByTime(2100) })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('SRS: session ends after wrong-then-correct on the reinserted card', () => {
+            const onFinished = vi.fn()
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+
+            // Wrong answer → reinserted
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+            expect(onFinished).not.toHaveBeenCalled()
+
+            // Correct answer on the reinserted card
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
+            act(() => { vi.advanceTimersByTime(2100) })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('normal mode: wrong answer reinserts the card', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            // Card reinserted — session continues
+            expect(onFinished).not.toHaveBeenCalled()
+            expect(screen.getByText('Hello')).toBeInTheDocument()
+        })
+
+        it('normal mode: session ends after correct answer on reinserted card', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+
+            // Wrong → reinserted
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            // Correct → session ends
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('reinserted card appears within the next card when queue has extra room', () => {
+            // With 2 cards, wrong answer on card 1 means card 1 is reinserted somewhere in positions 2-6
+            // Since queue length is 2, reinsert clamps to position 2 (end of queue).
+            // After wrong answer + timer, we should see card 2 first, then card 1 again.
+            render(
+                <TypingGame
+                    challenges={twoCards}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+
+            expect(screen.getByText('Hello')).toBeInTheDocument()
+
+            // Wrong answer on card 1
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            // Card 2 should be shown now (card 1 reinserted after it)
+            expect(screen.getByText('World')).toBeInTheDocument()
+
+            // Advance past card 2 correctly
+            fireEvent.change(input, { target: { value: 'Welt' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
+            act(() => { vi.advanceTimersByTime(2100) })
+
+            // Card 1 should reappear
+            expect(screen.getByText('Hello')).toBeInTheDocument()
         })
     })
 
@@ -466,7 +572,7 @@ describe('TypingGame', () => {
             { id: '1', original: 'Hello', translation: 'Hallo' },
         ]
 
-        it('calls onFinished after the last card timer expires', () => {
+        it('calls onFinished after the last card is answered correctly', () => {
             const onFinished = vi.fn()
             render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
 
@@ -483,7 +589,7 @@ describe('TypingGame', () => {
             expect(onFinished).toHaveBeenCalledOnce()
         })
 
-        it('calls onFinished after an incorrect answer on the last card', () => {
+        it('does NOT call onFinished when wrong answer on last card (card is reinserted)', () => {
             const onFinished = vi.fn()
             render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
 
@@ -497,7 +603,7 @@ describe('TypingGame', () => {
                 vi.advanceTimersByTime(5100)
             })
 
-            expect(onFinished).toHaveBeenCalledOnce()
+            expect(onFinished).not.toHaveBeenCalled()
         })
 
         it('does not call onFinished before the timer expires', () => {
@@ -546,16 +652,13 @@ describe('TypingGame', () => {
             expect(onFinished).toHaveBeenCalledOnce()
         })
 
-        it('calls onCardResult before onFinished for the last correct card in SRS mode', () => {
-            const callOrder: string[] = []
-            const onCardResult = vi.fn(() => callOrder.push('onCardResult'))
-            const onFinished = vi.fn(() => callOrder.push('onFinished'))
-
+        it('calls onFinished after the last SRS card is answered and pill is selected', () => {
+            const onFinished = vi.fn()
             render(
                 <TypingGame
                     challenges={singleChallenge}
                     onFinished={onFinished}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
 
@@ -565,74 +668,76 @@ describe('TypingGame', () => {
             fireEvent.click(screen.getByText('1d'))
             act(() => { vi.advanceTimersByTime(2100) })
 
-            expect(callOrder).toEqual(['onCardResult', 'onFinished'])
+            expect(onFinished).toHaveBeenCalledOnce()
         })
+    })
 
-        it('calls onCardResult before onFinished for the last incorrect card in SRS mode', () => {
-            const callOrder: string[] = []
-            const onCardResult = vi.fn(() => callOrder.push('onCardResult'))
-            const onFinished = vi.fn(() => callOrder.push('onFinished'))
-
+    describe('counter display', () => {
+        it('shows "N-1 cards remaining" at index 0 for an N-card session', () => {
             render(
                 <TypingGame
-                    challenges={singleChallenge}
-                    onFinished={onFinished}
-                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col' }}
                 />
             )
+            // sessionQueue.length=3, currentIndex=0 → 3 - 0 - 1 = 2
+            expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
+        })
 
+        it('decrements as cards are completed', () => {
+            render(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+            expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
+
+            const input = screen.getByRole('textbox')
+            // Advance to index 1 via correct answer + pill
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByRole('button', { name: '1d' }))
+            act(() => { vi.advanceTimersByTime(2100) })
+
+            // currentIndex=1 → 3 - 1 - 1 = 1
+            expect(screen.getByText('1 card remaining')).toBeInTheDocument()
+        })
+
+        it('shows 0 remaining on the last card', () => {
+            const lastCard: Challenge[] = [{ id: '1', original: 'Hello', translation: 'Hallo' }]
+            render(
+                <TypingGame
+                    challenges={lastCard}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+            // sessionQueue.length=1, currentIndex=0 → 1 - 0 - 1 = 0
+            expect(screen.getByText('0 cards remaining')).toBeInTheDocument()
+        })
+
+        it('counter increases after reinsertion (more cards remain in queue)', () => {
+            const twoCards: Challenge[] = [
+                { id: '1', original: 'Hello', translation: 'Hallo' },
+                { id: '2', original: 'World', translation: 'Welt' },
+            ]
+            render(
+                <TypingGame
+                    challenges={twoCards}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+            // index=0, queue=2 → 1 remaining
+            expect(screen.getByText('1 card remaining')).toBeInTheDocument()
+
+            // Wrong answer → card reinserted → queue grows to 3
             const input = screen.getByRole('textbox')
             fireEvent.change(input, { target: { value: 'wrong' } })
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
             act(() => { vi.advanceTimersByTime(5100) })
 
-            expect(callOrder).toEqual(['onCardResult', 'onFinished'])
-        })
-    })
-
-    describe('counter display', () => {
-        it('shows accurate remaining count as cardsCompleted prop increases', () => {
-            const { rerender } = render(
-                <TypingGame
-                    challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 0 }}
-                />
-            )
-            expect(screen.getByText('3 cards remaining')).toBeInTheDocument()
-
-            rerender(
-                <TypingGame
-                    challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 1 }}
-                />
-            )
-            expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
-
-            rerender(
-                <TypingGame
-                    challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 2 }}
-                />
-            )
+            // Now at index=1, queue=3 → 3 - 1 - 1 = 1
             expect(screen.getByText('1 card remaining')).toBeInTheDocument()
-
-            rerender(
-                <TypingGame
-                    challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 3 }}
-                />
-            )
-            expect(screen.getByText('0 cards remaining')).toBeInTheDocument()
-        })
-
-        it('never shows a negative count', () => {
-            render(
-                <TypingGame
-                    challenges={challenges}
-                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 5 }}
-                />
-            )
-            expect(screen.getByText('0 cards remaining')).toBeInTheDocument()
         })
     })
 })

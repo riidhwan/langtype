@@ -4,7 +4,7 @@ import { TypingGame } from '@/components/features/TypingGame'
 import { ModePicker } from '@/components/features/ModePicker'
 import { SRSAllDoneScreen } from '@/components/features/SRSAllDoneScreen'
 import { SRSProgressView } from '@/components/features/SRSProgressView'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { shuffleArray } from '@/lib/utils'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getDueChallengeIds } from '@/lib/srsAlgorithm'
@@ -70,32 +70,18 @@ export function CollectionGamePage() {
     const { cards } = useSRSStore()
     const recordPlay = useSRSStore((s) => s.recordPlay)
 
-    const [retryCount, setRetryCount] = useState(0)
-    const [missedIds, setMissedIds] = useState<string[]>([])
-    const [completedCount, setCompletedCount] = useState(0)
-    const pendingMissedIds = useRef<string[]>([])
-    const isRetryPhase = retryCount > 0
-
     // Snapshot challenges at session start.
-    // cards is intentionally excluded from deps to prevent mid-session
-    // list changes that would break currentIndex in useTypingEngine.
-    // retryCount and missedIds are intentionally included — they represent
-    // deliberate phase transitions, not background changes.
+    // cards is intentionally excluded from deps to prevent mid-session list changes.
     const challenges = useMemo(() => {
         const all = collection.challenges ?? []
         if (mode === 'srs') {
-            if (isRetryPhase) {
-                return shuffleArray(all.filter((c) => missedIds.includes(c.id)))
-            }
             const dueIds = getDueChallengeIds(collection.id, all.map((c) => c.id), cards)
             return shuffleArray(all.filter((c) => dueIds.includes(c.id)))
         }
-        if (mode === 'normal') {
-            return shuffleArray(all)
-        }
+        if (mode === 'normal') return shuffleArray(all)
         return []
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [collection.challenges, collection.id, mode, retryCount, missedIds])
+    }, [collection.challenges, collection.id, mode])
 
     useEffect(() => {
         if (mode === 'srs' || mode === 'normal') {
@@ -103,44 +89,10 @@ export function CollectionGamePage() {
         }
     }, [mode, collection.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Reset retry state only after mode leaves 'srs' to avoid a transient render
-    // where mode='srs' + retryCount=0 triggers the all-done screen before navigation.
-    useEffect(() => {
-        if (mode !== 'srs') {
-            setRetryCount(0)
-            setMissedIds([])
-            setCompletedCount(0)
-            pendingMissedIds.current = []
-        }
-    }, [mode])
-
-    const goToPicker = () => {
-        navigate({ search: () => ({}) })
-    }
+    const goToPicker = () => navigate({ search: () => ({}) })
     const startNormal = () => navigate({ search: () => ({ mode: 'normal' as const }) })
     const startSRS = () => navigate({ search: () => ({ mode: 'srs' as const }) })
     const goToProgress = () => navigate({ search: () => ({ view: 'progress' as const }) })
-
-    const handleCardResult = (challengeId: string, passed: boolean) => {
-        setCompletedCount((c) => c + 1)
-        if (!passed) pendingMissedIds.current.push(challengeId)
-    }
-
-    const handleFinished = () => {
-        const missed = pendingMissedIds.current
-        pendingMissedIds.current = []
-        if (missed.length > 0) {
-            setCompletedCount(0)
-            setMissedIds(missed)
-            setRetryCount((c) => c + 1)
-            // Clear questionId so the retry phase always starts at index 0.
-            // Without this, a stale questionId from the previous phase could jump
-            // the retry list to a non-zero index, silently skipping earlier cards.
-            navigate({ search: (prev) => ({ mode: prev.mode }), replace: true })
-        } else {
-            goToPicker()
-        }
-    }
 
     // Progress view
     if (view === 'progress') {
@@ -217,10 +169,10 @@ export function CollectionGamePage() {
                 <h2 className="text-xl text-muted-foreground">{collection.title}</h2>
             </div>
             <TypingGame
-                key={`${mode}-${retryCount}`}
+                key={mode}
                 challenges={challenges}
                 freeInput={collection.freeInput}
-                initialQuestionId={isRetryPhase ? undefined : (questionId ? String(questionId) : undefined)}
+                initialQuestionId={questionId ? String(questionId) : undefined}
                 onQuestionChange={(newId) => {
                     const numericId = Number(newId)
                     const isNumeric = !isNaN(numericId) && newId.trim() !== ''
@@ -232,14 +184,8 @@ export function CollectionGamePage() {
                         replace: true,
                     })
                 }}
-                onFinished={mode === 'srs' ? handleFinished : undefined}
-                srsContext={mode === 'srs' ? {
-                    collectionId: collection.id,
-                    totalDue: challenges.length,
-                    cardsCompleted: completedCount,
-                    isRetry: isRetryPhase,
-                    onCardResult: handleCardResult,
-                } : undefined}
+                onFinished={mode === 'srs' ? goToPicker : undefined}
+                srsContext={mode === 'srs' ? { collectionId: collection.id } : undefined}
             />
         </main>
     )
