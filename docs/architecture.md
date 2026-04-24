@@ -1,108 +1,57 @@
-# Architecture Documentation
+# Architecture
 
-## 1. High-Level Overview
+LangType is a **translation typing app** — users see source text and must type the correct translation. Built on **TanStack Start** (Vite-based full-stack React), deployed to Cloudflare Pages via Nitro.
 
-**LangType** is a typing application designed for language learners. It differs from standard typing tests by focusing on **translation accuracy** rather than just speed. Users are presented with a source text and must type the correct translation.
-
-### Core Goals
-- **Maintainability**: Clear separation of concerns via a Layer-First architecture.
-- **Reliability**: A strong focus on TDD (Test-Driven Development) covering logic, components, and user flows.
-- **Performance**: Leveraging TanStack Start's SSR and Cloudflare Workers for global edge deployment.
-
-## 2. Technology Stack
-
-| Category | Technology | Reasoning |
-| :--- | :--- | :--- |
-| **Framework** | TanStack Start (Vite) | Full-stack React framework with SSR, file-based routing, and edge deployment. |
-| **Language** | TypeScript | Type safety, self-documenting code. |
-| **Styling** | Tailwind CSS v4 | Utility-first, consistently fast development. |
-| **Global State** | Zustand | Lightweight, simple API for client-only state (e.g., game progress). |
-| **Server State** | TanStack Query v5 | Powerful caching, deduping, and background updates for API data. |
-| **Deployment** | Cloudflare Pages | Edge deployment via Nitro + Cloudflare Workers. |
-| **Unit Testing** | Vitest | Fast, Vite-native runner compatible with Jest API. |
-| **Component Testing** | React Testing Library | Testing implementation details (user behavior), not internals. |
-| **E2E Testing** | Playwright | Reliable end-to-end testing for critical user journeys. |
-
-## 3. Directory Structure (Layer-First)
-
-We utilize a **Layer-First** architecture to group code by its technical role.
+## Layer-First Structure
 
 ```
 src/
-├── routes/              # TanStack Router (Routing layer)
-│   ├── __root.tsx       # Root layout & HTML shell
-│   ├── index.tsx        # Home page route
-│   └── collections.$id.tsx  # Dynamic collection route
-│
-├── components/          # Shared UI Components (Presentation layer)
-│   ├── ui/              # Dumb/Generic components (Button, Input)
-│   ├── domain/          # Business logic aware components (TypingGame)
-│   └── features/        # Feature-specific composite components
-│
-├── hooks/               # Logic isolation (Logic layer)
-│   └── useGameEngine.ts # Example: core typing logic
-│
-├── services/            # Data Access (Data layer)
-│   └── challengeService.ts  # Collection data loading
-│
-├── store/               # Global State (State layer)
-│   └── useStore.ts      # Zustand stores
-│
-├── data/                # Static data files
-│   └── collections/     # JSON collection files
-│
-├── lib/                 # Shared Utilities
-│   └── utils.ts
-│
-└── router.tsx           # Router configuration
+├── routes/           # TanStack Router file-based routes (Routing layer)
+├── components/       # ui/ (generic), domain/ (business-aware), features/ (composite)
+├── hooks/            # Complex logic extracted into custom hooks (Logic layer)
+├── services/         # Data access — currently static JSON loading (Data layer)
+├── store/            # Zustand global state — SRS cards + play history, persisted to IndexedDB
+├── data/collections/ # Static JSON challenge files (loaded via Vite glob)
+└── lib/              # Shared utilities (stringUtils, cn helper)
 ```
 
-## 4. Key Concepts
+## Core Data Flow
 
-### Routing
-TanStack Router uses **file-based routing** with type-safe route definitions:
-- `src/routes/__root.tsx` - Root layout with `<HeadContent />` and `<Scripts />`
-- `src/routes/index.tsx` - Home page (`/`)
-- `src/routes/collections.$id.tsx` - Dynamic route (`/collections/:id`)
+Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled challenges passed as props → `TypingGame` component → `useTypingEngine` hook → `stringUtils` for input processing → URL state synced via `useUrlSync`.
 
-### State Management
-We separate state into two categories:
-1.  **Server State**: Data that lives on the server (e.g., text content, user profile). Managed by **TanStack Query**.
-2.  **Client State**: Ephemeral UI state (e.g., current wpm, typed characters). Managed by **Zustand**.
+## Key Modules
 
-### Data Fetching
-- **Route Loaders**: Fetch data in `loader` functions that run server-side.
-- **Static Imports**: For build-time data, use static JSON imports bundled by Vite.
-- **Client Components**: Use `useQuery` hooks to fetch or revalidate data on interaction.
+**`useTypingEngine`** (`src/hooks/useTypingEngine.ts`) — The central game hook. Manages the full status lifecycle: `'typing'` → `'submitted'` (on incorrect) or `'completed'` (on correct) → 5-second countdown → auto-advance to next challenge. Uses `stringUtils` for all input matching logic.
 
-## 5. Build & Deployment
+**`stringUtils`** (`src/lib/stringUtils.ts`) — Contains the most complex logic. Key behaviors:
+- `parseSentence`: Parses challenge sentences, extracting pre-filled characters (content inside parentheses like `(hint)` is auto-filled for the user)
+- `autoMatchSpacing`: Auto-inserts spaces, punctuation, and pre-filled chars so users skip them automatically
+- Flexible matching: a submission is accepted even if trailing characters are all auto-insertable (`isFlexibleMatch`)
+- Smart case handling: auto-capitalizes first character when appropriate
+- `setInputDirect`: Bypasses `autoMatchSpacing` — used by free input mode to pass the fully assembled answer directly
 
-### Development
-```bash
-npm run dev      # Start Vite dev server
-```
+**`challengeService`** (`src/services/challengeService.ts`) — Loads JSON collections at build time using `import.meta.glob`. No runtime API calls; all data is statically bundled.
 
-### Production Build
-```bash
-npm run build    # Build for Cloudflare Pages
-```
+**`useUrlSync`** (`src/hooks/useUrlSync.ts`) — Keeps `questionId` in the URL query string, enabling deep-linking and browser back/forward navigation.
 
-Output structure:
-- `dist/` - Static assets + Cloudflare worker
-- `dist/_worker.js/` - Edge worker bundle
+## Zustand Store (`src/store/useSRSStore.ts`)
 
-### Deployment
-```bash
-npx wrangler --cwd dist/ pages deploy
-```
+Persisted to IndexedDB via `idb-keyval` under the key `langtype-srs-v1`. Only `cards` and `lastPlayedAt` are persisted; `_hasHydrated` is runtime-only.
 
-## 6. Testing Strategy
+| Field | Type | Purpose |
+|---|---|---|
+| `cards` | `Record<"colId:chalId", SRSCard>` | Per-card SRS state, keyed `collectionId:challengeId` |
+| `lastPlayedAt` | `Record<colId, ms>` | Timestamp of last play per collection, used for home-page sort |
+| `_hasHydrated` | `boolean` | Set to `true` after IndexedDB rehydration; gates sort order and due counts to prevent flicker |
 
-We follow a TDD approach with three tiers:
+**`SRSCard` fields**: `interval` (days), `repetitions` (consecutive correct), `easeFactor` (starts 2.5, min 1.3), `nextReviewAt` (ms; 0 = new card), `lastReviewedAt` (ms; 0 = never reviewed).
 
-1.  **Logic (Unit Tests)**: Test complex logic (hooks, utils) in isolation using Vitest.
-    *   *Example*: Verify `calculateWPM()` returns correct values.
-2.  **Interaction (Component Tests)**: Test that components render and respond to user events using Vitest + RTL.
-    *   *Example*: Verify typing into `TypingInput` updates the visual display.
-3.  **Flow (E2E Tests)**: Test complete user journeys using Playwright.
-    *   *Example*: A user can start a game, type a sentence, and see their score.
+Storage uses `skipHydration: true` — the route must call `useSRSStore.persist.rehydrate()` manually (done in `__root.tsx`).
+
+## Challenge Data Format
+
+`Challenge` type: `id` (required), `translation` (required), `original` (optional — when absent no source sentence is shown). `Collection.challenges` is also optional (loaded separately when needed).
+
+JSON files in `src/data/collections/` define challenge sets. Parentheses in answer strings mark pre-filled hints: `"(The) quick brown fox"` — `"The"` is pre-filled.
+
+Raw source CSVs live in `src/data/collections/raw/` (gitignored). Generation scripts are in `scripts/` (gitignored). Only the final JSON files are committed.
