@@ -109,6 +109,7 @@ export function CollectionGamePage() {
         if (mode !== 'srs') {
             setRetryCount(0)
             setMissedIds([])
+            setCompletedCount(0)
             pendingMissedIds.current = []
         }
     }, [mode])
@@ -132,6 +133,10 @@ export function CollectionGamePage() {
             setCompletedCount(0)
             setMissedIds(missed)
             setRetryCount((c) => c + 1)
+            // Clear questionId so the retry phase always starts at index 0.
+            // Without this, a stale questionId from the previous phase could jump
+            // the retry list to a non-zero index, silently skipping earlier cards.
+            navigate({ search: (prev) => ({ mode: prev.mode }), replace: true })
         } else {
             goToPicker()
         }
@@ -215,7 +220,7 @@ export function CollectionGamePage() {
                 key={`${mode}-${retryCount}`}
                 challenges={challenges}
                 freeInput={collection.freeInput}
-                initialQuestionId={questionId ? String(questionId) : undefined}
+                initialQuestionId={isRetryPhase ? undefined : (questionId ? String(questionId) : undefined)}
                 onQuestionChange={(newId) => {
                     const numericId = Number(newId)
                     const isNumeric = !isNaN(numericId) && newId.trim() !== ''

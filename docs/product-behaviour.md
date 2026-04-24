@@ -37,7 +37,8 @@ Back button always navigates to `?` (clears params) → mode picker. Retry state
     ↓
 [handleFinished — last card done]
   if pendingMissedIds.length > 0:
-    → setMissedIds, retryCount++ → challenges recomputes → TypingGame re-mounts (isRetry=true)
+    → setMissedIds, retryCount++ → navigate clears questionId (replace:true, keeps mode)
+    → challenges recomputes → TypingGame re-mounts (isRetry=true, initialQuestionId=undefined)
   else:
     → goToPicker()
     ↓

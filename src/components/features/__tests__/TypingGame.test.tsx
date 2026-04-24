@@ -533,5 +533,106 @@ describe('TypingGame', () => {
             expect(screen.getByText('World')).toBeInTheDocument()
             expect(onFinished).not.toHaveBeenCalled()
         })
+
+        it('calls onFinished exactly once even well past the timer expiry', () => {
+            const onFinished = vi.fn()
+            render(<TypingGame challenges={singleChallenge} onFinished={onFinished} />)
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(30000) })
+
+            expect(onFinished).toHaveBeenCalledOnce()
+        })
+
+        it('calls onCardResult before onFinished for the last correct card in SRS mode', () => {
+            const callOrder: string[] = []
+            const onCardResult = vi.fn(() => callOrder.push('onCardResult'))
+            const onFinished = vi.fn(() => callOrder.push('onFinished'))
+
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'Hallo' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            fireEvent.click(screen.getByText('1d'))
+            act(() => { vi.advanceTimersByTime(2100) })
+
+            expect(callOrder).toEqual(['onCardResult', 'onFinished'])
+        })
+
+        it('calls onCardResult before onFinished for the last incorrect card in SRS mode', () => {
+            const callOrder: string[] = []
+            const onCardResult = vi.fn(() => callOrder.push('onCardResult'))
+            const onFinished = vi.fn(() => callOrder.push('onFinished'))
+
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    onFinished={onFinished}
+                    srsContext={{ collectionId: 'col', totalDue: 1, onCardResult }}
+                />
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'wrong' } })
+            act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
+            act(() => { vi.advanceTimersByTime(5100) })
+
+            expect(callOrder).toEqual(['onCardResult', 'onFinished'])
+        })
+    })
+
+    describe('counter display', () => {
+        it('shows accurate remaining count as cardsCompleted prop increases', () => {
+            const { rerender } = render(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 0 }}
+                />
+            )
+            expect(screen.getByText('3 cards remaining')).toBeInTheDocument()
+
+            rerender(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 1 }}
+                />
+            )
+            expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
+
+            rerender(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 2 }}
+                />
+            )
+            expect(screen.getByText('1 card remaining')).toBeInTheDocument()
+
+            rerender(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 3 }}
+                />
+            )
+            expect(screen.getByText('0 cards remaining')).toBeInTheDocument()
+        })
+
+        it('never shows a negative count', () => {
+            render(
+                <TypingGame
+                    challenges={challenges}
+                    srsContext={{ collectionId: 'col', totalDue: 3, cardsCompleted: 5 }}
+                />
+            )
+            expect(screen.getByText('0 cards remaining')).toBeInTheDocument()
+        })
     })
 })
