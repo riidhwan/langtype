@@ -7,13 +7,25 @@ LangType is a **translation typing app** — users see source text and must type
 ```
 src/
 ├── routes/           # TanStack Router file-based routes (Routing layer)
-├── components/       # ui/ (generic), domain/ (business-aware), features/ (composite)
+├── components/       # See component layers below
 ├── hooks/            # Complex logic extracted into custom hooks (Logic layer)
 ├── services/         # Data access — currently static JSON loading (Data layer)
 ├── store/            # Zustand global state — SRS cards + play history, persisted to IndexedDB
 ├── data/collections/ # Static JSON challenge files (loaded via Vite glob)
 └── lib/              # Shared utilities (stringUtils, cn helper)
 ```
+
+## Component Layers
+
+`components/` has three sublayers — placement is determined by how much business knowledge a component needs:
+
+| Sublayer | Rule | Examples |
+|---|---|---|
+| `ui/` | Generic, zero business logic, reusable anywhere | `Button`, `Input`, `icons.tsx` |
+| `domain/` | Business-aware but self-contained — knows about `Challenge`, `Status`, SRS concepts | `VisualTranslationInput`, `SRSProgressView`, `IntervalPills` |
+| `features/` | Composite — wires domain components and hooks into a full user-facing unit | `TypingGame`, `ModePicker` |
+
+A component that needs to call `useTypingEngine` or `useSRSStore` belongs in `features/`. A component that only receives typed props (even domain types) belongs in `domain/`.
 
 ## Core Data Flow
 
@@ -28,11 +40,24 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 - `autoMatchSpacing`: Auto-inserts spaces, punctuation, and pre-filled chars so users skip them automatically
 - Flexible matching: a submission is accepted even if trailing characters are all auto-insertable (`isFlexibleMatch`)
 - Smart case handling: auto-capitalizes first character when appropriate
-- `setInputDirect`: Bypasses `autoMatchSpacing` — used by free input mode to pass the fully assembled answer directly
 
 **`challengeService`** (`src/services/challengeService.ts`) — Loads JSON collections at build time using `import.meta.glob`. No runtime API calls; all data is statically bundled.
 
+**`useTypingEngine`** also exposes `setInputDirect` — bypasses `autoMatchSpacing` entirely and sets the input value directly. Used exclusively by free input mode, which assembles the full answer string itself before passing it to the engine.
+
 **`useUrlSync`** (`src/hooks/useUrlSync.ts`) — Keeps `questionId` in the URL query string, enabling deep-linking and browser back/forward navigation.
+
+## Free Input Mode vs Slot Mode
+
+`VisualTranslationInput` has two render paths, switched by the `freeInput` prop (sourced from `Collection.freeInput`):
+
+**Slot mode** (default) — renders one `[char-slot]` box per character. Character count is visible to the user.
+
+**Free input mode** — `buildSegments()` (inside `VisualTranslationInput`) splits `targetText` into alternating segments using `isFreebie`:
+- `prefilled` segments render as static muted text (the pre-filled hints from parentheses)
+- `gap` segments render as a growing underline input — character count is hidden
+
+Because `autoMatchSpacing` would incorrectly consume gap characters that match pre-filled text between gaps, free input mode bypasses it entirely: each gap has its own internal state (`gapValues`), and `buildFullAnswer` assembles them with the pre-filled segments at the correct positions before calling `setInputDirect`.
 
 ## Zustand Store (`src/store/useSRSStore.ts`)
 

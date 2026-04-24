@@ -2,22 +2,164 @@
 
 ## TypeScript
 
-Strict mode. Use `interface` for object shapes, `type` for unions. Never use `any`.
+Strict mode. `interface` for object shapes, `type` for unions and aliases. Never use `any`. Use `unknown` at system boundaries and narrow explicitly.
+
+Path alias: `@/*` → `src/*`. Always use it for imports outside the current directory.
+
+```typescript
+// correct
+import { cn } from '@/lib/utils'
+import type { Challenge } from '@/types/challenge'
+
+// wrong
+import { cn } from '../../lib/utils'
+```
 
 ## Components
 
-Functional only. Each has a `Props` interface. Use `cn()` (clsx + tailwind-merge) for conditional classNames.
+Functional only. Every component has a `Props` interface named exactly `Props`, placed directly above the function:
+
+```typescript
+interface Props {
+    value: string
+    status: Status
+    onChange: (value: string) => void
+    onSubmit: () => void
+}
+
+export function VisualTranslationInput({ value, status, onChange, onSubmit }: Props) {
+```
+
+- Destructure props in the signature, not inside the body
+- Named export (not default)
+- For HTML element wrappers, extend from React's own types:
+  ```typescript
+  interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
+  ```
+
+Use `cn()` from `@/lib/utils` for all conditional class names. Base classes first, overrides last:
+
+```typescript
+className={cn(
+    'border rounded-[var(--radius)] font-mono text-sm',
+    isCorrect && 'border-[var(--correct)] text-[var(--correct)]',
+    className
+)}
+```
+
+Event handler props are named `on[Action]` and typed with explicit payloads:
+
+```typescript
+onCardResult: (challengeId: string, passed: boolean) => void
+onFinished: () => void
+```
 
 ## Hooks
 
-Extract all non-trivial logic from components into custom hooks.
+Organise the body in this order:
+
+1. `useState` and `useRef` declarations
+2. `useMemo` for values derived from props/state
+3. `useEffect` blocks
+4. Helper functions (callbacks, event handlers)
+5. Return object
+
+```typescript
+export function useTypingEngine(sentences: string[]) {
+    // 1 — state
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [input, setInput] = useState('')
+    const [status, setStatus] = useState<Status>('typing')
+    const hasRecordedRef = useRef(false)
+
+    // 2 — derived
+    const parsed = useMemo(() => sentences.map(parseSentence), [sentences])
+    const { text: currentSentence, preFilledIndices } = parsed[currentIndex]
+
+    // 3 — effects
+    useEffect(() => { ... }, [currentIndex])
+
+    // 4 — helpers
+    const submit = () => { ... }
+    const setInputDirect = (value: string) => { ... }
+
+    // 5 — return
+    return { input, setInput, setInputDirect, submit, status, currentSentence, preFilledIndices }
+}
+```
+
+## Utilities (`src/lib/`)
+
+Only pure functions, no internal state. File layout:
+
+```
+constants → types/interfaces → exported functions → private helpers (no export)
+```
+
+All exported functions have a one-line JSDoc comment when the behaviour is non-obvious. Use `export function`, never `export default`.
+
+## Zustand Store
+
+Split state and actions into two interfaces, then combine:
+
+```typescript
+interface SRSState {
+    cards: Record<string, SRSCard>
+    lastPlayedAt: Record<string, number>
+    _hasHydrated: boolean          // underscore = internal flag
+}
+
+interface SRSActions {
+    recordReview: (colId: string, chalId: string, grade: SRSGrade) => void
+    setHasHydrated: (v: boolean) => void
+}
+
+export type SRSStore = SRSState & SRSActions
+```
+
+In components, selectors are always inline lambdas — never select the whole store:
+
+```typescript
+const cards = useSRSStore((s) => s.cards)
+const recordReview = useSRSStore((s) => s.recordReview)
+```
+
+`skipHydration: true` is set in the persist config; the root route calls `useSRSStore.persist.rehydrate()` manually to control timing and prevent sort-order flicker.
+
+## Route Files
+
+```typescript
+export const Route = createFileRoute('/collections/$id')({
+    component: CollectionPage,
+    loader: async ({ params }) => {
+        const collection = await getCollection(params.id)
+        if (!collection) throw notFound()
+        return collection
+    },
+    validateSearch: (search: Record<string, unknown>) => { ... },
+})
+
+export function CollectionPage() {
+    const collection = Route.useLoaderData()
+    const { mode, view } = Route.useSearch()
+    const navigate = useNavigate({ from: Route.fullPath })
+```
+
+- Loader throws `notFound()` for missing resources — never returns `null`
+- `validateSearch` type-guards all URL params; default to `undefined` for missing ones
+- Component is a named export so tests can render it directly
+- Use `Route.useLoaderData()` and `Route.useSearch()`, not the generic hooks
 
 ## Naming
 
-- Components: `PascalCase`
-- Hooks/utils: `camelCase` prefixed `use`
-- Constants: `UPPER_SNAKE_CASE`
-- Route files: `lowercase.$param.tsx`
+| Thing | Convention |
+|---|---|
+| Components | `PascalCase` |
+| Hooks | `camelCase` prefixed `use` |
+| Utilities / helpers | `camelCase` |
+| Constants | `UPPER_SNAKE_CASE` |
+| Route files | `lowercase.$param.tsx` |
+| Internal store flags | `_camelCase` (underscore prefix) |
 
 ## Git
 

@@ -1,15 +1,26 @@
 # LangType
 
-A typing application for language learners focused on **translation accuracy**. Unlike standard typing tests, users are presented with source text and must type the correct translation.
+A personal tool I built because I couldn't find an existing app that suited the way I learn German. It combines a typing-based drill — source text is shown and the correct German translation must be typed — with a spaced repetition system for flashcard-like review scheduling, except answers are always typed rather than self-evaluated. Designed specifically around the vocabulary and grammar patterns I'm currently studying. Live at [typing.ramdhani.me](https://typing.ramdhani.me).
+
+It is unlikely to be useful to anyone else in its current form. That said, the development approach and backlog are oriented toward generic use cases, and the app will most likely evolve into something more broadly applicable over time.
+
+The app is fully client-side. There is no backend or server-side logic — all data is statically bundled and state is persisted locally in the browser. This is a deliberate choice to avoid operational maintenance, though it may change as the project grows.
+
+## Features
+
+- **Spaced Repetition (SRS)** — SM-2 algorithm with per-card intervals; missed cards are replayed in a retry phase at the end of each session
+- **Two input modes** — slot mode (one box per character) and free input mode (open text per gap, hides character count for harder recall)
+- **Tag filtering + search** — filter collections by tag or keyword on the home page
+- **Keyboard-first** — navigate entirely with keyboard; SRS interval selection via number keys 1–7
 
 ## Tech Stack
 
 - **Framework**: [TanStack Start](https://tanstack.com/start) (Vite-based full-stack React)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **State Management**: Zustand (client) + TanStack Query (server)
+- **Language**: TypeScript (strict)
+- **Styling**: Tailwind CSS v4 + CSS custom properties
+- **State**: Zustand (persisted to IndexedDB)
 - **Testing**: Vitest + React Testing Library + Playwright
-- **Deployment**: Cloudflare Pages via Nitro
+- **Deployment**: Cloudflare Pages
 
 ## Getting Started
 
@@ -54,10 +65,6 @@ src/
 └── types/           # TypeScript type definitions
 ```
 
-For detailed architecture and code style guidelines, see:
-- [Architecture Documentation](./docs/architecture.md)
-- [Code Style Guide](./docs/code_style.md)
-
 ## Build & Deployment
 
 ### Production Build
@@ -66,21 +73,65 @@ For detailed architecture and code style guidelines, see:
 npm run build
 ```
 
-Output will be in `.output/` directory with Cloudflare Worker bundle.
+Output will be in the `dist/` directory.
 
-### Deploy to Cloudflare Workers
+### Deploy to Cloudflare Pages
 
 ```bash
-npx wrangler deploy --cwd .output/server
+npx wrangler --cwd dist/ pages deploy
 ```
 
-## Learn More
+## License
 
-- [TanStack Start Documentation](https://tanstack.com/start)
-- [TanStack Router Documentation](https://tanstack.com/router)
-- [Tailwind CSS v4](https://tailwindcss.com)
-- [Cloudflare Pages](https://pages.cloudflare.com)
+[AGPL-3.0-only](./LICENSE)
 
-## Contributing
+## AI-Assisted Development
 
-Follow the established code style and testing practices. See [Code Style Guide](./docs/code_style.md) for conventions.
+All development is done through [Claude Code](https://claude.ai/code). The rules below govern how this workflow operates.
+
+### Docs are the source of truth
+
+Five documents in `docs/` are loaded into Claude's context on every session via `CLAUDE.md`. All code must conform to them. Deviations are treated as bugs, not style preferences.
+
+| File | Governs |
+|---|---|
+| `architecture.md` | Layer structure, data flow, component placement rules, key modules |
+| `conventions.md` | TypeScript rules, component/hook/store patterns, testing standards |
+| `design-system.md` | Theme tokens, typography scale, layout patterns — no hardcoded colours |
+| `product-behaviour.md` | Every user-facing flow, state machine, and edge case |
+| `vocabulary.md` | Agreed terms for pages, views, and concepts |
+
+### Use the vocabulary
+
+All prompts must use terms from `vocabulary.md`. Do not introduce informal or ad-hoc names for pages, views, or concepts. If a new concept enters the project, extend `vocabulary.md` first, then use the term.
+
+### Plan before implement
+
+For any non-trivial change, Claude must enter plan mode: explore the codebase, write a structured plan file, and receive explicit approval before writing any code. Implementation does not begin until the plan is signed off.
+
+Non-trivial manual code changes made outside this workflow are heavily discouraged. They bypass the planning cycle, skip doc updates, and drift from established patterns — breaking the contract between the code and the docs.
+
+Commits must also be made by Claude, not manually. This ensures the commit message accurately reflects what actually changed, following the Conventional Commits standard enforced by the project.
+
+### Keep the docs current
+
+Every doc must reflect the current state of the codebase. Updates happen in the same session as the code change, not later.
+
+- New code pattern (component structure, hook convention, store pattern) → update `conventions.md` or `architecture.md`
+- New token, utility class, or layout pattern in `globals.css` → update `design-system.md`
+- Any user-facing flow added, removed, or changed → update `product-behaviour.md`
+- New concept introduced → update `vocabulary.md`
+
+### Write tests as part of every task
+
+Tests are not added after the fact. For every implementation, Claude determines whether unit tests, E2E tests, or both are required, and writes them before closing the task. Bug fixes must include a regression test. When behaviour changes, the tests change with it.
+
+### Cross-session memory
+
+Claude maintains a persistent memory store scoped to this project. Workflow rules, user preferences, and past decisions are stored there and applied automatically across sessions without re-briefing.
+
+### The developer's role
+
+The developer's responsibility in this workflow is supervision, review, testing, and improving the development workflow — not writing code. Every change Claude produces must be read, evaluated, and tested by the developer before it is accepted.
+
+Knowledge of clean code principles, the technology stack, security practices, and software engineering best practices is required — not to write the implementation, but to evaluate it. The developer must be capable of identifying flawed architecture, security issues, and patterns that will cause problems at scale. The quality of the codebase is bounded by the developer's ability to review and course-correct.
