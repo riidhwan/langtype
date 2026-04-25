@@ -178,6 +178,7 @@ describe('SRSProgressView', () => {
 
     it('does not show due count in summary when there are no due cards', () => {
         render(<SRSProgressView collection={collection} onBack={vi.fn()} />)
+        // eslint-disable-next-line sonarjs/slow-regex
         expect(screen.queryByText(/\d+ due/)).not.toBeInTheDocument()
     })
 })

@@ -253,8 +253,6 @@ export function VisualTranslationInput({
                                             : "border-b-[var(--incorrect)] bg-[var(--incorrect-bg)] text-[var(--incorrect)]"
                                     } else if (isTyped) {
                                         statusColor = "border-foreground text-foreground"
-                                    } else if (isPreFilled) {
-                                        statusColor = "border-muted-foreground/30 text-muted-foreground"
                                     }
 
                                     return (

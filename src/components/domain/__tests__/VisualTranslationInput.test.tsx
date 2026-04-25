@@ -66,8 +66,7 @@ describe('VisualTranslationInput', () => {
         render(<VisualTranslationInput {...defaultProps} onSubmit={undefined} />)
 
         const input = screen.getByRole('textbox')
-        // Should not throw
-        fireEvent.keyDown(input, { key: 'Enter' })
+        expect(() => fireEvent.keyDown(input, { key: 'Enter' })).not.toThrow()
     })
 
     it('renders spacers for spaces in target text', () => {

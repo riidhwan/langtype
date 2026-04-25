@@ -77,6 +77,31 @@ function shouldAppendFreebie(
     return willNeedMore
 }
 
+// Returns true when a typed freebie char is ambiguous — the user may have intended
+// it to match the next normal character rather than this freebie.
+function isAmbiguousFreebieConsumption(
+    inputIndex: number,
+    inputChars: string[],
+    targetIndex: number,
+    targetChar: string,
+    target: string,
+    preFilledIndices?: Set<number>,
+): boolean {
+    const isLastTypedChar = inputIndex === inputChars.length - 1
+    const nextNormal = findNextNormalChar(targetIndex + 1, target, preFilledIndices)
+    return isLastTypedChar && nextNormal !== null && nextNormal.char.toLowerCase() === targetChar.toLowerCase()
+}
+
+// Lowercases the input char when it is the first real character and the target
+// expects lowercase, so users who type capital letters are silently corrected.
+function applySmartCase(inputChar: string, targetChar: string, resultSoFar: string): string {
+    const isFirstChar = resultSoFar.length === 0 || !resultSoFar.trim()
+    if (isFirstChar && inputChar.toLowerCase() === targetChar.toLowerCase() && targetChar !== targetChar.toUpperCase()) {
+        return inputChar.toLowerCase()
+    }
+    return inputChar
+}
+
 /**
  * Formats the raw input to match the spacing of the target string.
  * This is the core engine for automatic punctuation, spacing and pre-filling.
@@ -100,34 +125,13 @@ export function autoMatchSpacing(rawInput: string, target: string, preFilledIndi
 
             result += targetChar
 
-            if (matchesInput) {
-                // Determine if we should consume the input character.
-                // It's ambiguous if the user typed a char that matches this freebie
-                // but actually intended it to match the next normal character.
-                const isLastTypedChar = inputIndex === inputChars.length - 1
-                const nextNormal = findNextNormalChar(i + 1, target, preFilledIndices)
-                const isAmbiguous = isLastTypedChar && nextNormal && nextNormal.char.toLowerCase() === targetChar.toLowerCase()
-
-                if (!isAmbiguous) {
-                    inputIndex++
-                }
+            if (matchesInput && !isAmbiguousFreebieConsumption(inputIndex, inputChars, i, targetChar, target, preFilledIndices)) {
+                inputIndex++
             }
         } else {
-            // Normal character processing
             if (!hasMoreInput) break
 
-            const inputChar = inputChars[inputIndex]
-
-            // Smart Case: Lowercase first non-spacing char if target expects it
-            const isFirstChar = result.length === 0 || !result.trim()
-            let processedChar = inputChar
-            if (isFirstChar &&
-                inputChar.toLowerCase() === targetChar.toLowerCase() &&
-                targetChar !== targetChar.toUpperCase()) {
-                processedChar = inputChar.toLowerCase()
-            }
-
-            result += processedChar
+            result += applySmartCase(inputChars[inputIndex], targetChar, result)
             inputIndex++
         }
     }
