@@ -47,6 +47,6 @@ Agreed terms for pages, views, and concepts. Use these consistently when discuss
 | Term | Description |
 |---|---|
 | **SRS session** | A review run using `?mode=srs` |
-| **Interval pills** | The 1–7 buttons (ASAP → 1w) shown after a correct answer in SRS mode |
+| **Interval pills** | The 1–9 buttons (ASAP → 2w) shown after a correct answer in SRS mode |
 | **Due cards** | Cards whose review date has passed |
 | **Retry phase** | After finishing a session, cards answered wrong are replayed |

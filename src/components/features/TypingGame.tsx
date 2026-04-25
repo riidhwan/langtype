@@ -23,7 +23,7 @@ interface Props {
     freeInput?: boolean
 }
 
-const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
+const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '3h', '6h', '12h', '1d', '3d', '1w', '2w']
 
 function reinsertChallenge(queue: Challenge[], fromIndex: number, challenge: Challenge): Challenge[] {
     const range = REINSERT_MAX - REINSERT_MIN + 1
@@ -263,7 +263,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                                         ))}
                                     </div>
                                     <p className="text-[11px] text-muted-foreground font-mono mt-1">
-                                        or press <span className="text-foreground">1–7</span>
+                                        or press <span className="text-foreground">1–9</span>
                                     </p>
                                 </div>
                             )

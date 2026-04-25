@@ -223,7 +223,7 @@ describe('TypingGame', () => {
             act(() => { fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' }) })
         }
 
-        it('shows "✓ correct" and all 7 interval pills after correct answer in SRS mode', () => {
+        it('shows "✓ correct" and all 9 interval pills after correct answer in SRS mode', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -235,11 +235,13 @@ describe('TypingGame', () => {
             expect(screen.getByText('Review again in:')).toBeInTheDocument()
             expect(screen.getByRole('button', { name: 'ASAP' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '1h' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '3h' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '6h' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '12h' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '1d' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '3d' })).toBeInTheDocument()
             expect(screen.getByRole('button', { name: '1w' })).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: '2w' })).toBeInTheDocument()
         })
 
         it('hides the countdown number while pills are shown', () => {
@@ -266,7 +268,7 @@ describe('TypingGame', () => {
             expect(screen.getByText('Review in ASAP ✓')).toBeInTheDocument()
         })
 
-        it('keyboard shortcut 7 selects 1w pill', () => {
+        it('keyboard shortcut 8 selects 1w pill', () => {
             render(
                 <TypingGame
                     challenges={singleChallenge}
@@ -274,8 +276,20 @@ describe('TypingGame', () => {
                 />
             )
             submitCorrect()
-            fireEvent.keyDown(window, { key: '7' })
+            fireEvent.keyDown(window, { key: '8' })
             expect(screen.getByText('Review in 1w ✓')).toBeInTheDocument()
+        })
+
+        it('keyboard shortcut 9 selects 2w pill', () => {
+            render(
+                <TypingGame
+                    challenges={singleChallenge}
+                    srsContext={{ collectionId: 'col' }}
+                />
+            )
+            submitCorrect()
+            fireEvent.keyDown(window, { key: '9' })
+            expect(screen.getByText('Review in 2w ✓')).toBeInTheDocument()
         })
 
         it('does NOT auto-advance without a pill click (timer is paused)', () => {
