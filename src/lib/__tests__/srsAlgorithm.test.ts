@@ -6,11 +6,13 @@ import {
     isCardDue,
     getDueChallengeIds,
     getNextReviewTime,
+    getQueueLoadBuckets,
 } from '../srsAlgorithm'
 import type { SRSCard } from '@/types/srs'
 
 const NOW = 1_000_000_000_000 // fixed timestamp for deterministic tests
 const DAY = 86_400_000
+const HOUR = 3_600_000
 
 function makeCard(overrides: Partial<SRSCard> = {}): SRSCard {
     return {
@@ -256,5 +258,70 @@ describe('getNextReviewTime', () => {
 
     it('returns null when no challenges are provided', () => {
         expect(getNextReviewTime('col', [], {}, NOW)).toBeNull()
+    })
+})
+
+describe('getQueueLoadBuckets', () => {
+    it('returns 8 buckets with correct labels', () => {
+        const result = getQueueLoadBuckets('col', [], {}, NOW)
+        expect(result).toHaveLength(8)
+        expect(result.map(b => b.label)).toEqual(
+            ['< 1h', '< 3h', '< 6h', '< 12h', '< 1d', '< 3d', '< 1w', '< 2w']
+        )
+    })
+
+    it('returns all zeros when no cards exist', () => {
+        const result = getQueueLoadBuckets('col', ['a', 'b'], {}, NOW)
+        expect(result.every(b => b.count === 0)).toBe(true)
+    })
+
+    it('excludes new cards (lastReviewedAt === 0)', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: 0, nextReviewAt: NOW + HOUR / 2 }) }
+        expect(getQueueLoadBuckets('col', ['a'], cards, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('excludes currently due/overdue cards (nextReviewAt <= now)', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW - 1 }) }
+        expect(getQueueLoadBuckets('col', ['a'], cards, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('places a card in the < 1h bucket', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR / 2 }) }
+        const result = getQueueLoadBuckets('col', ['a'], cards, NOW)
+        expect(result[0].count).toBe(1)
+        expect(result.slice(1).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('places a card at exactly the 1h upper boundary in < 1h', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR }) }
+        expect(getQueueLoadBuckets('col', ['a'], cards, NOW)[0].count).toBe(1)
+    })
+
+    it('places a card 1ms past 1h in < 3h', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR + 1 }) }
+        const result = getQueueLoadBuckets('col', ['a'], cards, NOW)
+        expect(result[0].count).toBe(0)
+        expect(result[1].count).toBe(1)
+    })
+
+    it('ignores cards beyond 2w', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + 15 * DAY }) }
+        expect(getQueueLoadBuckets('col', ['a'], cards, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('counts a card exactly at the 2w boundary in < 2w', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + 14 * DAY }) }
+        expect(getQueueLoadBuckets('col', ['a'], cards, NOW)[7].count).toBe(1)
+    })
+
+    it('distributes multiple cards across multiple buckets', () => {
+        const cards = {
+            'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR / 2 }),  // < 1h
+            'col:b': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR / 2 }),  // < 1h
+            'col:c': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + DAY }),        // < 1d
+        }
+        const result = getQueueLoadBuckets('col', ['a', 'b', 'c'], cards, NOW)
+        expect(result[0].count).toBe(2) // < 1h
+        expect(result[4].count).toBe(1) // < 1d
     })
 })

@@ -1,4 +1,5 @@
-import type { SRSCard, SRSGrade } from '@/types/srs'
+import type { SRSCard, SRSGrade, SRSIntervalChoice } from '@/types/srs'
+import { SRS_INTERVAL_DAYS } from '@/types/srs'
 
 const INITIAL_EASE_FACTOR = 2.5
 const MIN_EASE_FACTOR = 1.3
@@ -108,6 +109,36 @@ export function getDueChallengeIds(
         const card = cards[`${collectionId}:${id}`]
         return !card || isCardDue(card, now)
     })
+}
+
+const BUCKET_CHOICES: SRSIntervalChoice[] = ['1h', '3h', '6h', '12h', '1d', '3d', '1w', '2w']
+
+export type BucketCounts = Array<{ label: string; count: number }>
+
+export function getQueueLoadBuckets(
+    collectionId: string,
+    challengeIds: string[],
+    cards: Record<string, SRSCard>,
+    now: number = Date.now(),
+): BucketCounts {
+    const counts = BUCKET_CHOICES.map((choice) => ({ label: `< ${choice}`, count: 0 }))
+
+    for (const id of challengeIds) {
+        const card = cards[`${collectionId}:${id}`]
+        if (!card || card.lastReviewedAt === 0) continue
+        if (card.nextReviewAt <= now) continue
+
+        for (let i = 0; i < BUCKET_CHOICES.length; i++) {
+            const prevMs = i === 0 ? 0 : SRS_INTERVAL_DAYS[BUCKET_CHOICES[i - 1]] * MS_PER_DAY
+            const curMs = SRS_INTERVAL_DAYS[BUCKET_CHOICES[i]] * MS_PER_DAY
+            if (card.nextReviewAt > now + prevMs && card.nextReviewAt <= now + curMs) {
+                counts[i].count++
+                break
+            }
+        }
+    }
+
+    return counts
 }
 
 export function getNextReviewTime(

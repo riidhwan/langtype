@@ -4,6 +4,7 @@ import { TypingGame } from '@/components/features/TypingGame'
 import { ModePicker } from '@/components/features/ModePicker'
 import { SRSAllDoneScreen } from '@/components/features/SRSAllDoneScreen'
 import { SRSProgressView } from '@/components/features/SRSProgressView'
+import { SRSQueuePanel } from '@/components/features/SRSQueuePanel'
 import { useEffect, useMemo } from 'react'
 import { shuffleArray } from '@/lib/utils'
 import { useSRSStore } from '@/store/useSRSStore'
@@ -187,6 +188,12 @@ export function CollectionGamePage() {
                 onFinished={mode === 'srs' ? goToPicker : undefined}
                 srsContext={mode === 'srs' ? { collectionId: collection.id } : undefined}
             />
+            {mode === 'srs' && (
+                <SRSQueuePanel
+                    collectionId={collection.id}
+                    allChallenges={collection.challenges ?? []}
+                />
+            )}
         </main>
     )
 }
