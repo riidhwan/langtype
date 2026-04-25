@@ -7,6 +7,7 @@ import {
     getDueChallengeIds,
     getNextReviewTime,
     getQueueLoadBuckets,
+    getAllCollectionsQueueLoadBuckets,
 } from '../srsAlgorithm'
 import type { SRSCard } from '@/types/srs'
 
@@ -323,5 +324,40 @@ describe('getQueueLoadBuckets', () => {
         const result = getQueueLoadBuckets('col', ['a', 'b', 'c'], cards, NOW)
         expect(result[0].count).toBe(2) // < 1h
         expect(result[4].count).toBe(1) // < 1d
+    })
+})
+
+describe('getAllCollectionsQueueLoadBuckets', () => {
+    it('returns 8 buckets with correct labels', () => {
+        const result = getAllCollectionsQueueLoadBuckets({}, NOW)
+        expect(result).toHaveLength(8)
+        expect(result.map(b => b.label)).toEqual(
+            ['< 1h', '< 3h', '< 6h', '< 12h', '< 1d', '< 3d', '< 1w', '< 2w']
+        )
+    })
+
+    it('returns all zeros for an empty store', () => {
+        expect(getAllCollectionsQueueLoadBuckets({}, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('excludes new cards (lastReviewedAt === 0)', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: 0, nextReviewAt: NOW + HOUR / 2 }) }
+        expect(getAllCollectionsQueueLoadBuckets(cards, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('excludes currently due/overdue cards', () => {
+        const cards = { 'col:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW }) }
+        expect(getAllCollectionsQueueLoadBuckets(cards, NOW).every(b => b.count === 0)).toBe(true)
+    })
+
+    it('counts cards from multiple collections', () => {
+        const cards = {
+            'col1:a': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR / 2 }),  // < 1h
+            'col2:b': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + HOUR / 2 }),  // < 1h
+            'col3:c': makeCard({ lastReviewedAt: NOW - DAY, nextReviewAt: NOW + 3 * DAY }),   // < 3d
+        }
+        const result = getAllCollectionsQueueLoadBuckets(cards, NOW)
+        expect(result[0].count).toBe(2) // < 1h
+        expect(result[5].count).toBe(1) // < 3d
     })
 })

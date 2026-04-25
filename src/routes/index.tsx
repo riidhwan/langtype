@@ -5,6 +5,7 @@ import { useSRSStore } from '@/store/useSRSStore'
 import { isCardDue } from '@/lib/srsAlgorithm'
 import { cn } from '@/lib/utils'
 import { IconSearch, IconChevronRight } from '@/components/ui/icons'
+import { SRSQueuePanel } from '@/components/features/SRSQueuePanel'
 import { DEFAULT_HOME_TAG } from '@/config'
 
 export const Route = createFileRoute('/')({
@@ -172,6 +173,7 @@ export function Home() {
                     </div>
                 )}
             </div>
+            <SRSQueuePanel />
         </main>
     )
 }

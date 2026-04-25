@@ -141,6 +141,29 @@ export function getQueueLoadBuckets(
     return counts
 }
 
+export function getAllCollectionsQueueLoadBuckets(
+    cards: Record<string, SRSCard>,
+    now: number = Date.now(),
+): BucketCounts {
+    const counts = BUCKET_CHOICES.map((choice) => ({ label: `< ${choice}`, count: 0 }))
+
+    for (const card of Object.values(cards)) {
+        if (card.lastReviewedAt === 0) continue
+        if (card.nextReviewAt <= now) continue
+
+        for (let i = 0; i < BUCKET_CHOICES.length; i++) {
+            const prevMs = i === 0 ? 0 : SRS_INTERVAL_DAYS[BUCKET_CHOICES[i - 1]] * MS_PER_DAY
+            const curMs = SRS_INTERVAL_DAYS[BUCKET_CHOICES[i]] * MS_PER_DAY
+            if (card.nextReviewAt > now + prevMs && card.nextReviewAt <= now + curMs) {
+                counts[i].count++
+                break
+            }
+        }
+    }
+
+    return counts
+}
+
 export function getNextReviewTime(
     collectionId: string,
     challengeIds: string[],

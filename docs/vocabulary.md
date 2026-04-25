@@ -49,4 +49,4 @@ Agreed terms for pages, views, and concepts. Use these consistently when discuss
 | **SRS session** | A review run using `?mode=srs` |
 | **Interval pills** | The 1–9 buttons (ASAP → 2w) shown after a correct answer in SRS mode |
 | **Due cards** | Cards whose review date has passed |
-| **Retry phase** | After finishing a session, cards answered wrong are replayed |
+| **Queue panel** | Floating clock button (bottom-left, all pages) showing upcoming due counts bucketed by interval — single "all" column on the home page, plus a "here" column for the current collection during an SRS session |
