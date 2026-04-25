@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Critical Rules
+
+**Never run `git commit` or `git push` unless the user explicitly asks.** This applies even after completing a task, fixing lint, or running tests successfully. Wait to be asked.
+
 ## Commands
 
 ```bash
