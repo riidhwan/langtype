@@ -12,8 +12,19 @@ src/
 ├── services/         # Data access — currently static JSON loading (Data layer)
 ├── store/            # Zustand global state — SRS cards + play history, persisted to IndexedDB
 ├── data/collections/ # Static JSON challenge files (loaded via Vite glob)
-└── lib/              # Shared utilities (stringUtils, cn helper)
+├── lib/              # Shared utilities (stringUtils, cn helper)
+└── config.ts         # App-level tuneable constants (see below)
 ```
+
+## `src/config.ts` — Tuneable Constants
+
+`src/config.ts` holds named constants for values that are likely to be adjusted over time or that would otherwise be buried inside a component. When adding a new magic number or threshold, prefer defining it here over inlining it in a `.tsx` file if it meets any of these criteria:
+
+- It controls user-facing behaviour (timing, counts, limits)
+- It might need tuning based on playtesting
+- It is referenced in more than one place
+
+Examples already in `config.ts`: `DEFAULT_HOME_TAG`, `REINSERT_MIN`, `REINSERT_MAX`.
 
 ## Component Layers
 

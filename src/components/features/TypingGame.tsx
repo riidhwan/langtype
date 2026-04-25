@@ -7,6 +7,7 @@ import { SentenceDisplay } from "@/components/domain/SentenceDisplay"
 import { VisualTranslationInput } from "@/components/domain/VisualTranslationInput"
 import { Challenge } from "@/types/challenge"
 import { useSRSStore } from "@/store/useSRSStore"
+import { REINSERT_MIN, REINSERT_MAX } from "@/config"
 
 interface SRSContext {
     collectionId: string
@@ -25,7 +26,8 @@ interface Props {
 const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '6h', '12h', '1d', '3d', '1w']
 
 function reinsertChallenge(queue: Challenge[], fromIndex: number, challenge: Challenge): Challenge[] {
-    const offset = Math.floor(Math.random() * 4) + 2 // 2–5 positions ahead (always skip at least 1 card)
+    const range = REINSERT_MAX - REINSERT_MIN + 1
+    const offset = Math.floor(Math.random() * range) + REINSERT_MIN
     const insertAt = Math.min(fromIndex + offset, queue.length)
     const next = [...queue]
     next.splice(insertAt, 0, challenge)
