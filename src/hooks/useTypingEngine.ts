@@ -57,7 +57,6 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
     const submit = () => {
         if (status === 'completed' || status === 'submitted') return
 
-        const isMatch = input === currentSentence
         const isFlexMatch = isFlexibleMatch(input, currentSentence, preFilledIndices)
 
         if (isFlexMatch) {

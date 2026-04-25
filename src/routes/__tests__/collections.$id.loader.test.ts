@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import { Route } from '../collections.$id'
-import { notFound } from '@tanstack/react-router'
 import * as challengeService from '@/services/challengeService'
 
 describe('collections.$id route logic', () => {

@@ -33,7 +33,7 @@ export function formatTimeUntil(ms: number): string {
     return `in ${Math.ceil(hours / 24)}d`
 }
 
-export function SRSProgressView({ collection, onBack }: Props) {
+export function SRSProgressView({ collection, onBack: _onBack }: Props) {
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
 

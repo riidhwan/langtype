@@ -165,6 +165,10 @@ export function CollectionPage() {
 
 Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`. Never run `git commit` or `git push` unless explicitly asked.
 
+## Linting
+
+**Always run `npm run lint` before considering a task complete.** Fix any errors it surfaces; warnings from genuinely unused-but-kept props (`_prefixed`) are acceptable.
+
 ## Testing
 
 **Always consider whether unit tests and/or E2E tests are needed after every implementation — do not wait to be asked.** Write unit tests when new code has non-obvious threshold values, branching logic, or derived state that could silently regress. Write E2E tests when the change affects visual layout, positioning, or CSS properties that jsdom cannot verify. If unsure, ask.
