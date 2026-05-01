@@ -149,6 +149,7 @@ export function CollectionPage() {
 - `validateSearch` type-guards all URL params; default to `undefined` for missing ones
 - Component is a named export so tests can render it directly
 - Use `Route.useLoaderData()` and `Route.useSearch()`, not the generic hooks
+- Keep route files thin: routing setup, loaders, search param validation, and page-level composition only. Move non-trivial client state into hooks, typed UI into `components/domain` or `components/features`, and pure transforms into `src/lib`.
 
 ## Naming
 

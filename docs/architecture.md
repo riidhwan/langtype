@@ -29,7 +29,7 @@ data/dictionary/raw/de-dict.jsonl
   → /dictionary fetches search-index.json, search/{chunk}.json, and entries/{bucket}.json
 ```
 
-The raw Wiktextract-style JSONL file and generated artifacts are local-only and gitignored. The committed surface is the repeatable scripts, docs, tests, and tiny fixtures. The app debounces user input, fetches and caches `search-index.json`, loads only the non-empty search shards listed for the normalized prefix, filters locally with `startsWith`, then fetches the selected entry bucket. Search rows use `term` as the lemma display label; form rows keep the searched inflection in `matchedTerm`.
+The raw Wiktextract-style JSONL file and generated artifacts are local-only and gitignored. The committed surface is the repeatable scripts, docs, tests, and tiny fixtures. The app debounces user input, fetches and caches `search-index.json`, loads only the non-empty search shards listed for the normalized prefix, filters locally with `startsWith`, then fetches the selected entry bucket. Search rows use `term` as the lemma display label; form rows keep the searched inflection in `matchedTerm`. The route file only mounts the page. `DictionaryBrowser` composes the UI, `useDictionarySearch` owns debounce/search/entry state, `dictionaryService` owns artifact access, and `dictionaryForms` owns pure display grouping and formatting.
 
 See `docs/runbooks/dictionary-update.md` before changing build, validation, upload, publish, or maintenance workflow.
 
@@ -74,6 +74,8 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 **`challengeService`** (`src/services/challengeService.ts`) — Loads built-in JSON collections at build time using `import.meta.glob` and merges in valid local custom collections from the custom collection store. No runtime API calls are used.
 
 **`dictionaryService`** (`src/services/dictionaryService.ts`) — Runtime static JSON access for dictionary search/detail chunks. It normalizes German search terms (`ä/ö/ü`, `ß`, whitespace, case), fetches and caches the search index and the correct prefix shards, dedupes entries, ranks lemma matches ahead of form matches, and loads entry buckets on demand.
+
+**`useDictionarySearch`** (`src/hooks/useDictionarySearch.ts`) — Owns Dictionary page query state, debouncing, result loading, selected entry loading, error text, and mobile sheet state. UI components receive typed props and do not fetch dictionary data directly.
 
 **`useTypingEngine`** also exposes `setInputDirect` — bypasses `autoMatchSpacing` entirely and sets the input value directly. Used exclusively by free input mode, which assembles the full answer string itself before passing it to the engine.
 
