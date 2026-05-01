@@ -85,11 +85,11 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 
 ## Free Input Mode vs Slot Mode
 
-`VisualTranslationInput` has two render paths, switched by the `freeInput` prop (sourced from `Collection.freeInput`):
+`VisualTranslationInput` is a thin mode switch, controlled by the `freeInput` prop (sourced from `Collection.freeInput`):
 
-**Slot mode** (default) — renders one `[char-slot]` box per character. Character count is visible to the user.
+**Slot mode** (default) — `SlotTranslationInput` renders one `[char-slot]` box per character. Character count is visible to the user.
 
-**Free input mode** — `buildSegments()` (inside `VisualTranslationInput`) splits `targetText` into alternating segments using `isFreebie`:
+**Free input mode** — `FreeTranslationInput` uses `buildSegments()` from `visualTranslationInputHelpers` to split `targetText` into alternating segments using `isFreebie`:
 - `prefilled` segments render as static muted text (the pre-filled hints from parentheses)
 - `gap` segments render as a growing underline input — character count is hidden
 
