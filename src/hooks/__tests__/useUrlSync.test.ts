@@ -14,7 +14,7 @@ describe('useUrlSync', () => {
 
         renderHook(({ index }) => useUrlSync({
             currentIndex: index,
-            challenges: challenges as any,
+            challenges,
             setCurrentIndex: vi.fn(),
             onQuestionChange,
         }), {
@@ -30,7 +30,7 @@ describe('useUrlSync', () => {
 
         const { rerender } = renderHook(({ initialId }) => useUrlSync({
             currentIndex: 0,
-            challenges: challenges as any,
+            challenges,
             initialQuestionId: initialId,
             setCurrentIndex,
             onQuestionChange: vi.fn(),
@@ -52,11 +52,31 @@ describe('useUrlSync', () => {
 
         renderHook(() => useUrlSync({
             currentIndex: 1, // Currently at index 1 ('2')
-            challenges: challenges as any,
+            challenges,
             initialQuestionId: '2', // URL says '2'
             setCurrentIndex,
             onQuestionChange: vi.fn(),
         }))
+
+        expect(setCurrentIndex).not.toHaveBeenCalled()
+    })
+
+    it('does not resync from the URL when only currentIndex changes', () => {
+        const setCurrentIndex = vi.fn()
+
+        const { rerender } = renderHook(({ index }) => useUrlSync({
+            currentIndex: index,
+            challenges,
+            initialQuestionId: '1',
+            setCurrentIndex,
+            onQuestionChange: vi.fn(),
+        }), {
+            initialProps: { index: 0 }
+        })
+
+        expect(setCurrentIndex).not.toHaveBeenCalled()
+
+        rerender({ index: 1 })
 
         expect(setCurrentIndex).not.toHaveBeenCalled()
     })
@@ -66,7 +86,7 @@ describe('useUrlSync', () => {
 
         renderHook(() => useUrlSync({
             currentIndex: 0,
-            challenges: challenges as any,
+            challenges,
             initialQuestionId: 'unknown-id',
             setCurrentIndex,
             onQuestionChange: vi.fn(),

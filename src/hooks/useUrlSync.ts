@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface UseUrlSyncProps {
     currentIndex: number
@@ -15,6 +15,9 @@ export function useUrlSync({
     setCurrentIndex,
     onQuestionChange,
 }: UseUrlSyncProps) {
+    const currentIndexRef = useRef(currentIndex)
+    currentIndexRef.current = currentIndex
+
     // Keep track of the last synced ID to prevent loops if necessary,
     // though the logic relies mainly on checking indexes.
 
@@ -35,11 +38,9 @@ export function useUrlSync({
             // Only update if:
             // a) The ID exists in the list
             // b) It's different from the current index (prevents redundant updates/loops)
-            if (idx !== -1 && idx !== currentIndex) {
+            if (idx !== -1 && idx !== currentIndexRef.current) {
                 setCurrentIndex(idx)
             }
         }
-        // We exclude currentIndex from deps to avoid fighting with the effect above.
-        // We only want to react when the *external* URL prop changes.
-    }, [initialQuestionId, challenges, setCurrentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [initialQuestionId, challenges, setCurrentIndex])
 }

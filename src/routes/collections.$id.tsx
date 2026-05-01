@@ -5,10 +5,12 @@ import { ModePicker } from '@/components/features/ModePicker'
 import { SRSAllDoneScreen } from '@/components/features/SRSAllDoneScreen'
 import { SRSProgressView } from '@/components/features/SRSProgressView'
 import { SRSQueuePanel } from '@/components/features/SRSQueuePanel'
-import { useEffect, useMemo } from 'react'
-import { shuffleArray } from '@/lib/utils'
+import { useEffect } from 'react'
 import { useSRSStore } from '@/store/useSRSStore'
-import { getDueChallengeIds } from '@/lib/srsAlgorithm'
+import { useSessionChallenges } from '@/hooks/useSessionChallenges'
+import type { Challenge } from '@/types/challenge'
+
+const EMPTY_CHALLENGES: Challenge[] = []
 
 export const Route = createFileRoute('/collections/$id')({
     component: CollectionGamePage,
@@ -68,27 +70,22 @@ export function CollectionGamePage() {
     const collection = Route.useLoaderData()
     const { questionId, mode, view } = Route.useSearch()
     const navigate = useNavigate({ from: Route.fullPath })
-    const { cards } = useSRSStore()
+    const cards = useSRSStore((s) => s.cards)
     const recordPlay = useSRSStore((s) => s.recordPlay)
 
-    // Snapshot challenges at session start.
-    // cards is intentionally excluded from deps to prevent mid-session list changes.
-    const challenges = useMemo(() => {
-        const all = collection.challenges ?? []
-        if (mode === 'srs') {
-            const dueIds = getDueChallengeIds(collection.id, all.map((c) => c.id), cards)
-            return shuffleArray(all.filter((c) => dueIds.includes(c.id)))
-        }
-        if (mode === 'normal') return shuffleArray(all)
-        return []
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [collection.challenges, collection.id, mode])
+    const allChallenges = collection.challenges ?? EMPTY_CHALLENGES
+    const challenges = useSessionChallenges({
+        collectionId: collection.id,
+        mode,
+        allChallenges,
+        cards,
+    })
 
     useEffect(() => {
         if (mode === 'srs' || mode === 'normal') {
             recordPlay(collection.id)
         }
-    }, [mode, collection.id]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [mode, collection.id, recordPlay])
 
     const goToPicker = () => navigate({ search: () => ({}) })
     const startNormal = () => navigate({ search: () => ({ mode: 'normal' as const }) })
