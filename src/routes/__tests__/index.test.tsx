@@ -1,31 +1,41 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import type { ReactNode } from 'react'
+import type { CustomCollectionsStore } from '@/store/useCustomCollectionsStore'
+import type { SRSStore } from '@/store/useSRSStore'
+import type { Collection } from '@/types/challenge'
+import type { SRSCard } from '@/types/srs'
 
 vi.mock('@/config', () => ({ DEFAULT_HOME_TAG: null }))
 
 const mockUseLoaderData = vi.hoisted(() => vi.fn())
 
+interface MockLinkProps {
+    children: ReactNode
+    className?: string
+}
+
 vi.mock('@tanstack/react-router', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@tanstack/react-router')>()
     return {
         ...actual,
-        Link: ({ children, className }: any) => <div className={className}>{children}</div>,
+        Link: ({ children, className }: MockLinkProps) => <div className={className}>{children}</div>,
         createFileRoute: () => () => ({ useLoaderData: mockUseLoaderData }),
     }
 })
 
 const mockSRSState = vi.hoisted(() => ({
-    cards: {} as Record<string, any>,
+    cards: {} as Record<string, SRSCard>,
     _hasHydrated: true,
     lastPlayedAt: {} as Record<string, number>,
 }))
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) => selector(mockSRSState),
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'cards' | '_hasHydrated' | 'lastPlayedAt'>) => T) => selector(mockSRSState),
 }))
 
 const mockCustomState = vi.hoisted(() => ({
-    collections: {} as Record<string, any>,
+    collections: {} as CustomCollectionsStore['collections'],
     _hasHydrated: true,
 }))
 
@@ -33,24 +43,29 @@ vi.mock('@/store/useCustomCollectionsStore', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@/store/useCustomCollectionsStore')>()
     return {
         ...actual,
-        useCustomCollectionsStore: (selector: (s: any) => any) => selector(mockCustomState),
+        useCustomCollectionsStore: <T,>(selector: (state: Pick<CustomCollectionsStore, 'collections' | '_hasHydrated'>) => T) => selector(mockCustomState),
     }
-})
-
-vi.mock('@/lib/srsAlgorithm', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('@/lib/srsAlgorithm')>()
-    return { ...actual, isCardDue: vi.fn(() => false) }
 })
 
 import { Home } from '../index'
 
 // --- Helpers ---
 
-const col = (id: string, title: string, tags?: string[]) => ({
+const col = (id: string, title: string, tags?: string[]): Collection => ({
     id,
     title,
     description: `Description for ${id}`,
     ...(tags ? { tags } : {}),
+})
+
+const card = (collectionId: string, challengeId: string, nextReviewAt: number): SRSCard => ({
+    collectionId,
+    challengeId,
+    interval: 0,
+    repetitions: 0,
+    easeFactor: 2.5,
+    nextReviewAt,
+    lastReviewedAt: 0,
 })
 
 const collections = [
@@ -156,6 +171,20 @@ describe('Home — tag filtering', () => {
             target: { value: 'Alpha' },
         })
         expect(screen.getByText('Alpha')).toBeInTheDocument()
+        expect(screen.queryByText('Beta')).not.toBeInTheDocument()
+        expect(screen.queryByText('Gamma')).not.toBeInTheDocument()
+    })
+
+    it('filters due collections using memoized row due counts', () => {
+        mockSRSState.cards = {
+            'a:1': card('a', '1', 0),
+        }
+
+        render(<Home />)
+        fireEvent.click(screen.getByRole('button', { name: 'Due (1)' }))
+
+        expect(screen.getByText('Alpha')).toBeInTheDocument()
+        expect(screen.getByText('1 due')).toBeInTheDocument()
         expect(screen.queryByText('Beta')).not.toBeInTheDocument()
         expect(screen.queryByText('Gamma')).not.toBeInTheDocument()
     })
