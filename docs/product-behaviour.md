@@ -10,6 +10,16 @@ A fixed button (bottom-right, visible on every page) switches between `warm` (li
 
 Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A search input filters by title/description; "Due (N)" tab narrows to collections with at least one card due. Skeleton rows are shown until the SRS store hydrates (`_hasHydrated`) to prevent sort-order flicker. Tag pills appear below the All/Due tabs when any collection has a `tags` field. Clicking a tag (single-select) filters to collections containing that tag; clicking the active tag deselects it. Tag, All/Due, and search filters are ANDed. Collections without a `tags` field are visible when no tag is active and hidden when a tag is active.
 
+A "Create collection" action opens the custom collection draft flow. Valid custom collections are shown alongside built-ins with a "Custom" marker and an edit action. Drafts are saved locally but hidden from the practice list until they have a non-empty title and at least one challenge with a non-empty answer.
+
+## Custom Collection Editor (`/custom-collections/new`, `/custom-collections/$id/edit`)
+
+Custom collections are local-only and persisted in IndexedDB on the current device. Creating a collection first creates a draft, then redirects to the editor for that draft. The editor supports title, description, comma-separated tags, free-input/slot-input mode, and challenge add/edit/remove/reorder operations.
+
+Each challenge has an optional prompt (`original`) and a required answer (`translation`). Parentheses in answers keep the existing pre-filled hint behaviour. Empty answer rows may exist in drafts but are filtered out of playable collections. The Practice action is disabled until the collection is valid.
+
+Deleting a custom collection asks for confirmation, removes the local collection, and clears its SRS progress.
+
 ## Collection Page (`/collections/$id`)
 
 All state lives in URL search params. The page renders one of four views depending on `?mode` and `?view`:

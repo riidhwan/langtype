@@ -21,6 +21,7 @@ describe('collections.$id route logic', () => {
                 await (Route.options.loader as any)({ params: { id: 'invalid' } })
             }).rejects.toThrow() // notFound() throws an error or response
         })
+
     })
 
     describe('validateSearch', () => {

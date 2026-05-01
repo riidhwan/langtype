@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CustomCollectionsNewRouteImport } from './routes/custom-collections.new'
 import { Route as CollectionsIdRouteImport } from './routes/collections.$id'
+import { Route as CustomCollectionsIdEditRouteImport } from './routes/custom-collections.$id.edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomCollectionsNewRoute = CustomCollectionsNewRouteImport.update({
+  id: '/custom-collections/new',
+  path: '/custom-collections/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionsIdRoute = CollectionsIdRouteImport.update({
@@ -22,31 +29,57 @@ const CollectionsIdRoute = CollectionsIdRouteImport.update({
   path: '/collections/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CustomCollectionsIdEditRoute = CustomCollectionsIdEditRouteImport.update({
+  id: '/custom-collections/$id/edit',
+  path: '/custom-collections/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/custom-collections/new': typeof CustomCollectionsNewRoute
+  '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/custom-collections/new': typeof CustomCollectionsNewRoute
+  '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/collections/$id': typeof CollectionsIdRoute
+  '/custom-collections/new': typeof CustomCollectionsNewRoute
+  '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/collections/$id'
+  fullPaths:
+    | '/'
+    | '/collections/$id'
+    | '/custom-collections/new'
+    | '/custom-collections/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/collections/$id'
-  id: '__root__' | '/' | '/collections/$id'
+  to:
+    | '/'
+    | '/collections/$id'
+    | '/custom-collections/new'
+    | '/custom-collections/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/collections/$id'
+    | '/custom-collections/new'
+    | '/custom-collections/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CollectionsIdRoute: typeof CollectionsIdRoute
+  CustomCollectionsNewRoute: typeof CustomCollectionsNewRoute
+  CustomCollectionsIdEditRoute: typeof CustomCollectionsIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,11 +91,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/custom-collections/new': {
+      id: '/custom-collections/new'
+      path: '/custom-collections/new'
+      fullPath: '/custom-collections/new'
+      preLoaderRoute: typeof CustomCollectionsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/collections/$id': {
       id: '/collections/$id'
       path: '/collections/$id'
       fullPath: '/collections/$id'
       preLoaderRoute: typeof CollectionsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-collections/$id/edit': {
+      id: '/custom-collections/$id/edit'
+      path: '/custom-collections/$id/edit'
+      fullPath: '/custom-collections/$id/edit'
+      preLoaderRoute: typeof CustomCollectionsIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -71,6 +118,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CollectionsIdRoute: CollectionsIdRoute,
+  CustomCollectionsNewRoute: CustomCollectionsNewRoute,
+  CustomCollectionsIdEditRoute: CustomCollectionsIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

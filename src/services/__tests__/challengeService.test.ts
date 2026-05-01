@@ -1,7 +1,22 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+
+vi.mock('idb-keyval', () => {
+    const db = new Map<string, string>()
+    return {
+        get: vi.fn((key: string) => Promise.resolve(db.get(key))),
+        set: vi.fn((key: string, value: string) => { db.set(key, value); return Promise.resolve() }),
+        del: vi.fn((key: string) => { db.delete(key); return Promise.resolve() }),
+    }
+})
+
 import { getCollection, getCollections, getCollectionChallengeIds } from '../challengeService'
+import { useCustomCollectionsStore } from '@/store/useCustomCollectionsStore'
 
 describe('challengeService', () => {
+    beforeEach(() => {
+        useCustomCollectionsStore.setState({ collections: {}, _hasHydrated: true })
+    })
+
     describe('getCollections', () => {
         it('returns all collection metadata from index.json', async () => {
             const collections = await getCollections()
@@ -15,6 +30,45 @@ describe('challengeService', () => {
             // Vitest runs in DEV mode (import.meta.env.DEV === true)
             const collections = await getCollections()
             expect(collections.find(c => c.id === 'dev_test')).toBeDefined()
+        })
+
+        it('includes valid custom collections before built-ins', async () => {
+            useCustomCollectionsStore.setState({
+                collections: {
+                    custom_ready: {
+                        id: 'custom_ready',
+                        title: 'Ready custom',
+                        challenges: [{ id: '1', translation: 'Hallo' }],
+                        createdAt: 1,
+                        updatedAt: 2,
+                    },
+                },
+                _hasHydrated: true,
+            })
+
+            const collections = await getCollections()
+
+            expect(collections[0].id).toBe('custom_ready')
+            expect(collections.find(c => c.id === 'custom_ready')).toBeDefined()
+        })
+
+        it('excludes invalid custom drafts', async () => {
+            useCustomCollectionsStore.setState({
+                collections: {
+                    custom_draft: {
+                        id: 'custom_draft',
+                        title: 'Draft',
+                        challenges: [],
+                        createdAt: 1,
+                        updatedAt: 2,
+                    },
+                },
+                _hasHydrated: true,
+            })
+
+            const collections = await getCollections()
+
+            expect(collections.find(c => c.id === 'custom_draft')).toBeUndefined()
         })
     })
 
@@ -35,6 +89,48 @@ describe('challengeService', () => {
 
         it('returns undefined for non-existent collection', async () => {
             const collection = await getCollection('non_existent')
+            expect(collection).toBeUndefined()
+        })
+
+        it('loads a valid custom collection from local state', async () => {
+            useCustomCollectionsStore.setState({
+                collections: {
+                    custom_ready: {
+                        id: 'custom_ready',
+                        title: 'Ready custom',
+                        challenges: [
+                            { id: '1', translation: 'Hallo' },
+                            { id: '2', translation: '   ' },
+                        ],
+                        createdAt: 1,
+                        updatedAt: 2,
+                    },
+                },
+                _hasHydrated: true,
+            })
+
+            const collection = await getCollection('custom_ready')
+
+            expect(collection?.title).toBe('Ready custom')
+            expect(collection?.challenges).toEqual([{ id: '1', translation: 'Hallo' }])
+        })
+
+        it('does not load an invalid custom draft for practice', async () => {
+            useCustomCollectionsStore.setState({
+                collections: {
+                    custom_draft: {
+                        id: 'custom_draft',
+                        title: '',
+                        challenges: [{ id: '1', translation: 'Hallo' }],
+                        createdAt: 1,
+                        updatedAt: 2,
+                    },
+                },
+                _hasHydrated: true,
+            })
+
+            const collection = await getCollection('custom_draft')
+
             expect(collection).toBeUndefined()
         })
     })

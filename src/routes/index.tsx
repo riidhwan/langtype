@@ -2,9 +2,15 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useMemo } from 'react'
 import { getCollections } from '@/services/challengeService'
 import { useSRSStore } from '@/store/useSRSStore'
+import {
+    isCustomCollectionId,
+    isValidCustomCollection,
+    toPlayableCollection,
+    useCustomCollectionsStore,
+} from '@/store/useCustomCollectionsStore'
 import { isCardDue } from '@/lib/srsAlgorithm'
 import { cn } from '@/lib/utils'
-import { IconSearch, IconChevronRight } from '@/components/ui/icons'
+import { IconSearch, IconChevronRight, IconEdit, IconPlus } from '@/components/ui/icons'
 import { SRSQueuePanel } from '@/components/features/SRSQueuePanel'
 import { DEFAULT_HOME_TAG } from '@/config'
 
@@ -21,12 +27,22 @@ export function Home() {
     const cards = useSRSStore((s) => s.cards)
     const hasHydrated = useSRSStore((s) => s._hasHydrated)
     const lastPlayedAt = useSRSStore((s) => s.lastPlayedAt)
+    const customCollections = useCustomCollectionsStore((s) => s.collections)
+    const customHasHydrated = useCustomCollectionsStore((s) => s._hasHydrated)
 
     const [query, setQuery] = useState('')
     const [filter, setFilter] = useState<'all' | 'due'>('all')
     const [activeTag, setActiveTag] = useState<string | null>(DEFAULT_HOME_TAG)
 
-    const sortedCollections = [...collections].sort(
+    const mergedCollections = useMemo(() => {
+        const builtIns = collections.filter((collection) => !isCustomCollectionId(collection.id))
+        const playableCustom = Object.values(customCollections)
+            .filter(isValidCustomCollection)
+            .map(toPlayableCollection)
+        return [...playableCustom, ...builtIns]
+    }, [collections, customCollections])
+
+    const sortedCollections = [...mergedCollections].sort(
         (a, b) => (lastPlayedAt[b.id] ?? 0) - (lastPlayedAt[a.id] ?? 0)
     )
 
@@ -68,6 +84,13 @@ export function Home() {
             <div className="w-full max-w-4xl">
                 <header className="mb-6">
                     <p className="mono-label mb-1">collections</p>
+                    <Link
+                        to="/custom-collections/new"
+                        className="mt-3 inline-flex items-center gap-2 rounded-[var(--radius)] border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:border-primary hover:bg-[var(--bg2)]"
+                    >
+                        <IconPlus className="h-4 w-4" />
+                        Create collection
+                    </Link>
 
                     {/* Search */}
                     <div className="relative mt-4">
@@ -128,9 +151,9 @@ export function Home() {
                     )}
                 </header>
 
-                {!hasHydrated ? (
+                {!hasHydrated || !customHasHydrated ? (
                     <div className="flex flex-col divide-y divide-border border rounded-[var(--radius)] bg-card">
-                        {collections.map((collection) => (
+                        {mergedCollections.map((collection) => (
                             <div key={collection.id} className="h-[64px] animate-pulse" />
                         ))}
                     </div>
@@ -139,20 +162,28 @@ export function Home() {
                         {visibleCollections.map((collection) => {
                             const dueCount = getDueCount(collection.id)
 
+                            const isCustom = isCustomCollectionId(collection.id)
+
                             return (
-                                <Link
-                                    key={collection.id}
-                                    to="/collections/$id"
-                                    params={{ id: collection.id }}
-                                    preload={false}
-                                    className="block group"
-                                >
-                                    <div className="transition-colors hover:bg-[var(--bg3)]">
+                                <div key={collection.id} className="flex items-stretch transition-colors hover:bg-[var(--bg3)]">
+                                    <Link
+                                        to="/collections/$id"
+                                        params={{ id: collection.id }}
+                                        preload={false}
+                                        className="block min-w-0 flex-1 group"
+                                    >
                                         <div className="flex items-center justify-between px-4 py-4 gap-4">
                                             <div className="min-w-0">
-                                                <h2 className="text-[15px] font-semibold mb-0.5 group-hover:text-primary transition-colors">
-                                                    {collection.title}
-                                                </h2>
+                                                <div className="mb-0.5 flex flex-wrap items-center gap-2">
+                                                    <h2 className="text-[15px] font-semibold group-hover:text-primary transition-colors">
+                                                        {collection.title}
+                                                    </h2>
+                                                    {isCustom && (
+                                                        <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wide text-muted-foreground">
+                                                            Custom
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 {collection.description && (
                                                     <p className="text-sm text-muted-foreground leading-snug">{collection.description}</p>
                                                 )}
@@ -166,8 +197,19 @@ export function Home() {
                                                 <IconChevronRight className="h-4 w-4 text-muted-foreground" />
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                    {isCustom && (
+                                        <Link
+                                            to="/custom-collections/$id/edit"
+                                            params={{ id: collection.id }}
+                                            title="Edit collection"
+                                            className="flex shrink-0 items-center border-l border-border px-4 text-muted-foreground transition-colors hover:bg-[var(--bg2)] hover:text-foreground"
+                                        >
+                                            <IconEdit className="h-4 w-4" />
+                                            <span className="sr-only">Edit {collection.title}</span>
+                                        </Link>
+                                    )}
+                                </div>
                             )
                         })}
                     </div>

@@ -10,7 +10,7 @@ src/
 ├── components/       # See component layers below
 ├── hooks/            # Complex logic extracted into custom hooks (Logic layer)
 ├── services/         # Data access — currently static JSON loading (Data layer)
-├── store/            # Zustand global state — SRS cards + play history, persisted to IndexedDB
+├── store/            # Zustand global state — SRS cards, play history, and custom collections persisted to IndexedDB
 ├── data/collections/ # Static JSON challenge files (loaded via Vite glob)
 ├── lib/              # Shared utilities (stringUtils, cn helper)
 └── config.ts         # App-level tuneable constants (see below)
@@ -52,7 +52,7 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 - Flexible matching: a submission is accepted even if trailing characters are all auto-insertable (`isFlexibleMatch`)
 - Smart case handling: auto-capitalizes first character when appropriate
 
-**`challengeService`** (`src/services/challengeService.ts`) — Loads JSON collections at build time using `import.meta.glob`. No runtime API calls; all data is statically bundled.
+**`challengeService`** (`src/services/challengeService.ts`) — Loads built-in JSON collections at build time using `import.meta.glob` and merges in valid local custom collections from the custom collection store. No runtime API calls are used.
 
 **`useTypingEngine`** also exposes `setInputDirect` — bypasses `autoMatchSpacing` entirely and sets the input value directly. Used exclusively by free input mode, which assembles the full answer string itself before passing it to the engine.
 
@@ -83,6 +83,12 @@ Persisted to IndexedDB via `idb-keyval` under the key `langtype-srs-v1`. Only `c
 **`SRSCard` fields**: `interval` (days), `repetitions` (consecutive correct), `easeFactor` (starts 2.5, min 1.3), `nextReviewAt` (ms; 0 = new card), `lastReviewedAt` (ms; 0 = never reviewed).
 
 Storage uses `skipHydration: true` — the route must call `useSRSStore.persist.rehydrate()` manually (done in `__root.tsx`).
+
+## Custom Collections Store (`src/store/useCustomCollectionsStore.ts`)
+
+User-created collections are local-only and persisted to IndexedDB under `langtype-custom-collections-v1`. The store uses the same `Collection` and `Challenge` shape as bundled JSON, with `createdAt` and `updatedAt` metadata for local sorting/editing.
+
+Custom collection ids are prefixed with `custom_` to avoid collisions with bundled collection files. Drafts may be incomplete, but only collections with a non-empty title and at least one challenge with a non-empty `translation` are returned by `challengeService` for the home list and practice route.
 
 ## Challenge Data Format
 

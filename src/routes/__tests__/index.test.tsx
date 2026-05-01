@@ -24,6 +24,19 @@ vi.mock('@/store/useSRSStore', () => ({
     useSRSStore: (selector: (s: any) => any) => selector(mockSRSState),
 }))
 
+const mockCustomState = vi.hoisted(() => ({
+    collections: {} as Record<string, any>,
+    _hasHydrated: true,
+}))
+
+vi.mock('@/store/useCustomCollectionsStore', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@/store/useCustomCollectionsStore')>()
+    return {
+        ...actual,
+        useCustomCollectionsStore: (selector: (s: any) => any) => selector(mockCustomState),
+    }
+})
+
 vi.mock('@/lib/srsAlgorithm', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@/lib/srsAlgorithm')>()
     return { ...actual, isCardDue: vi.fn(() => false) }
@@ -51,7 +64,49 @@ describe('Home — tag filtering', () => {
         mockSRSState.cards = {}
         mockSRSState._hasHydrated = true
         mockSRSState.lastPlayedAt = {}
+        mockCustomState.collections = {}
+        mockCustomState._hasHydrated = true
         mockUseLoaderData.mockReturnValue({ collections })
+    })
+
+    it('renders the custom collection creation entry point', () => {
+        render(<Home />)
+        expect(screen.getByText('Create collection')).toBeInTheDocument()
+    })
+
+    it('renders valid custom collections with a custom marker', () => {
+        mockCustomState.collections = {
+            custom_ready: {
+                id: 'custom_ready',
+                title: 'My German Set',
+                description: 'Personal practice',
+                tags: ['Custom'],
+                challenges: [{ id: '1', translation: 'Hallo' }],
+                createdAt: 1,
+                updatedAt: 2,
+            },
+        }
+
+        render(<Home />)
+
+        expect(screen.getByText('My German Set')).toBeInTheDocument()
+        expect(screen.getAllByText('Custom').length).toBeGreaterThan(0)
+    })
+
+    it('hides custom drafts that are not practice-ready', () => {
+        mockCustomState.collections = {
+            custom_draft: {
+                id: 'custom_draft',
+                title: 'Incomplete set',
+                challenges: [],
+                createdAt: 1,
+                updatedAt: 2,
+            },
+        }
+
+        render(<Home />)
+
+        expect(screen.queryByText('Incomplete set')).not.toBeInTheDocument()
     })
 
     it('does not render tag pills when no collections have tags', () => {

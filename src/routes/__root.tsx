@@ -9,6 +9,7 @@ import {
 import * as React from 'react'
 import appCss from '../globals.css?url'
 import { useSRSStore } from '@/store/useSRSStore'
+import { useCustomCollectionsStore } from '@/store/useCustomCollectionsStore'
 import { IconSun, IconMoon } from '@/components/ui/icons'
 
 type Theme = 'warm' | 'ink'
@@ -56,6 +57,7 @@ function RootComponent() {
 
     React.useEffect(() => {
         useSRSStore.persist.rehydrate()
+        useCustomCollectionsStore.persist.rehydrate()
     }, [])
 
     const toggleTheme = () => setTheme(prev => prev === 'warm' ? 'ink' : 'warm')
