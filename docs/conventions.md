@@ -177,6 +177,10 @@ Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore
 
 Tests are co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests.
 
+## Dictionary Data
+
+`data/dictionary/raw/*` and `data/dictionary/generated/*` are gitignored. Do not commit the raw Wiktextract JSONL file or generated dictionary artifacts. Commit repeatable dictionary scripts, validation/upload tests, docs, and tiny fixtures under `test/fixtures/`.
+
 ### Mock Patterns
 
 Use `vi.hoisted()` for mock values referenced inside `vi.mock()` factories; wrap real module functions in `vi.fn()` when per-test overrides are needed:

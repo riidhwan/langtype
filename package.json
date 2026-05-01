@@ -13,7 +13,11 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "dict:build": "node scripts/dictionary/build.mjs",
+    "dict:validate": "node scripts/dictionary/validate.mjs",
+    "dict:upload": "node scripts/dictionary/upload.mjs",
+    "dict:publish": "node scripts/dictionary/publish.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",

@@ -47,5 +47,11 @@ dist/
 
 src/data/collections/raw/*
 scripts/*
+!scripts/dictionary/
+!scripts/dictionary/**
+
+# Local dictionary source data and generated static artifacts are too large to commit.
+data/dictionary/raw/*
+data/dictionary/generated/*
 
 .vscode

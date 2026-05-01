@@ -12,6 +12,14 @@ Collections are sorted by most-recently-played (`lastPlayedAt` in Zustand). A se
 
 A "Create collection" action opens the custom collection draft flow. Valid custom collections are shown alongside built-ins with a "Custom" marker and an edit action. Drafts are saved locally but hidden from the practice list until they have a non-empty title and at least one challenge with a non-empty answer.
 
+## Dictionary Page (`/dictionary`)
+
+The Dictionary page searches a static German dictionary published to Cloudflare R2. Search starts after three normalized characters and is debounced while the user types. Prefix search covers lemmas and useful inflected forms, so `arb` can find entries such as `Arbeit`, `arbeiten`, and `Arbeiter`, while `gearbeitet` can find `arbeiten`. Loaded prefix shards are cached in memory so extending a query filters locally instead of refetching the same static data.
+
+Results show the lemma as the primary result label, part of speech, noun article when known, and whether the row is a lemma or form match. Form matches show the matched inflected form in the secondary text, such as `matched isst · form`. Lemma matches rank ahead of form matches and duplicate entries are collapsed.
+
+Selecting a result loads the entry bucket and renders available details. Nouns may show article/gender, genitive, plural, and declension forms. Verbs may show indicative, imperative, perfect, subjunctive, and past participle data. Adjectives may show comparative, superlative, and declension forms. Forms without a supported category are omitted instead of being shown in a fallback group. Missing or unsupported fields are omitted instead of showing empty placeholders. Loading, empty, and error states are shown for both search and entry loading.
+
 ## Custom Collection Editor (`/custom-collections/new`, `/custom-collections/$id/edit`)
 
 Custom collections are local-only and persisted in IndexedDB on the current device. Creating a collection first creates a draft, then redirects to the editor for that draft. The editor supports title, description, comma-separated tags, free-input/slot-input mode, and challenge add/edit/remove/reorder operations.

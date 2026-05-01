@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DictionaryRouteImport } from './routes/dictionary'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomCollectionsNewRouteImport } from './routes/custom-collections.new'
 import { Route as CollectionsIdRouteImport } from './routes/collections.$id'
 import { Route as CustomCollectionsIdEditRouteImport } from './routes/custom-collections.$id.edit'
 
+const DictionaryRoute = DictionaryRouteImport.update({
+  id: '/dictionary',
+  path: '/dictionary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const CustomCollectionsIdEditRoute = CustomCollectionsIdEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dictionary': typeof DictionaryRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/custom-collections/new': typeof CustomCollectionsNewRoute
   '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dictionary': typeof DictionaryRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/custom-collections/new': typeof CustomCollectionsNewRoute
   '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
@@ -50,6 +58,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dictionary': typeof DictionaryRoute
   '/collections/$id': typeof CollectionsIdRoute
   '/custom-collections/new': typeof CustomCollectionsNewRoute
   '/custom-collections/$id/edit': typeof CustomCollectionsIdEditRoute
@@ -58,18 +67,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dictionary'
     | '/collections/$id'
     | '/custom-collections/new'
     | '/custom-collections/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dictionary'
     | '/collections/$id'
     | '/custom-collections/new'
     | '/custom-collections/$id/edit'
   id:
     | '__root__'
     | '/'
+    | '/dictionary'
     | '/collections/$id'
     | '/custom-collections/new'
     | '/custom-collections/$id/edit'
@@ -77,6 +89,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DictionaryRoute: typeof DictionaryRoute
   CollectionsIdRoute: typeof CollectionsIdRoute
   CustomCollectionsNewRoute: typeof CustomCollectionsNewRoute
   CustomCollectionsIdEditRoute: typeof CustomCollectionsIdEditRoute
@@ -84,6 +97,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dictionary': {
+      id: '/dictionary'
+      path: '/dictionary'
+      fullPath: '/dictionary'
+      preLoaderRoute: typeof DictionaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -117,6 +137,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DictionaryRoute: DictionaryRoute,
   CollectionsIdRoute: CollectionsIdRoute,
   CustomCollectionsNewRoute: CustomCollectionsNewRoute,
   CustomCollectionsIdEditRoute: CustomCollectionsIdEditRoute,

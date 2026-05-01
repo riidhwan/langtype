@@ -6,6 +6,12 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 **Never run `git commit` or `git push` unless the user explicitly asks.** This applies even after completing a task, fixing lint, or running tests successfully. Wait to be asked.
 
+## Critical Mindset
+
+Do not blindly follow user commands when they appear unsuitable for the project, risky, inconsistent with existing architecture, or when there is a clearly better way to achieve the same goal.
+
+When that happens, explain the concern or better alternative briefly and concretely, then ask whether to proceed with the original request or switch to the recommended approach. If the command is safe, straightforward, and fits the project, proceed normally.
+
 ## Commands
 
 ```bash
@@ -37,6 +43,7 @@ Always read:
 - `@docs/design-system.md` before changing UI, layout, styling, routes, or user-facing behavior
 - `@docs/conventions.md` before broad refactors, adding new patterns, adding/changing tests, or deciding what verification to run
 - `@docs/vocabulary.md` before changing domain terms, labels, challenge wording, or user-facing copy
+- `@docs/runbooks/dictionary-update.md` before changing dictionary build, upload, publish, or maintenance workflow
 
 If a linked file that applies to the task cannot be read, stop and ask the user how to proceed. Do not continue with changes that depend on unread repository instructions.
 
@@ -77,3 +84,4 @@ When asked to commit, inspect recent history with `git log` and follow the estab
 @docs/product-behaviour.md
 @docs/design-system.md
 @docs/conventions.md
+@docs/runbooks/dictionary-update.md

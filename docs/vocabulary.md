@@ -8,6 +8,7 @@ Agreed terms for pages, views, and concepts. Use these consistently when discuss
 |---|---|
 | **Home page** | `/` — collection list with search, tags, Due tab |
 | **Collection page** | `/collections/$id` — everything after tapping a collection |
+| **Dictionary page** | `/dictionary` — German dictionary search and entry detail |
 
 ## Views (within the Collection page)
 
@@ -26,6 +27,16 @@ Agreed terms for pages, views, and concepts. Use these consistently when discuss
 | **Challenge** | A single question/answer pair |
 | **Original** | The prompt shown above the input (English meaning or German context) |
 | **Translation** | The German text the user types |
+
+## Dictionary Concepts
+
+| Term | Description |
+|---|---|
+| **Dictionary entry** | A normalized German word record shown in the Dictionary page |
+| **Lemma** | The headword or base form for a dictionary entry |
+| **Form** | An inflected or derived spelling that points back to a lemma |
+| **Matched form** | The inflected spelling that matched a Dictionary page search while the result title remains the lemma |
+| **Inflection** | Grammar-specific form data, such as plural nouns, genitive nouns, conjugated verbs, or adjective comparison |
 
 ## Input Modes
 

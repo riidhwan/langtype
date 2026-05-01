@@ -16,6 +16,23 @@ src/
 └── config.ts         # App-level tuneable constants (see below)
 ```
 
+## Dictionary Data Flow
+
+The German Dictionary page (`/dictionary`) is backendless. It fetches versioned static JSON artifacts from a public Cloudflare R2 bucket:
+
+```
+data/dictionary/raw/de-dict.jsonl
+  → npm run dict:build
+  → data/dictionary/generated/vYYYY-MM-DD/
+  → npm run dict:upload
+  → R2 dictionary/vYYYY-MM-DD/
+  → /dictionary fetches search-index.json, search/{chunk}.json, and entries/{bucket}.json
+```
+
+The raw Wiktextract-style JSONL file and generated artifacts are local-only and gitignored. The committed surface is the repeatable scripts, docs, tests, and tiny fixtures. The app debounces user input, fetches and caches `search-index.json`, loads only the non-empty search shards listed for the normalized prefix, filters locally with `startsWith`, then fetches the selected entry bucket. Search rows use `term` as the lemma display label; form rows keep the searched inflection in `matchedTerm`.
+
+See `docs/runbooks/dictionary-update.md` before changing build, validation, upload, publish, or maintenance workflow.
+
 ## `src/config.ts` — Tuneable Constants
 
 `src/config.ts` holds named constants for values that are likely to be adjusted over time or that would otherwise be buried inside a component. When adding a new magic number or threshold, prefer defining it here over inlining it in a `.tsx` file if it meets any of these criteria:
@@ -25,6 +42,8 @@ src/
 - It is referenced in more than one place
 
 Examples already in `config.ts`: `DEFAULT_HOME_TAG`, `REINSERT_MIN`, `REINSERT_MAX`.
+
+Dictionary config values also live in `config.ts`: public R2 base URL, active dictionary version, minimum query length, search debounce delay, result limit, and prefix length.
 
 ## Component Layers
 
@@ -53,6 +72,8 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 - Smart case handling: auto-capitalizes first character when appropriate
 
 **`challengeService`** (`src/services/challengeService.ts`) — Loads built-in JSON collections at build time using `import.meta.glob` and merges in valid local custom collections from the custom collection store. No runtime API calls are used.
+
+**`dictionaryService`** (`src/services/dictionaryService.ts`) — Runtime static JSON access for dictionary search/detail chunks. It normalizes German search terms (`ä/ö/ü`, `ß`, whitespace, case), fetches and caches the search index and the correct prefix shards, dedupes entries, ranks lemma matches ahead of form matches, and loads entry buckets on demand.
 
 **`useTypingEngine`** also exposes `setInputDirect` — bypasses `autoMatchSpacing` entirely and sets the input value directly. Used exclusively by free input mode, which assembles the full answer string itself before passing it to the engine.
 
