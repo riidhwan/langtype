@@ -48,8 +48,8 @@ Back button always navigates to `?` (clears params) → mode picker. Retry state
     ↓
 [Game] — due cards only, shuffled into sessionQueue
   • correct, non-ASAP answer → recordReviewWithInterval(), timer resumes → advance
-  • correct, ASAP answer     → recordReviewWithInterval(0) → card reinserted 1–5 ahead in sessionQueue
-  • wrong answer             → recordReview('incorrect'), nextReviewAt=now → card reinserted 1–5 ahead
+  • correct, ASAP answer     → recordReviewWithInterval(0) → card reinserted 2–10 ahead in sessionQueue
+  • wrong answer             → recordReview('incorrect'), nextReviewAt=now → card reinserted 2–10 ahead
     ↓
 [Card keeps reappearing until answered with a non-ASAP interval]
   If user keeps answering wrong or picks ASAP, card is reinserted again each time.
@@ -80,6 +80,6 @@ All collection challenges shuffled. Game receives no `srsContext` — no SRS rec
 - Status lifecycle: `typing` → `completed` (correct) or `submitted` (incorrect) → auto-advance (or wait for pill in SRS mode)
 - In SRS mode, correct answer pauses the timer (`setIsPaused(true)`) until a pill is selected, then restarts with a 2-second countdown.
 - Recording fires exactly once per card via `hasRecordedRef` (reset on `status=typing`), triggered when `timeLeft === 0`.
-- `sessionQueue` (internal state in `TypingGame`) starts equal to `challenges` and grows as cards are reinserted. The "X cards remaining" counter is `sessionQueue.length - currentIndex - 1`.
-- Wrong answers and ASAP interval reinsert the card at a random position 1–5 ahead in `sessionQueue` (capped at the end). `pendingReinsertRef` prevents `onFinished` from firing in the same render as a reinsertion.
+- The internal `sessionQueue` starts equal to `challenges` and grows as cards are reinserted. The "X cards remaining" counter is `sessionQueue.length - currentIndex - 1`.
+- Wrong answers and ASAP interval reinsert the card at a random position 2–10 ahead in `sessionQueue` (capped at the end). `pendingReinsertRef` prevents `onFinished` from firing in the same render as a reinsertion.
 - Normal mode also uses reinsertion for wrong answers. The session ends when `currentIndex` reaches `sessionQueue.length - 1` without a reinsertion.

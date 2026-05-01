@@ -1,13 +1,14 @@
 import { useTypingEngine } from "@/hooks/useTypingEngine"
 import { useUrlSync } from "@/hooks/useUrlSync"
-import { useEffect, useMemo, useRef, useState } from "react"
-import type { SRSIntervalChoice } from "@/types/srs"
-import { SRS_INTERVAL_DAYS, SRS_INTERVAL_LABELS } from "@/types/srs"
+import { useMemo } from "react"
+import { SRS_INTERVAL_LABELS } from "@/types/srs"
 import { SentenceDisplay } from "@/components/domain/SentenceDisplay"
 import { VisualTranslationInput } from "@/components/domain/VisualTranslationInput"
 import { Challenge } from "@/types/challenge"
-import { useSRSStore } from "@/store/useSRSStore"
-import { REINSERT_MIN, REINSERT_MAX } from "@/config"
+import { useTypingSessionQueue } from "@/hooks/useTypingSessionQueue"
+import { SRS_INTERVAL_ORDER, useSRSReviewRecording } from "@/hooks/useSRSReviewRecording"
+import { useTypingRetryReinsertion } from "@/hooks/useTypingRetryReinsertion"
+import { useTypingSessionCompletion } from "@/hooks/useTypingSessionCompletion"
 
 interface SRSContext {
     collectionId: string
@@ -23,17 +24,6 @@ interface Props {
     freeInput?: boolean
 }
 
-const INTERVAL_ORDER: SRSIntervalChoice[] = ['asap', '1h', '3h', '6h', '12h', '1d', '3d', '1w', '2w']
-
-function reinsertChallenge(queue: Challenge[], fromIndex: number, challenge: Challenge): Challenge[] {
-    const range = REINSERT_MAX - REINSERT_MIN + 1
-    const offset = Math.floor(Math.random() * range) + REINSERT_MIN
-    const insertAt = Math.min(fromIndex + offset, queue.length)
-    const next = [...queue]
-    next.splice(insertAt, 0, challenge)
-    return next
-}
-
 export function TypingGame({ challenges, initialQuestionId, onQuestionChange, onFinished, srsContext, freeInput }: Props) {
     const initialIndex = useMemo(() => {
         if (!initialQuestionId) return 0
@@ -41,25 +31,12 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         return idx !== -1 ? idx : 0
     }, [challenges, initialQuestionId])
 
-    // sessionQueue starts equal to challenges and grows as missed/ASAP cards are reinserted
-    const [sessionQueue, setSessionQueue] = useState<Challenge[]>(challenges)
-
-    // Guards against onFinished firing in the same render as a reinsertion.
-    // Effects run in declaration order: recording effect sets this before onFinished effect checks it.
-    const pendingReinsertRef = useRef(false)
-
-    // Sync sessionQueue when challenges prop changes (new session start)
-    useEffect(() => {
-        setSessionQueue(challenges)
-        pendingReinsertRef.current = false
-    }, [challenges])
-
-    // Reset pendingReinsertRef after reinsertion state settles in the next render
-    useEffect(() => {
-        pendingReinsertRef.current = false
-    }, [sessionQueue])
-
-    const translations = useMemo(() => sessionQueue.map((c) => c.translation), [sessionQueue])
+    const {
+        sessionQueue,
+        translations,
+        pendingReinsertRef,
+        reinsertCurrentChallenge,
+    } = useTypingSessionQueue(challenges)
 
     const {
         input,
@@ -93,112 +70,35 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
         onQuestionChange
     })
 
-    // SRS: interval choice — timer is paused until the user selects a pill
-    const [intervalChoice, setIntervalChoice] = useState<SRSIntervalChoice | null>(null)
-    useEffect(() => {
-        setIntervalChoice(null)
-    }, [currentIndex])
+    const { intervalChoice, showingIntervalPills, handleIntervalClick } = useSRSReviewRecording({
+        status,
+        timeLeft,
+        currentIndex,
+        currentChallenge,
+        srsContext,
+        isCorrect,
+        setIsPaused,
+        setTimeLeft,
+        reinsertCurrentChallenge,
+    })
 
-    const showingIntervalPills =
-        isCorrect && !!srsContext && !srsContext.skipRecording && intervalChoice === null
+    useTypingRetryReinsertion({
+        currentIndex,
+        hasSRSContext: !!srsContext,
+        status,
+        timeLeft,
+        reinsertCurrentChallenge,
+    })
 
-    useEffect(() => {
-        setIsPaused(showingIntervalPills)
-    }, [showingIntervalPills]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    const handleIntervalClick = (choice: SRSIntervalChoice) => {
-        setIntervalChoice(choice)
-        setIsPaused(false)
-        setTimeLeft(2)
-    }
-
-    // Keyboard shortcuts 1–7 for interval pills
-    useEffect(() => {
-        if (!showingIntervalPills) return
-        const handler = (e: KeyboardEvent) => {
-            const n = parseInt(e.key)
-            if (n >= 1 && n <= INTERVAL_ORDER.length) {
-                handleIntervalClick(INTERVAL_ORDER[n - 1])
-            }
-        }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-    }, [showingIntervalPills]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    const recordReview = useSRSStore((s) => s.recordReview)
-    const recordReviewWithInterval = useSRSStore((s) => s.recordReviewWithInterval)
-    const hasRecordedRef = useRef(false)
-
-    // SRS recording + reinsertion for wrong answers and ASAP interval
-    useEffect(() => {
-        if (status === 'typing') {
-            hasRecordedRef.current = false
-            return
-        }
-        if (!srsContext || hasRecordedRef.current) return
-        if (status !== 'completed' && status !== 'submitted') return
-        if (timeLeft !== 0) return
-
-        hasRecordedRef.current = true
-
-        const id = sessionQueue[currentIndex].id
-
-        if (status === 'submitted') {
-            if (!srsContext.skipRecording) {
-                recordReview(srsContext.collectionId, id, 'incorrect')
-            }
-            pendingReinsertRef.current = true
-            setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
-        } else {
-            const choice = intervalChoice ?? '1d'
-            const intervalDays = SRS_INTERVAL_DAYS[choice]
-            const passed = intervalDays > 0
-            if (!srsContext.skipRecording) {
-                recordReviewWithInterval(srsContext.collectionId, id, intervalDays)
-            }
-            if (!passed) {
-                // ASAP: reinsert so user sees it again within 1–5 cards
-                pendingReinsertRef.current = true
-                setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
-            }
-        }
-    }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    // Normal-mode reinsertion: wrong answers reappear within 1–5 positions
-    const hasReinsertedRef = useRef(false)
-    useEffect(() => {
-        hasReinsertedRef.current = false
-    }, [currentIndex])
-
-    useEffect(() => {
-        if (srsContext) return
-        if (status !== 'submitted' || timeLeft !== 0) return
-        if (hasReinsertedRef.current) return
-        hasReinsertedRef.current = true
-        pendingReinsertRef.current = true
-        setSessionQueue(prev => reinsertChallenge(prev, currentIndex, prev[currentIndex]))
-    }, [status, timeLeft, currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    // Detect end of session: reached the last card in the queue, timer done, no pending reinsertion
-    const hasCalledOnFinished = useRef(false)
-    useEffect(() => {
-        hasCalledOnFinished.current = false
-    }, [challenges])
-
-    useEffect(() => {
-        if (
-            onFinished &&
-            !hasCalledOnFinished.current &&
-            !pendingReinsertRef.current &&
-            status !== 'typing' &&
-            timeLeft === 0 &&
-            sessionQueue.length > 0 &&
-            currentIndex === sessionQueue.length - 1
-        ) {
-            hasCalledOnFinished.current = true
-            onFinished()
-        }
-    }, [status, timeLeft, currentIndex, sessionQueue.length]) // eslint-disable-line react-hooks/exhaustive-deps
+    useTypingSessionCompletion({
+        challenges,
+        currentIndex,
+        pendingReinsertRef,
+        sessionQueueLength: sessionQueue.length,
+        status,
+        timeLeft,
+        onFinished,
+    })
 
     const cardsRemaining = srsContext ? sessionQueue.length - currentIndex - 1 : null
 
@@ -246,7 +146,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                                 <div className="flex flex-col items-center gap-2">
                                     <p className="mono-label">Review again in:</p>
                                     <div className="flex flex-wrap justify-center gap-2">
-                                        {INTERVAL_ORDER.map((choice, i) => (
+                                        {SRS_INTERVAL_ORDER.map((choice, i) => (
                                             <button
                                                 key={choice}
                                                 onClick={() => handleIntervalClick(choice)}

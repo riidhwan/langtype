@@ -59,11 +59,13 @@ A component that needs to call `useTypingEngine` or `useSRSStore` belongs in `fe
 
 ## Core Data Flow
 
-Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled challenges passed as props → `TypingGame` component → `useTypingEngine` hook → `stringUtils` for input processing → URL state synced via `useUrlSync`.
+Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled challenges passed as props → `TypingGame` feature component → session/review hooks → `useTypingEngine` → `stringUtils` for input processing → URL state synced via `useUrlSync`.
 
 ## Key Modules
 
 **`useTypingEngine`** (`src/hooks/useTypingEngine.ts`) — The central game hook. Manages the full status lifecycle: `'typing'` → `'submitted'` (on incorrect) or `'completed'` (on correct) → 5-second countdown → auto-advance to next challenge. Uses `stringUtils` for all input matching logic.
+
+**Typing session hooks** (`src/hooks/useTypingSessionQueue.ts`, `src/hooks/useSRSReviewRecording.ts`, `src/hooks/useTypingRetryReinsertion.ts`, `src/hooks/useTypingSessionCompletion.ts`) — Own feature-level game orchestration around the engine: session queue reset/reinsertion, SRS interval selection and review recording, normal-mode wrong-answer retries, and end-of-session detection. `TypingGame` composes these hooks and renders the UI.
 
 **`stringUtils`** (`src/lib/stringUtils.ts`) — Contains the most complex logic. Key behaviors:
 - `parseSentence`: Parses challenge sentences, extracting pre-filled characters (content inside parentheses like `(hint)` is auto-filled for the user)

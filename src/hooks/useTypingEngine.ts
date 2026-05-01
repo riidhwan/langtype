@@ -1,14 +1,14 @@
 import { useState, useMemo, useEffect } from 'react'
 import { autoMatchSpacing, isFlexibleMatch, parseSentence } from '@/lib/stringUtils'
 
-type Status = 'typing' | 'submitted' | 'completed'
+export type TypingStatus = 'typing' | 'submitted' | 'completed'
 
 export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
     const parsedSentences = useMemo(() => sentences.map(s => parseSentence(s)), [sentences])
 
     const [currentIndex, setCurrentIndex] = useState(initialIndex)
     const [input, setInput] = useState('')
-    const [status, setStatus] = useState<Status>('typing')
+    const [status, setStatus] = useState<TypingStatus>('typing')
 
     const { text: currentSentence, preFilledIndices } = useMemo(() => {
         return parsedSentences[currentIndex] || { text: '', preFilledIndices: new Set<number>() }
