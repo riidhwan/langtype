@@ -197,9 +197,50 @@ Treat the workflow itself as improvable. If a task reveals unclear issue criteri
 
 Tests are co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests.
 
-## Dictionary Data
+### Unit Test Standard
 
-`data/dictionary/raw/*` and `data/dictionary/generated/*` are gitignored. Do not commit the raw Wiktextract JSONL file or generated dictionary artifacts. Commit repeatable dictionary scripts, validation/upload tests, docs, and tiny fixtures under `test/fixtures/`.
+Unit tests should prove behavior through public interfaces and observable outcomes. They are allowed to know the contract of the unit under test, but not its private implementation.
+
+- Test the invariant, not the implementation detail. A harmless refactor should not break the test.
+- Prefer focused tests with one clear behavioral reason to fail.
+- Use Arrange / Act / Assert structure when it improves clarity.
+- Cover the happy path, important branches, boundary values, empty/error states, and regression cases.
+- Use small deterministic fixtures or builder helpers. Avoid large opaque fixtures that hide the behavior under test.
+- Keep the unit boundary explicit. Mock external services, browser/storage/network boundaries, expensive collaborators, and framework plumbing; do not mock the logic being tested.
+- Await async behavior explicitly with Testing Library or Vitest async helpers. Do not rely on incidental timing.
+- Reset mocks, timers, stores, local storage, and module/global state between tests.
+
+Standards by unit type:
+
+- Pure utilities: use table tests for meaningful input classes and edge cases. Assert exact outputs and thrown errors.
+- Hooks: use `renderHook`, wrap state changes in `act`, use fake timers for time-dependent behavior, and assert returned state/actions instead of hook internals.
+- Components: use Testing Library queries by role, label, and visible text first. Use `user-event` for user flows, reserve `fireEvent` for low-level events that `user-event` cannot express, and assert visible UI or callback outcomes.
+- Stores and services: reset persisted or module state in `beforeEach`; assert state transitions, returned values, and externally visible side effects.
+- Routes and loaders: test loader/search behavior separately from page rendering where practical; route component tests may mock router plumbing but should still assert page-level behavior.
+
+Avoid:
+
+- Snapshot-only unit tests.
+- "Renders without crashing" tests with no behavioral assertion.
+- Over-mocking, especially mocking the unit under test.
+- Assertions coupled to private state, CSS class names, or implementation-only call order.
+- Real timers, arbitrary sleeps, or unbounded retries for timer-dependent logic.
+- Shared mutable fixtures that are not rebuilt or reset for each test.
+- Broad integration tests mislabeled as unit tests when a narrower unit test would be clearer.
+- Testing layout, computed CSS, or pixel-level behavior in jsdom. Use Playwright for browser-rendered behavior.
+
+Unit test audit checklist:
+
+- Each test documents a user, business, or code invariant.
+- Each test has one clear reason to fail.
+- Bug fixes include a regression test that fails without the fix.
+- Branching logic, derived state, thresholds, and error/empty states are covered.
+- Async work is awaited explicitly.
+- Mocks are scoped to external boundaries and reset between tests.
+- Fake timers are restored with `vi.useRealTimers()`.
+- Store, storage, module, and global state cannot leak into the next test.
+- Component tests prefer accessible queries; `data-testid` is used only when accessible queries are unsuitable.
+- jsdom limitations are respected; browser layout and visual regressions are covered by E2E tests.
 
 ### Mock Patterns
 
@@ -289,3 +330,7 @@ Keep this updated when adding or removing attributes.
 |---|---|---|
 | `visual-translation-input` | root `div` | `VisualTranslationInput` |
 | `char-slot` | per-character `div` | `VisualTranslationInput` (slot mode only) |
+
+## Dictionary Data
+
+`data/dictionary/raw/*` and `data/dictionary/generated/*` are gitignored. Do not commit the raw Wiktextract JSONL file or generated dictionary artifacts. Commit repeatable dictionary scripts, validation/upload tests, docs, and tiny fixtures under `test/fixtures/`.
