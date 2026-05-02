@@ -3,6 +3,7 @@ import tsParser from "@typescript-eslint/parser";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import sonarjs from "eslint-plugin-sonarjs";
+import { noRawUiControls } from "./eslint-rules/no-raw-ui-controls.mjs";
 
 export default [
     js.configs.recommended,
@@ -18,6 +19,11 @@ export default [
         plugins: {
             "@typescript-eslint": tsPlugin,
             "react-hooks": reactHooksPlugin,
+            "langtype": {
+                rules: {
+                    "no-raw-ui-controls": noRawUiControls,
+                },
+            },
         },
         rules: {
             "no-unused-vars": "off",
@@ -25,6 +31,7 @@ export default [
             "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
+            "langtype/no-raw-ui-controls": "error",
             "sonarjs/no-nested-conditional": "off",
             "sonarjs/pseudo-random": "off",
         },

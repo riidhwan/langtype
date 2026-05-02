@@ -8,6 +8,11 @@ import {
     useCustomCollectionsStore,
 } from '@/store/useCustomCollectionsStore'
 import { useSRSStore } from '@/store/useSRSStore'
+import { ConfirmButton } from '@/components/ui/ConfirmButton'
+import { IconButton } from '@/components/ui/IconButton'
+import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
+import { Textarea } from '@/components/ui/Textarea'
 import { IconArrowDown, IconArrowUp, IconPlus, IconTrash } from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
 
@@ -77,7 +82,6 @@ export function CollectionEditor({ collection }: Props) {
     }
 
     const removeChallenge = (id: string) => {
-        if (!window.confirm('Delete this challenge?')) return
         updateCollection({
             challenges: (collection.challenges ?? []).filter((challenge) => challenge.id !== id),
         })
@@ -94,7 +98,6 @@ export function CollectionEditor({ collection }: Props) {
     }
 
     const handleDeleteCollection = () => {
-        if (!window.confirm('Delete this custom collection and its progress?')) return
         deleteCollection(collection.id)
         resetCollection(collection.id)
         navigate({ to: '/' })
@@ -129,42 +132,39 @@ export function CollectionEditor({ collection }: Props) {
                         >
                             Practice
                         </Link>
-                        <button
-                            onClick={handleDeleteCollection}
-                            className="rounded-[var(--radius)] border border-border px-3 py-2 text-sm font-medium text-[var(--incorrect)] transition-colors hover:bg-[var(--bg2)]"
+                        <ConfirmButton
+                            confirmMessage="Delete this custom collection and its progress?"
+                            onConfirm={handleDeleteCollection}
                         >
                             Delete
-                        </button>
+                        </ConfirmButton>
                     </div>
                 </header>
 
                 <section className="grid gap-4 md:grid-cols-[1fr_220px]">
                     <label className="flex flex-col gap-1">
                         <span className="mono-label">title</span>
-                        <input
+                        <Input
                             value={collection.title}
                             onChange={(event) => updateCollection({ title: event.target.value })}
-                            className="rounded-[var(--radius)] border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
                             placeholder="German A1 review"
                         />
                     </label>
                     <label className="flex flex-col gap-1">
                         <span className="mono-label">mode</span>
-                        <select
+                        <Select
                             value={collection.freeInput ? 'free' : 'slots'}
                             onChange={(event) => updateCollection({ freeInput: event.target.value === 'free' })}
-                            className="rounded-[var(--radius)] border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
                         >
                             <option value="free">Free input</option>
                             <option value="slots">Slot input</option>
-                        </select>
+                        </Select>
                     </label>
                     <label className="flex flex-col gap-1 md:col-span-2">
                         <span className="mono-label">description</span>
-                        <textarea
+                        <Textarea
                             value={collection.description ?? ''}
                             onChange={(event) => updateCollection({ description: event.target.value })}
-                            className="min-h-20 rounded-[var(--radius)] border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
                             placeholder="Short note about what this collection practices"
                         />
                     </label>
@@ -187,6 +187,7 @@ export function CollectionEditor({ collection }: Props) {
                                     </button>
                                 </span>
                             ))}
+                            {/* eslint-disable-next-line langtype/no-raw-ui-controls -- Compound tag chip input needs transparent flex sizing inside the chip container. */}
                             <input
                                 value={tagInput}
                                 onChange={(event) => {
@@ -233,46 +234,48 @@ export function CollectionEditor({ collection }: Props) {
                                 <div key={challenge.id} className="grid gap-3 p-4 md:grid-cols-[1fr_1fr_auto] md:items-start">
                                     <label className="flex flex-col gap-1">
                                         <span className="mono-label">prompt</span>
-                                        <textarea
+                                        <Textarea
                                             value={challenge.original ?? ''}
                                             onChange={(event) => updateChallenge(challenge.id, { original: event.target.value })}
-                                            className="min-h-20 rounded-[var(--radius)] border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                                            className="bg-background"
                                             placeholder="Optional source text"
                                         />
                                     </label>
                                     <label className="flex flex-col gap-1">
                                         <span className="mono-label">answer</span>
-                                        <textarea
+                                        <Textarea
                                             value={challenge.translation}
                                             onChange={(event) => updateChallenge(challenge.id, { translation: event.target.value })}
-                                            className="min-h-20 rounded-[var(--radius)] border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                                            className="bg-background"
                                             placeholder="Required answer"
                                         />
                                     </label>
                                     <div className="flex gap-2 md:flex-col">
-                                        <button
+                                        <IconButton
+                                            aria-label="Move up"
                                             onClick={() => moveChallenge(index, -1)}
                                             disabled={index === 0}
                                             title="Move up"
-                                            className="rounded-[var(--radius)] border border-border p-2 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
                                         >
                                             <IconArrowUp className="h-4 w-4" />
-                                        </button>
-                                        <button
+                                        </IconButton>
+                                        <IconButton
+                                            aria-label="Move down"
                                             onClick={() => moveChallenge(index, 1)}
                                             disabled={index === (collection.challenges ?? []).length - 1}
                                             title="Move down"
-                                            className="rounded-[var(--radius)] border border-border p-2 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
                                         >
                                             <IconArrowDown className="h-4 w-4" />
-                                        </button>
-                                        <button
-                                            onClick={() => removeChallenge(challenge.id)}
+                                        </IconButton>
+                                        <ConfirmButton
+                                            aria-label="Delete challenge"
+                                            confirmMessage="Delete this challenge?"
+                                            onConfirm={() => removeChallenge(challenge.id)}
                                             title="Delete challenge"
-                                            className="rounded-[var(--radius)] border border-border p-2 text-[var(--incorrect)] transition-colors hover:bg-[var(--bg2)]"
+                                            className="inline-flex h-9 w-9 items-center justify-center p-0"
                                         >
                                             <IconTrash className="h-4 w-4" />
-                                        </button>
+                                        </ConfirmButton>
                                     </div>
                                 </div>
                             ))}

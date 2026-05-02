@@ -26,6 +26,24 @@ All styling uses CSS custom-property themes defined in `src/globals.css`. **Do n
 - `.mono-label` — JetBrains Mono 11px uppercase, used for section headings and counters
 - `.key-hint` — keycap-style badge for keyboard shortcut hints (e.g. `<kbd className="key-hint">enter</kbd>`)
 
+## UI Primitives
+
+Use the generic primitives in `src/components/ui/` for ordinary app controls before hand-styling raw elements:
+
+| Primitive | Use |
+|---|---|
+| `Input` | Standard single-line text inputs with shared form-control tokens |
+| `Textarea` | Standard multi-line text inputs with shared form-control tokens |
+| `Select` | Native selects with shared form-control tokens |
+| `IconButton` | Fixed-size icon-only buttons; always provide an `aria-label` |
+| `ConfirmButton` | Native `window.confirm` destructive actions; pass the exact confirmation copy through `confirmMessage` |
+
+Primitive base classes own the shared border, background, focus, disabled, and sizing defaults. Pass `className` only for contextual overrides such as using `bg-background` inside a `bg-card` list row.
+
+Do not use these primitives for specialized typing controls whose behavior depends on raw input layout, slot rendering, IME handling, or game-specific keyboard flow. Those controls stay in their domain components.
+
+`langtype/no-raw-ui-controls` enforces this convention in feature and domain code. If a raw `input`, `textarea`, or `select` is genuinely part of a specialized compound control, add a targeted `eslint-disable-next-line langtype/no-raw-ui-controls` comment that states why the primitive does not fit. Direct `window.confirm` calls are only allowed inside `ConfirmButton`.
+
 ## Typography
 
 | Use case | Classes |

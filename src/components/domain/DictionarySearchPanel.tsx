@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/Input'
 import { IconChevronRight, IconSearch } from '@/components/ui/icons'
 import { formatDictionaryPartOfSpeech } from '@/lib/dictionaryForms'
 import { cn } from '@/lib/utils'
@@ -24,10 +25,10 @@ export function DictionarySearchPanel({
         <section>
             <div className="relative">
                 <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
+                <Input
                     value={query}
                     onChange={(event) => onQueryChange(event.target.value)}
-                    className="w-full rounded-[var(--radius)] border border-border bg-card py-2 pl-9 pr-3 text-sm focus:border-primary focus:outline-none"
+                    className="pl-9"
                     placeholder="Search lemmas or forms..."
                     aria-label="Search dictionary"
                 />

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import type { HomeCollectionFilter } from '@/lib/homeCollections'
+import { Input } from '@/components/ui/Input'
 import { IconSearch } from '@/components/ui/icons'
 
 interface Props {
@@ -27,12 +28,12 @@ export function CollectionFilters({
         <>
             <div className="relative mt-4">
                 <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                <input
+                <Input
                     type="text"
                     value={query}
                     onChange={(event) => onQueryChange(event.target.value)}
                     placeholder="Search collections…"
-                    className="w-full pl-9 pr-9 py-2 bg-card border border-border rounded-[var(--radius)] text-sm focus:outline-none focus:border-primary"
+                    className="pl-9 pr-9"
                 />
                 {query && (
                     <button
