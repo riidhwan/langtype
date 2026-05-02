@@ -11,7 +11,12 @@ export type Segment =
     | { type: 'prefilled'; text: string }
     | { type: 'gap'; startIndex: number; length: number }
 
+export type SlotSizingTier = 'normal' | 'medium' | 'compact'
+export type WordGapTier = 'default' | 'tight'
+
 interface SlotSizing {
+    tier: SlotSizingTier
+    gapTier: WordGapTier
     slotSize: string
     wordGap: string
 }
@@ -72,6 +77,8 @@ export function getSlotSizing(words: WordInfo[]): SlotSizing {
 
     if (maxWordLength >= 14) {
         return {
+            tier: 'compact',
+            gapTier: 'tight',
             slotSize: 'w-4 h-7 text-sm md:w-5 md:h-8 md:text-base',
             wordGap: 'gap-x-0.5',
         }
@@ -79,12 +86,16 @@ export function getSlotSizing(words: WordInfo[]): SlotSizing {
 
     if (maxWordLength >= 12) {
         return {
+            tier: 'medium',
+            gapTier: 'default',
             slotSize: 'w-5 h-8 text-base md:w-6 md:h-9 md:text-lg',
             wordGap: 'gap-x-1',
         }
     }
 
     return {
+        tier: 'normal',
+        gapTier: 'default',
         slotSize: 'w-[26px] h-[38px] text-lg md:w-8 md:h-10 md:text-xl',
         wordGap: 'gap-x-1',
     }

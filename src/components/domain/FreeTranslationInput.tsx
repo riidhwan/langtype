@@ -88,19 +88,27 @@ export function FreeTranslationInput({
                     const gapValue = gapValues[currentGapIndex] ?? ''
                     const isActiveGap = currentGapIndex === activeGapIndex && status === 'typing'
                     let gapColor = 'border-muted-foreground/40 text-foreground'
+                    let isGapCorrect = false
 
                     if (status === 'submitted' || status === 'completed') {
                         const expected = targetText.slice(segment.startIndex, segment.startIndex + segment.length)
-                        gapColor = gapValue === expected
+                        isGapCorrect = gapValue === expected
+                        gapColor = isGapCorrect
                             ? 'border-[var(--correct)] text-[var(--correct)]'
                             : 'border-[var(--incorrect)] text-[var(--incorrect)]'
                     }
+                    const gapState = status === 'submitted' || status === 'completed'
+                        ? (isGapCorrect ? 'correct' : 'incorrect')
+                        : (isActiveGap ? 'active' : 'idle')
 
                     return (
                         <input
                             key={index}
                             ref={(element) => { gapInputRefs.current[currentGapIndex] = element }}
                             type="text"
+                            aria-label={`Translation gap ${currentGapIndex + 1}`}
+                            data-testid="translation-gap"
+                            data-gap-state={gapState}
                             value={gapValue}
                             onChange={(event) => handleGapChange(currentGapIndex, event.target.value)}
                             onKeyDown={(event) => handleGapKeyDown(currentGapIndex, event)}

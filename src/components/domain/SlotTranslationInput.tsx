@@ -25,7 +25,7 @@ export function SlotTranslationInput({
     const hiddenInputRef = useRef<HTMLInputElement>(null)
 
     const words = getWordsWithIndices(targetText)
-    const { slotSize, wordGap } = getSlotSizing(words)
+    const { tier, slotSize, wordGap } = getSlotSizing(words)
 
     useEffect(() => {
         if (status !== 'typing') return
@@ -58,6 +58,7 @@ export function SlotTranslationInput({
             <input
                 ref={hiddenInputRef}
                 type="text"
+                aria-label="Translation answer"
                 className="absolute inset-0 opacity-0 pointer-events-none"
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
@@ -83,9 +84,11 @@ export function SlotTranslationInput({
                             const isPreFilledIndex = preFilledIndices?.has(index)
                             const isPreFilled = !inputValue && (isAutoInsert || isPreFilledIndex)
                             const displayChar = inputValue || (isPreFilled ? char : '')
+                            let slotState = isTyped ? 'typed' : 'empty'
 
                             if (status === 'submitted' || status === 'completed') {
                                 const isMatch = inputValue === char || (!inputValue && (isPreFilledIndex || isAutoInsert))
+                                slotState = isMatch ? 'correct' : 'incorrect'
                                 statusColor = isMatch
                                     ? 'border-b-[var(--correct)] bg-[var(--correct-bg)] text-[var(--correct)]'
                                     : 'border-b-[var(--incorrect)] bg-[var(--incorrect-bg)] text-[var(--incorrect)]'
@@ -97,6 +100,9 @@ export function SlotTranslationInput({
                                 <div
                                     key={index}
                                     data-testid="char-slot"
+                                    data-current={isCurrent ? 'true' : undefined}
+                                    data-slot-size={tier}
+                                    data-slot-state={slotState}
                                     className={cn(
                                         'border-b-2 flex items-center justify-center font-mono transition-colors select-none',
                                         slotSize,

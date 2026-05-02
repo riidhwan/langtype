@@ -13,7 +13,7 @@ Use GitHub Issues as the durable task queue and task handoff layer.
 Before starting implementation, check whether the task already has a GitHub issue. If it does not, create or draft one first unless the change is truly tiny, such as a typo, comment correction, or metadata-only cleanup.
 
 Issue expectations:
-- Non-urgent features and fixes use a backlog issue
+- Non-urgent features and fixes use a tracked issue
 - Large tasks use one parent issue plus child issues for independently shippable slices
 - Small fixes and improvements use a quick-fix issue with the problem, expected result, and verification notes
 - Commits should reference the relevant issue with `Refs #N` or `Closes #N` when useful

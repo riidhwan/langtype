@@ -6,48 +6,37 @@ describe('VisualTranslationInput', () => {
     const defaultProps = {
         value: '',
         onChange: vi.fn(),
-        targetText: 'Hi', // Simple target
+        targetText: 'Hi',
         status: 'typing' as const,
-        isSubmitted: false // Helper potentially? Or derived from status
     }
 
-    it('renders slots with default styling when typing', () => {
+    it('renders typed and empty slot states while typing', () => {
         render(<VisualTranslationInput {...defaultProps} value="H" />)
         const slots = screen.getAllByTestId('char-slot')
-        expect(slots[0]).toHaveClass('border-foreground') // Neutral/Active style
-        expect(slots[0]).not.toHaveClass('bg-[var(--incorrect-bg)]')
-        expect(slots[0]).not.toHaveClass('bg-[var(--correct-bg)]')
+        expect(slots[0]).toHaveAttribute('data-slot-state', 'typed')
+        expect(slots[1]).toHaveAttribute('data-slot-state', 'empty')
     })
 
     it('shows error state when submitted and incorrect', () => {
         render(<VisualTranslationInput {...defaultProps} value="X" status="submitted" />)
         const slots = screen.getAllByTestId('char-slot')
 
-        // First slot 'X' != 'H' -> Error (Red)
-        expect(slots[0]).toHaveClass('bg-[var(--incorrect-bg)]')
-        expect(slots[0]).toHaveClass('text-[var(--incorrect)]')
-
-        // Second slot empty != 'i' -> Error (Red)
-        expect(slots[1]).toHaveClass('bg-[var(--incorrect-bg)]')
+        expect(slots[0]).toHaveAttribute('data-slot-state', 'incorrect')
+        expect(slots[1]).toHaveAttribute('data-slot-state', 'incorrect')
     })
 
     it('shows success state when submitted and correct', () => {
         render(<VisualTranslationInput {...defaultProps} value="H" status="submitted" />)
         const slots = screen.getAllByTestId('char-slot')
 
-        // First slot 'H' == 'H' -> Success (Green)
-        expect(slots[0]).toHaveClass('bg-[var(--correct-bg)]')
+        expect(slots[0]).toHaveAttribute('data-slot-state', 'correct')
     })
 
     it('focuses input when container is clicked', () => {
         render(<VisualTranslationInput {...defaultProps} />)
-        // We can click the main container. Since it has no role, we might access by className or modify component to have testid. 
-        // Or simpler: click the rendered text slot which bubbles up.
-        // Let's add data-testid to container in component? Or just click a slot since we have them.
-        const slot = screen.getAllByTestId('char-slot')[0]
-        fireEvent.click(slot)
+        fireEvent.click(screen.getByTestId('visual-translation-input'))
 
-        const input = screen.getByRole('textbox')
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
         expect(input).toHaveFocus()
     })
 
@@ -55,7 +44,7 @@ describe('VisualTranslationInput', () => {
         const handleSubmit = vi.fn()
         render(<VisualTranslationInput {...defaultProps} onSubmit={handleSubmit} />)
 
-        const input = screen.getByRole('textbox')
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
         fireEvent.keyDown(input, { key: 'Enter' })
 
         expect(handleSubmit).toHaveBeenCalled()
@@ -65,33 +54,30 @@ describe('VisualTranslationInput', () => {
         // No onSubmit prop
         render(<VisualTranslationInput {...defaultProps} onSubmit={undefined} />)
 
-        const input = screen.getByRole('textbox')
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
         expect(() => fireEvent.keyDown(input, { key: 'Enter' })).not.toThrow()
     })
 
-    it('renders spacers for spaces in target text', () => {
+    it('does not render editable slots for spaces in target text', () => {
         render(<VisualTranslationInput {...defaultProps} targetText="A B" />)
-        // Expect 2 slots (A, B) and 1 spacer?
-        // Our implementation: maps chars. If space -> div with aria-hidden.
-        // Let's check strict slot count.
         const slots = screen.getAllByTestId('char-slot')
         expect(slots).toHaveLength(2)
     })
     it('disables input when status is not typing', () => {
         const { rerender } = render(<VisualTranslationInput {...defaultProps} status="typing" />)
-        expect(screen.getByRole('textbox')).not.toBeDisabled()
+        expect(screen.getByRole('textbox', { name: 'Translation answer' })).not.toBeDisabled()
 
         rerender(<VisualTranslationInput {...defaultProps} status="submitted" />)
-        expect(screen.getByRole('textbox')).toBeDisabled()
+        expect(screen.getByRole('textbox', { name: 'Translation answer' })).toBeDisabled()
 
         rerender(<VisualTranslationInput {...defaultProps} status="completed" />)
-        expect(screen.getByRole('textbox')).toBeDisabled()
+        expect(screen.getByRole('textbox', { name: 'Translation answer' })).toBeDisabled()
     })
 
     it('sets dynamic keyboard attributes correctly', () => {
         // Target starts with lowercase -> autocapitalize="none"
         const { rerender } = render(<VisualTranslationInput {...defaultProps} targetText="der Mann" />)
-        const input = screen.getByRole('textbox')
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
         expect(input).toHaveAttribute('autoCapitalize', 'none')
         expect(input).toHaveAttribute('autoCorrect', 'off')
         expect(input).toHaveAttribute('spellCheck', 'false')
@@ -120,46 +106,34 @@ describe('VisualTranslationInput', () => {
         render(<VisualTranslationInput {...defaultProps} targetText="der Namen" value="der" />)
 
         const slots = screen.getAllByTestId('char-slot')
-        // slots: d(0), e(1), r(2), N(4), a(5), m(6), e(7), n(8) — space not rendered
-        expect(slots[3]).toHaveClass('outline-[var(--accent)]') // 'N' of "Namen"
-        expect(slots[2]).not.toHaveClass('outline-[var(--accent)]') // 'r' of "der" — already typed
+        expect(slots[3]).toHaveAttribute('data-current', 'true')
+        expect(slots[2]).not.toHaveAttribute('data-current')
     })
 
     describe('slot sizing by word length', () => {
         it('uses normal slots for short words (≤11 chars)', () => {
             render(<VisualTranslationInput {...defaultProps} targetText="Hallo" />)
             const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0]).toHaveClass('w-[26px]')
+            expect(slots[0]).toHaveAttribute('data-slot-size', 'normal')
         })
 
         it('uses medium slots for 12-13 char words', () => {
-            // "Verabredungen" = 13 chars
             render(<VisualTranslationInput {...defaultProps} targetText="Verabredungen" />)
             const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0]).toHaveClass('w-5')
-            expect(slots[0]).not.toHaveClass('w-[26px]')
+            expect(slots[0]).toHaveAttribute('data-slot-size', 'medium')
         })
 
         it('uses compact slots for words ≥14 chars', () => {
-            // "Entschuldigung" = 14 chars
             render(<VisualTranslationInput {...defaultProps} targetText="Entschuldigung" />)
             const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0]).toHaveClass('w-4')
-            expect(slots[0]).not.toHaveClass('w-[26px]')
-        })
-
-        it('uses tight gap for words ≥14 chars', () => {
-            render(<VisualTranslationInput {...defaultProps} targetText="Entschuldigung" />)
-            const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0].parentElement).toHaveClass('gap-x-0.5')
+            expect(slots[0]).toHaveAttribute('data-slot-size', 'compact')
         })
 
         it('applies compact slots to all words when any word is ≥14 chars', () => {
-            // "die" = 3 chars, "Krankenschwestern" = 17 chars — longest word drives the tier
             render(<VisualTranslationInput {...defaultProps} targetText="die Krankenschwestern" />)
             const slots = screen.getAllByTestId('char-slot')
-            expect(slots[0]).toHaveClass('w-4')  // 'd' of "die" — same compact tier as the long word
-            expect(slots[3]).toHaveClass('w-4')  // 'K' of "Krankenschwestern"
+            expect(slots[0]).toHaveAttribute('data-slot-size', 'compact')
+            expect(slots[3]).toHaveAttribute('data-slot-size', 'compact')
         })
     })
 
@@ -241,41 +215,38 @@ describe('VisualTranslationInput', () => {
             expect(newInputs[0]).toHaveFocus()
         })
 
-        it('highlights the active gap with orange outline while typing', () => {
-            const { container } = render(<VisualTranslationInput
+        it('marks the active gap while typing', () => {
+            render(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value=""
                 status="typing"
             />)
-            const gap = container.querySelector('.border-b-2')
-            expect(gap).toHaveClass('outline-[var(--accent)]')
+            expect(screen.getByTestId('translation-gap')).toHaveAttribute('data-gap-state', 'active')
         })
 
-        it('keeps orange outline on the last gap after all characters are typed', () => {
-            const { container } = render(<VisualTranslationInput
+        it('keeps the last gap active after all characters are typed', () => {
+            render(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value="Hallo"
                 status="typing"
             />)
-            const gap = container.querySelector('.border-b-2')
-            expect(gap).toHaveClass('outline-[var(--accent)]')
+            expect(screen.getByTestId('translation-gap')).toHaveAttribute('data-gap-state', 'active')
         })
 
-        it('does not show orange outline after submission', () => {
-            const { container } = render(<VisualTranslationInput
+        it('clears the active gap state after submission', () => {
+            render(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value="Hallo"
                 status="completed"
             />)
-            const gap = container.querySelector('.border-b-2')
-            expect(gap).not.toHaveClass('outline-[var(--accent)]')
+            expect(screen.getByTestId('translation-gap')).not.toHaveAttribute('data-gap-state', 'active')
         })
 
-        it('applies correct colour to gap on completed answer', () => {
-            const { container, rerender } = render(<VisualTranslationInput
+        it('marks the gap correct on completed answer', () => {
+            const { rerender } = render(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value=""
@@ -288,12 +259,11 @@ describe('VisualTranslationInput', () => {
                 value="Hallo"
                 status="completed"
             />)
-            const gap = container.querySelector('.border-b-2')
-            expect(gap).toHaveClass('text-[var(--correct)]')
+            expect(screen.getByTestId('translation-gap')).toHaveAttribute('data-gap-state', 'correct')
         })
 
-        it('applies incorrect colour to gap on submitted wrong answer', () => {
-            const { container, rerender } = render(<VisualTranslationInput
+        it('marks the gap incorrect on submitted wrong answer', () => {
+            const { rerender } = render(<VisualTranslationInput
                 {...freeProps}
                 targetText="Hallo"
                 value=""
@@ -306,8 +276,7 @@ describe('VisualTranslationInput', () => {
                 value="Helli"
                 status="submitted"
             />)
-            const gap = container.querySelector('.border-b-2')
-            expect(gap).toHaveClass('text-[var(--incorrect)]')
+            expect(screen.getByTestId('translation-gap')).toHaveAttribute('data-gap-state', 'incorrect')
         })
     })
 
@@ -316,12 +285,10 @@ describe('VisualTranslationInput', () => {
         render(<VisualTranslationInput {...defaultProps} targetText="der Tisch" preFilledIndices={preFilledIndices} value="" status="submitted" />)
 
         const slots = screen.getAllByTestId('char-slot')
-        // "der" slots (0,1,2) should be green because they are pre-filled
-        expect(slots[0]).toHaveClass('bg-[var(--correct-bg)]')
-        expect(slots[1]).toHaveClass('bg-[var(--correct-bg)]')
-        expect(slots[2]).toHaveClass('bg-[var(--correct-bg)]')
+        expect(slots[0]).toHaveAttribute('data-slot-state', 'correct')
+        expect(slots[1]).toHaveAttribute('data-slot-state', 'correct')
+        expect(slots[2]).toHaveAttribute('data-slot-state', 'correct')
 
-        // "T" slot (index 4) should be red because it's required but empty
-        expect(slots[3]).toHaveClass('bg-[var(--incorrect-bg)]')
+        expect(slots[3]).toHaveAttribute('data-slot-state', 'incorrect')
     })
 })

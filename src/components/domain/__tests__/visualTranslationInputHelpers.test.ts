@@ -48,23 +48,23 @@ describe('visualTranslationInputHelpers', () => {
         })
 
         it('uses normal slot sizing for short words', () => {
-            expect(getSlotSizing(getWordsWithIndices('Hallo'))).toEqual({
-                slotSize: 'w-[26px] h-[38px] text-lg md:w-8 md:h-10 md:text-xl',
-                wordGap: 'gap-x-1',
+            expect(getSlotSizing(getWordsWithIndices('Hallo'))).toMatchObject({
+                tier: 'normal',
+                gapTier: 'default',
             })
         })
 
         it('uses medium slot sizing for 12-13 character words', () => {
-            expect(getSlotSizing(getWordsWithIndices('Verabredungen'))).toEqual({
-                slotSize: 'w-5 h-8 text-base md:w-6 md:h-9 md:text-lg',
-                wordGap: 'gap-x-1',
+            expect(getSlotSizing(getWordsWithIndices('Verabredungen'))).toMatchObject({
+                tier: 'medium',
+                gapTier: 'default',
             })
         })
 
         it('uses compact slot sizing and tighter gaps for long words', () => {
-            expect(getSlotSizing(getWordsWithIndices('Entschuldigung'))).toEqual({
-                slotSize: 'w-4 h-7 text-sm md:w-5 md:h-8 md:text-base',
-                wordGap: 'gap-x-0.5',
+            expect(getSlotSizing(getWordsWithIndices('Entschuldigung'))).toMatchObject({
+                tier: 'compact',
+                gapTier: 'tight',
             })
         })
     })
