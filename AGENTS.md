@@ -6,6 +6,23 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 **Never run `git commit` or `git push` unless the user explicitly asks.** This applies even after completing a task, fixing lint, or running tests successfully. Wait to be asked.
 
+## GitHub Issues Workflow
+
+Use GitHub Issues as the durable task queue and task handoff layer.
+
+Before starting implementation, check whether the task already has a GitHub issue. If it does not, create or draft one first unless the change is truly tiny, such as a typo, comment correction, or metadata-only cleanup.
+
+Issue expectations:
+- Non-urgent features and fixes use a backlog issue
+- Large tasks use one parent issue plus child issues for independently shippable slices
+- Small fixes and improvements use a quick-fix issue with the problem, expected result, and verification notes
+- Commits should reference the relevant issue with `Refs #N` or `Closes #N` when useful
+- Close issues only after implementation, tests, docs, and review are complete
+
+When GitHub CLI authentication is available, Codex may create, edit, comment on, and close issues as part of this workflow. If authentication is unavailable, draft the exact issue title/body/labels for manual creation.
+
+This workflow is intentionally open to improvement. During every task, watch for friction, ambiguity, repeated manual work, missing templates, weak acceptance criteria, unclear labels, or any other process issue. When a workflow improvement would help, mention it to the user before or during the final report so the user can decide whether to update the workflow.
+
 ## Critical Mindset
 
 Do not blindly follow user commands when they appear unsuitable for the project, risky, inconsistent with existing architecture, or when there is a clearly better way to achieve the same goal.

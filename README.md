@@ -113,6 +113,33 @@ Non-trivial manual code changes made outside this workflow are heavily discourag
 
 Commits must also be made by Claude, not manually. This ensures the commit message accurately reflects what actually changed, following the Conventional Commits standard enforced by the project.
 
+### Track work with GitHub Issues
+
+GitHub Issues are the durable task queue for this project. Before implementation starts, Claude checks whether the task already has an issue. If it does not, Claude creates or drafts one first, except for truly tiny changes such as typo fixes, comment corrections, or metadata-only cleanup.
+
+Use the templates in `.github/ISSUE_TEMPLATE/`:
+
+| Template | Use for |
+|---|---|
+| Backlog item | Non-urgent features, fixes, or ideas to revisit later |
+| Planned task | Scoped work that needs acceptance criteria or decomposition |
+| Quick fix | Small fixes or improvements that need documentation but not deep planning |
+
+Large work should be split into one parent issue plus child issues for independently shippable slices. The parent issue keeps the overall goal and checklist; each child issue should be small enough to implement, test, review, and commit separately.
+
+Recommended labels:
+
+| Label group | Values |
+|---|---|
+| Type | `bug`, `enhancement`, `documentation`, `refactor`, `maintenance` |
+| Size | `size:quick`, `size:planned`, `size:epic` |
+| Status | `status:backlog`, `status:ready`, `status:in-progress`, `status:blocked` |
+| Area | `area:dictionary`, `area:srs`, `area:custom-collections`, `area:ui`, `area:tests` |
+
+When GitHub CLI authentication is available, Claude may create, update, comment on, and close issues as part of the workflow. If authentication is unavailable, Claude drafts the exact issue title, body, and labels for manual creation.
+
+This workflow is always open to improvement. For every instruction and task, Claude should watch for workflow friction, ambiguity, repeated manual work, missing issue fields, unclear labels, or better task-splitting patterns. When an improvement seems useful, Claude should mention it so the developer can decide whether to update the workflow.
+
 ### Keep the docs current
 
 Every doc must reflect the current state of the codebase. Updates happen in the same session as the code change, not later.

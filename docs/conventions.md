@@ -166,6 +166,19 @@ export function CollectionPage() {
 
 Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`. Never run `git commit` or `git push` unless explicitly asked.
 
+GitHub Issues are used for task tracking. Before implementation, check for an existing issue or create/draft one unless the change is truly tiny. Use `Refs #N` or `Closes #N` in commit messages when useful.
+
+Issue labels stay intentionally small:
+
+| Group | Labels |
+|---|---|
+| Type | `bug`, `enhancement`, `documentation`, `refactor`, `maintenance` |
+| Size | `size:quick`, `size:planned`, `size:epic` |
+| Status | `status:backlog`, `status:ready`, `status:in-progress`, `status:blocked` |
+| Area | `area:dictionary`, `area:srs`, `area:custom-collections`, `area:ui`, `area:tests` |
+
+Treat the workflow itself as improvable. If a task reveals unclear issue criteria, missing templates, repeated manual steps, weak labels, or better task-splitting practices, mention the improvement to the user so the workflow can be updated intentionally.
+
 ## Linting
 
 **Always run `npm run lint` before considering a task complete.** Fix any errors it surfaces; warnings from genuinely unused-but-kept props (`_prefixed`) are acceptable.
