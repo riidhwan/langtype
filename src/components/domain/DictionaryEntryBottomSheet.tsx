@@ -1,5 +1,6 @@
 import type { DictionaryEntry, DictionarySearchItem } from '@/types/dictionary'
 import type { DictionaryLoadState } from '@/hooks/useDictionarySearch'
+import { Button } from '@/components/ui/Button'
 import { DictionaryEntryPanel } from './DictionaryEntryPanel'
 
 interface Props {
@@ -40,13 +41,12 @@ export function DictionaryEntryBottomSheet({
                         <p className="mono-label mb-0.5">entry</p>
                         <h2 className="truncate text-[15px] font-semibold">{item?.lemma ?? 'Dictionary entry'}</h2>
                     </div>
-                    <button
-                        type="button"
+                    <Button
                         onClick={onClose}
-                        className="rounded-[var(--radius-sm)] border border-border px-3 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="rounded-[var(--radius-sm)] px-3 py-1 text-muted-foreground hover:text-foreground"
                     >
                         Close
-                    </button>
+                    </Button>
                 </div>
                 <div className="max-h-[calc(85vh-64px)] overflow-y-auto p-4">
                     <DictionaryEntryPanel

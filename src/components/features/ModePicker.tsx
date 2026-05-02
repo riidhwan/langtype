@@ -3,6 +3,7 @@ import { Collection } from '@/types/challenge'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getDueChallengeIds, getNextReviewTime } from '@/lib/srsAlgorithm'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
 import { IconChevronRight } from '@/components/ui/icons'
 
 interface Props {
@@ -55,9 +56,9 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
             <p className="mono-label">How would you like to practice?</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                <button
+                <Button
                     onClick={onSelectNormal}
-                    className="flex items-center justify-between gap-4 w-full rounded-[var(--radius)] border border-border bg-card p-5 text-left transition-colors hover:border-primary hover:bg-[var(--bg2)] cursor-pointer"
+                    className="w-full justify-between gap-4 p-5 text-left"
                 >
                     <div>
                         <span className="text-[15px] font-semibold block mb-1">Practice All</span>
@@ -66,16 +67,16 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                         </span>
                     </div>
                     <IconChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                </button>
+                </Button>
 
-                <button
+                <Button
                     onClick={dueCount > 0 ? onSelectSRS : undefined}
                     disabled={dueCount === 0}
                     className={cn(
-                        'flex items-center justify-between gap-4 w-full rounded-[var(--radius)] border bg-card p-5 text-left transition-colors',
+                        'w-full justify-between gap-4 p-5 text-left',
                         dueCount > 0
-                            ? 'border-border hover:border-primary hover:bg-[var(--bg2)] cursor-pointer'
-                            : 'border-border opacity-45 cursor-not-allowed',
+                            ? 'cursor-pointer'
+                            : 'opacity-45 cursor-not-allowed',
                     )}
                 >
                     <div>
@@ -89,41 +90,41 @@ export function ModePicker({ collection, onSelectNormal, onSelectSRS, onViewProg
                         </span>
                     </div>
                     {dueCount > 0 && <IconChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />}
-                </button>
+                </Button>
             </div>
 
-            <button
+            <Button
+                variant="link"
                 onClick={onViewProgress}
-                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
             >
                 View progress
-            </button>
+            </Button>
 
             {hasProgress && (
                 <div className="text-sm text-muted-foreground">
                     {confirmingReset ? (
                         <span className="flex items-center gap-3">
                             <span>Reset Spaced Repetition progress for this collection?</span>
-                            <button
+                            <Button
+                                variant="dangerLink"
                                 onClick={handleReset}
-                                className="text-[var(--incorrect)] hover:opacity-80 font-medium transition-opacity"
                             >
                                 Reset
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="link"
                                 onClick={() => setConfirmingReset(false)}
-                                className="underline underline-offset-4 cursor-pointer hover:text-foreground transition-colors"
                             >
                                 Cancel
-                            </button>
+                            </Button>
                         </span>
                     ) : (
-                        <button
+                        <Button
+                            variant="link"
                             onClick={() => setConfirmingReset(true)}
-                            className="underline underline-offset-4 cursor-pointer hover:text-foreground transition-colors"
                         >
                             Reset progress
-                        </button>
+                        </Button>
                     )}
                 </div>
             )}

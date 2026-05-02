@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Challenge } from '@/types/challenge'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getNextReviewTime } from '@/lib/srsAlgorithm'
+import { Button } from '@/components/ui/Button'
 
 interface Props {
     collectionId: string
@@ -37,12 +38,12 @@ export function SRSAllDoneScreen({ collectionId, challenges, onBack }: Props) {
                     ? `Next cards due in ${hoursUntil} ${hoursUntil === 1 ? 'hour' : 'hours'}.`
                     : 'No more cards scheduled — check back tomorrow.'}
             </p>
-            <button
+            <Button
+                variant="link"
                 onClick={onBack}
-                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
             >
                 Back to collection
-            </button>
+            </Button>
         </div>
     )
 }

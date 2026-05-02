@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
 import type { HomeCollectionFilter } from '@/lib/homeCollections'
+import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { IconSearch } from '@/components/ui/icons'
 
@@ -36,47 +36,41 @@ export function CollectionFilters({
                     className="pl-9 pr-9"
                 />
                 {query && (
-                    <button
+                    <Button
+                        variant="link"
+                        aria-label="Clear search"
                         onClick={() => onQueryChange('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-base leading-none no-underline"
                     >
                         ×
-                    </button>
+                    </Button>
                 )}
             </div>
 
             <div className="flex gap-2 mt-3">
                 {(['all', 'due'] as const).map((tab) => (
-                    <button
+                    <Button
                         key={tab}
+                        variant="pill"
+                        selected={filter === tab}
                         onClick={() => onFilterChange(tab)}
-                        className={cn(
-                            'px-3 py-1 rounded-full border text-xs font-mono transition-colors',
-                            filter === tab
-                                ? 'border-primary bg-[var(--accent-dim)] text-primary font-semibold'
-                                : 'border-border text-muted-foreground hover:text-foreground'
-                        )}
                     >
                         {tab === 'all' ? 'All' : `Due (${totalDue})`}
-                    </button>
+                    </Button>
                 ))}
             </div>
 
             {tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-3">
                     {tags.map((tag) => (
-                        <button
+                        <Button
                             key={tag}
+                            variant="pill"
+                            selected={activeTag === tag}
                             onClick={() => onTagClick(tag)}
-                            className={cn(
-                                'px-3 py-1 rounded-full border text-xs font-mono transition-colors',
-                                activeTag === tag
-                                    ? 'border-primary bg-[var(--accent-dim)] text-primary font-semibold'
-                                    : 'border-border text-muted-foreground hover:text-foreground'
-                            )}
                         >
                             {tag}
-                        </button>
+                        </Button>
                     ))}
                 </div>
             )}

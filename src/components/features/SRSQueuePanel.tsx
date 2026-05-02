@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { useSRSStore } from '@/store/useSRSStore'
 import { getQueueLoadBuckets, getAllCollectionsQueueLoadBuckets } from '@/lib/srsAlgorithm'
+import { IconButton } from '@/components/ui/IconButton'
 import { IconClock } from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
 import type { Challenge } from '@/types/challenge'
@@ -83,19 +84,19 @@ export function SRSQueuePanel({ collectionId, allChallenges }: Props) {
                     </table>
                 </div>
             )}
-            <button
+            <IconButton
                 onClick={() => setIsOpen(prev => !prev)}
                 aria-label={isOpen ? 'Close queue panel' : 'View upcoming queue load'}
                 aria-expanded={isOpen}
                 className={cn(
-                    'p-2 rounded-full border bg-card transition-colors',
+                    'rounded-full',
                     isOpen
                         ? 'border-primary text-foreground bg-[var(--bg3)]'
-                        : 'border-border text-muted-foreground hover:text-foreground hover:border-primary'
+                        : 'hover:border-primary'
                 )}
             >
                 <IconClock />
-            </button>
+            </IconButton>
         </div>
     )
 }

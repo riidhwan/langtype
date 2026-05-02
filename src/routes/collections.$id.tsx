@@ -8,6 +8,7 @@ import { SRSQueuePanel } from '@/components/features/SRSQueuePanel'
 import { useEffect } from 'react'
 import { useSRSStore } from '@/store/useSRSStore'
 import { useSessionChallenges } from '@/hooks/useSessionChallenges'
+import { Button } from '@/components/ui/Button'
 import type { Challenge } from '@/types/challenge'
 
 const EMPTY_CHALLENGES: Challenge[] = []
@@ -96,14 +97,15 @@ export function CollectionGamePage() {
     if (view === 'progress') {
         return (
             <main className="relative flex min-h-screen flex-col items-center justify-start md:justify-center px-4 pb-4 pt-20 md:p-24 bg-background">
-                <button
+                <Button
+                    variant="link"
                     onClick={goToPicker}
-                    className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 no-underline"
                     title="Back"
                 >
                     <BackArrow />
                     <span className="sr-only md:not-sr-only text-sm font-medium">Back</span>
-                </button>
+                </Button>
                 <SRSProgressView collection={collection} onBack={goToPicker} />
             </main>
         )
@@ -135,14 +137,15 @@ export function CollectionGamePage() {
     if (mode === 'srs' && challenges.length === 0) {
         return (
             <main className="relative flex min-h-screen flex-col items-center justify-start md:justify-center px-4 pb-4 pt-20 md:p-24 bg-background">
-                <button
+                <Button
+                    variant="link"
                     onClick={goToPicker}
-                    className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 no-underline"
                     title="Back"
                 >
                     <BackArrow />
                     <span className="sr-only md:not-sr-only text-sm font-medium">Back</span>
-                </button>
+                </Button>
                 <SRSAllDoneScreen
                     collectionId={collection.id}
                     challenges={collection.challenges ?? []}
@@ -155,14 +158,15 @@ export function CollectionGamePage() {
     // Game
     return (
         <main className="relative flex min-h-screen flex-col items-center justify-start md:justify-center px-4 pb-4 pt-20 md:p-24 bg-background">
-            <button
+            <Button
+                variant="link"
                 onClick={goToPicker}
-                className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-2 no-underline"
                 title="Back"
             >
                 <BackArrow />
                 <span className="sr-only md:not-sr-only text-sm font-medium">Back</span>
-            </button>
+            </Button>
             <div className="mb-4 text-center">
                 <h2 className="text-xl text-muted-foreground">{collection.title}</h2>
             </div>

@@ -10,6 +10,7 @@ import * as React from 'react'
 import appCss from '../globals.css?url'
 import { useSRSStore } from '@/store/useSRSStore'
 import { useCustomCollectionsStore } from '@/store/useCustomCollectionsStore'
+import { IconButton } from '@/components/ui/IconButton'
 import { IconSun, IconMoon } from '@/components/ui/icons'
 
 type Theme = 'warm' | 'ink'
@@ -65,13 +66,13 @@ function RootComponent() {
     return (
         <>
             <Outlet />
-            <button
+            <IconButton
                 onClick={toggleTheme}
                 aria-label={theme === 'warm' ? 'Switch to dark mode' : 'Switch to light mode'}
-                className="fixed bottom-4 right-4 p-2 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary transition-colors z-50"
+                className="fixed bottom-4 right-4 z-50 rounded-full hover:border-primary"
             >
                 {theme === 'warm' ? <IconMoon className="h-4 w-4" /> : <IconSun className="h-4 w-4" />}
-            </button>
+            </IconButton>
         </>
     )
 }

@@ -1,4 +1,5 @@
 import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 import { IconChevronRight, IconSearch } from '@/components/ui/icons'
 import { formatDictionaryPartOfSpeech } from '@/lib/dictionaryForms'
 import { cn } from '@/lib/utils'
@@ -40,11 +41,11 @@ export function DictionarySearchPanel({
                 ) : (
                     <div className="divide-y divide-border">
                         {results.map((item) => (
-                            <button
+                            <Button
                                 key={`${item.id}-${item.normalized}`}
                                 onClick={() => onSelectResult(item)}
                                 className={cn(
-                                    'flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-[var(--bg3)]',
+                                    'w-full justify-between gap-3 rounded-none border-0 bg-transparent px-4 py-3 text-left font-normal hover:border-transparent hover:bg-[var(--bg3)]',
                                     selected?.id === item.id && 'bg-[var(--accent-dim)]'
                                 )}
                             >
@@ -62,7 +63,7 @@ export function DictionarySearchPanel({
                                     </span>
                                 </span>
                                 <IconChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 )}

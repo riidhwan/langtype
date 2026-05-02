@@ -8,6 +8,7 @@ import {
     useCustomCollectionsStore,
 } from '@/store/useCustomCollectionsStore'
 import { useSRSStore } from '@/store/useSRSStore'
+import { Button } from '@/components/ui/Button'
 import { ConfirmButton } from '@/components/ui/ConfirmButton'
 import { IconButton } from '@/components/ui/IconButton'
 import { Input } from '@/components/ui/Input'
@@ -177,14 +178,14 @@ export function CollectionEditor({ collection }: Props) {
                                     className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-background px-2 py-1 text-xs font-mono"
                                 >
                                     <span className="truncate">{tag}</span>
-                                    <button
-                                        type="button"
+                                    <Button
+                                        variant="link"
                                         onClick={() => removeTag(tag)}
                                         title={`Remove ${tag}`}
-                                        className="text-muted-foreground hover:text-foreground"
+                                        className="text-xs no-underline"
                                     >
                                         &times;
-                                    </button>
+                                    </Button>
                                 </span>
                             ))}
                             {/* eslint-disable-next-line langtype/no-raw-ui-controls -- Compound tag chip input needs transparent flex sizing inside the chip container. */}
@@ -215,13 +216,12 @@ export function CollectionEditor({ collection }: Props) {
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-3">
                         <h2 className="text-lg font-semibold">Challenges</h2>
-                        <button
+                        <Button
                             onClick={addChallenge}
-                            className="inline-flex items-center gap-2 rounded-[var(--radius)] border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:border-primary hover:bg-[var(--bg2)]"
                         >
                             <IconPlus className="h-4 w-4" />
                             Add
-                        </button>
+                        </Button>
                     </div>
 
                     {(collection.challenges ?? []).length === 0 ? (
