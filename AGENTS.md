@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Critical Rules
 
-**Never run `git commit` or `git push` unless the user explicitly asks.** This applies even after completing a task, fixing lint, or running tests successfully. Wait to be asked.
+**Never run `git commit` or `git push` unless the user explicitly asks.** This applies even after completing a task, fixing lint, or running tests successfully. Wait to be asked. When the user does explicitly ask Codex to commit and push, treat that as approval that the pre-commit review gate is satisfied unless the user says otherwise.
 
 ## GitHub Issues Workflow
 
@@ -17,6 +17,7 @@ Issue expectations:
 - Large tasks use one parent issue plus child issues for independently shippable slices
 - Small fixes and improvements use a quick-fix issue with the problem, expected result, and verification notes
 - Commits should reference the relevant issue with `Refs #N` or `Closes #N` when useful
+- For complete, verified issue-backed work, use `Closes #N` when the commit should close the issue on merge or push. Do not downgrade to `Refs #N` solely because a post-commit review might happen; the explicit commit/push request is the review approval unless the user says otherwise.
 - When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history.
 - Close issues only after implementation, tests, docs, and review are complete
 
@@ -83,7 +84,7 @@ If verification cannot run, report why.
 
 ## Git
 
-Never run `git commit` or `git push` unless the user explicitly asks.
+Never run `git commit` or `git push` unless the user explicitly asks. When the user explicitly asks Codex to commit and push, treat that as approval that the pre-commit review gate is satisfied unless the user says otherwise.
 
 When committing, stage only files relevant to the requested change. Leave local metadata, editor files, and unrelated dirty files uncommitted unless the user explicitly asks to include them.
 

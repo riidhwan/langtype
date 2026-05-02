@@ -44,9 +44,14 @@ next-env.d.ts
 
 dist/
 .output/
+.cache/
 
 src/data/collections/raw/*
 scripts/*
+!scripts/build.mjs
+!scripts/build-lib.mjs
+!scripts/__tests__/
+!scripts/__tests__/**
 !scripts/dictionary/
 !scripts/dictionary/**
 
