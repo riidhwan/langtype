@@ -133,7 +133,7 @@ Recommended labels:
 |---|---|
 | Type | `bug`, `enhancement`, `documentation`, `refactor`, `maintenance` |
 | Size | `size:quick`, `size:planned`, `size:epic` |
-| Status | `status:backlog`, `status:ready`, `status:in-progress`, `status:blocked` |
+| Status | `status:backlog`, `status:ready`, `status:active`, `status:blocked` |
 | Area | `area:dictionary`, `area:srs`, `area:custom-collections`, `area:ui`, `area:tests` |
 
 When GitHub CLI authentication is available, Claude may create, update, comment on, and close issues as part of the workflow. If authentication is unavailable, Claude drafts the exact issue title, body, and labels for manual creation.

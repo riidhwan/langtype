@@ -174,7 +174,7 @@ Issue labels stay intentionally small:
 |---|---|
 | Type | `bug`, `enhancement`, `documentation`, `refactor`, `maintenance` |
 | Size | `size:quick`, `size:planned`, `size:epic` |
-| Status | `status:backlog`, `status:ready`, `status:in-progress`, `status:blocked` |
+| Status | `status:backlog`, `status:ready`, `status:active`, `status:blocked` |
 | Area | `area:dictionary`, `area:srs`, `area:custom-collections`, `area:ui`, `area:tests` |
 
 Treat the workflow itself as improvable. If a task reveals unclear issue criteria, missing templates, repeated manual steps, weak labels, or better task-splitting practices, mention the improvement to the user so the workflow can be updated intentionally.
