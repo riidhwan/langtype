@@ -28,6 +28,7 @@ export default [
         rules: {
             "no-unused-vars": "off",
             "no-undef": "off",
+            "@typescript-eslint/no-explicit-any": "error",
             "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",

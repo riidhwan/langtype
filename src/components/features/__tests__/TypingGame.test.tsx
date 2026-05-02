@@ -2,12 +2,13 @@ import { render, screen, act, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { TypingGame } from '../TypingGame'
 import { Challenge } from '@/types/challenge'
+import type { SRSStore } from '@/store/useSRSStore'
 
 const mockRecordReview = vi.hoisted(() => vi.fn())
 const mockRecordReviewWithInterval = vi.hoisted(() => vi.fn())
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) =>
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'recordReview' | 'recordReviewWithInterval'>) => T) =>
         selector({ recordReview: mockRecordReview, recordReviewWithInterval: mockRecordReviewWithInterval }),
 }))
 

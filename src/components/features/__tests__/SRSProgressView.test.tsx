@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { SRSProgressView, getCardStatus, formatTimeUntil } from '../SRSProgressView'
 import type { Collection } from '@/types/challenge'
 import type { SRSCard } from '@/types/srs'
+import type { SRSStore } from '@/store/useSRSStore'
 
 const NOW = 1_000_000_000_000
 const DAY = 86_400_000
@@ -14,7 +15,7 @@ const mockSRSState = vi.hoisted(() => ({
 }))
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) => selector(mockSRSState),
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'cards' | '_hasHydrated'>) => T) => selector(mockSRSState),
 }))
 
 vi.mock('@/lib/srsAlgorithm', async (orig) => {

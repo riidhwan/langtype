@@ -1,14 +1,19 @@
 import { describe, it, expect, vi } from 'vitest'
 import { Route } from '../collections.$id'
 import * as challengeService from '@/services/challengeService'
+import type { Collection } from '@/types/challenge'
+
+type CollectionLoader = (context: { params: { id: string } }) => Promise<Collection>
+
+const loadCollection = Route.options.loader as CollectionLoader
 
 describe('collections.$id route logic', () => {
     describe('loader', () => {
         it('returns collection for valid id', async () => {
-            const mockCollection = { id: 'test', title: 'Test' }
-            const getCollectionSpy = vi.spyOn(challengeService, 'getCollection').mockResolvedValue(mockCollection as any)
+            const mockCollection: Collection = { id: 'test', title: 'Test' }
+            const getCollectionSpy = vi.spyOn(challengeService, 'getCollection').mockResolvedValue(mockCollection)
 
-            const result = await (Route.options.loader as any)({ params: { id: 'test' } })
+            const result = await loadCollection({ params: { id: 'test' } })
 
             expect(result).toEqual(mockCollection)
             expect(getCollectionSpy).toHaveBeenCalledWith('test')
@@ -18,7 +23,7 @@ describe('collections.$id route logic', () => {
             vi.spyOn(challengeService, 'getCollection').mockResolvedValue(undefined)
 
             await expect(async () => {
-                await (Route.options.loader as any)({ params: { id: 'invalid' } })
+                await loadCollection({ params: { id: 'invalid' } })
             }).rejects.toThrow() // notFound() throws an error or response
         })
 

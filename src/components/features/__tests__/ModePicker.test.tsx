@@ -2,16 +2,18 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ModePicker } from '../ModePicker'
 import type { Collection } from '@/types/challenge'
+import type { SRSCard } from '@/types/srs'
+import type { SRSStore } from '@/store/useSRSStore'
 
 // Shared mutable state — mutated per-test in beforeEach
 const mockSRSState = vi.hoisted(() => ({
-    cards: {} as Record<string, any>,
+    cards: {} as Record<string, SRSCard>,
     _hasHydrated: true,
     resetCollection: vi.fn(),
 }))
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) => selector(mockSRSState),
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'cards' | '_hasHydrated' | 'resetCollection'>) => T) => selector(mockSRSState),
 }))
 
 const mockGetDueChallengeIds = vi.hoisted(() => vi.fn((_colId: string, ids: string[]) => ids))
@@ -30,6 +32,19 @@ const collection: Collection = {
         { id: '1', original: 'Hello', translation: 'Hallo' },
         { id: '2', original: 'World', translation: 'Welt' },
     ],
+}
+
+function makeCard(overrides: Partial<SRSCard> = {}): SRSCard {
+    return {
+        collectionId: 'test-col',
+        challengeId: '1',
+        interval: 1,
+        repetitions: 1,
+        easeFactor: 2.5,
+        nextReviewAt: Date.now(),
+        lastReviewedAt: Date.now(),
+        ...overrides,
+    }
 }
 
 describe('ModePicker', () => {
@@ -129,7 +144,7 @@ describe('ModePicker', () => {
     })
 
     it('shows reset button when SRS progress exists for this collection', () => {
-        mockSRSState.cards = { 'test-col:1': {} }
+        mockSRSState.cards = { 'test-col:1': makeCard() }
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
@@ -137,7 +152,7 @@ describe('ModePicker', () => {
     })
 
     it('shows confirmation UI when Reset progress is clicked', () => {
-        mockSRSState.cards = { 'test-col:1': {} }
+        mockSRSState.cards = { 'test-col:1': makeCard() }
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
@@ -149,7 +164,7 @@ describe('ModePicker', () => {
     })
 
     it('hides confirmation and restores reset button when Cancel is clicked', () => {
-        mockSRSState.cards = { 'test-col:1': {} }
+        mockSRSState.cards = { 'test-col:1': makeCard() }
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 
@@ -170,7 +185,7 @@ describe('ModePicker', () => {
     })
 
     it('calls resetCollection with the collection id when Reset is confirmed', () => {
-        mockSRSState.cards = { 'test-col:1': {} }
+        mockSRSState.cards = { 'test-col:1': makeCard() }
 
         render(<ModePicker collection={collection} onSelectNormal={vi.fn()} onSelectSRS={vi.fn()} onViewProgress={vi.fn()} />)
 

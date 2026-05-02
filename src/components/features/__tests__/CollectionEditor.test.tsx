@@ -2,6 +2,13 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { CollectionEditor } from '../CollectionEditor'
 import { useCustomCollectionsStore, type CustomCollection } from '@/store/useCustomCollectionsStore'
+import type { SRSStore } from '@/store/useSRSStore'
+import type { ReactNode } from 'react'
+
+interface MockLinkProps {
+    children: ReactNode
+    className?: string
+}
 
 vi.mock('idb-keyval', () => {
     const db = new Map<string, string>()
@@ -19,13 +26,13 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@tanstack/react-router')>()
     return {
         ...actual,
-        Link: ({ children, className }: any) => <a className={className}>{children}</a>,
+        Link: ({ children, className }: MockLinkProps) => <a className={className}>{children}</a>,
         useNavigate: () => navigate,
     }
 })
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) => selector({ resetCollection }),
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'resetCollection'>) => T) => selector({ resetCollection }),
 }))
 
 const baseCollection: CustomCollection = {

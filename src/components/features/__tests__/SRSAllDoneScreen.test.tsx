@@ -2,9 +2,10 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { SRSAllDoneScreen } from '../SRSAllDoneScreen'
 import type { Challenge } from '@/types/challenge'
+import type { SRSStore } from '@/store/useSRSStore'
 
 vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: (selector: (s: any) => any) => selector({ cards: {} }),
+    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'cards'>) => T) => selector({ cards: {} }),
 }))
 
 const mockGetNextReviewTime = vi.hoisted(() => vi.fn(() => null as number | null))
