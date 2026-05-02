@@ -74,6 +74,58 @@ describe('dictionaryService', () => {
         expect(fetcher).toHaveBeenCalledTimes(2)
     })
 
+    it('removes a failed cached search index promise so a retry can succeed', async () => {
+        const rows: DictionarySearchItem[] = [
+            row('1', 'Arbeit', 'arbeit', 'Arbeit', 'lemma', 0),
+        ]
+        const fetcher = vi.fn(async (url: Parameters<typeof fetch>[0]) => {
+            if (String(url).endsWith('/search-index.json') && fetcher.mock.calls.length === 1) {
+                throw new Error('temporary index failure')
+            }
+            if (String(url).endsWith('/search-index.json')) {
+                return response({ p617262: ['p617262-00.json'] })
+            }
+            return response(rows)
+        })
+        vi.stubGlobal('fetch', fetcher)
+
+        await expect(searchDictionary('arb')).rejects.toThrow('temporary index failure')
+        await expect(searchDictionary('arb')).resolves.toEqual(rows)
+
+        expect(fetcher).toHaveBeenCalledTimes(3)
+        expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+            'https://cdn.example.com/dictionary/v2026-05-01/search-index.json',
+            'https://cdn.example.com/dictionary/v2026-05-01/search-index.json',
+            'https://cdn.example.com/dictionary/v2026-05-01/search/p617262-00.json',
+        ])
+    })
+
+    it('removes a failed cached search chunk promise so a retry can succeed', async () => {
+        const rows: DictionarySearchItem[] = [
+            row('1', 'Arbeit', 'arbeit', 'Arbeit', 'lemma', 0),
+        ]
+        const fetcher = vi.fn(async (url: Parameters<typeof fetch>[0]) => {
+            if (String(url).endsWith('/search-index.json')) {
+                return response({ p617262: ['p617262-00.json'] })
+            }
+            if (String(url).endsWith('/search/p617262-00.json') && fetcher.mock.calls.length === 2) {
+                throw new Error('temporary chunk failure')
+            }
+            return response(rows)
+        })
+        vi.stubGlobal('fetch', fetcher)
+
+        await expect(searchDictionary('arb')).rejects.toThrow('temporary chunk failure')
+        await expect(searchDictionary('arbe')).resolves.toEqual(rows)
+
+        expect(fetcher).toHaveBeenCalledTimes(3)
+        expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+            'https://cdn.example.com/dictionary/v2026-05-01/search-index.json',
+            'https://cdn.example.com/dictionary/v2026-05-01/search/p617262-00.json',
+            'https://cdn.example.com/dictionary/v2026-05-01/search/p617262-00.json',
+        ])
+    })
+
     it('returns an empty list without chunk requests when a prefix is absent from the index', async () => {
         const fetcher = vi.fn(async () => response({ p617262: ['p617262-00.json'] }))
 
@@ -103,6 +155,29 @@ describe('dictionaryService', () => {
 
         await expect(getDictionaryEntry({ id: '1', entryBucket: '0001' }, { fetcher })).resolves.toEqual(entry)
         expect(fetcher).toHaveBeenCalledWith('https://cdn.example.com/dictionary/v2026-05-01/entries/0001.json')
+    })
+
+    it('surfaces failed entry responses', async () => {
+        const fetcher = vi.fn(async () => ({ ok: false, status: 500, json: vi.fn() } as unknown as Response))
+
+        await expect(getDictionaryEntry({ id: '1', entryBucket: '0001' }, { fetcher }))
+            .rejects.toThrow('Dictionary request failed: 500')
+    })
+
+    it('surfaces dictionary misconfiguration before fetching', async () => {
+        vi.resetModules()
+        vi.doMock('@/config', () => ({
+            DICTIONARY_PUBLIC_BASE_URL: '',
+            DICTIONARY_ACTIVE_VERSION: 'v2026-05-01',
+            DICTIONARY_PREFIX_LENGTH: 3,
+            DICTIONARY_RESULT_LIMIT: 2,
+        }))
+        const { searchDictionary: searchWithMissingConfig } = await import('../dictionaryService')
+        const fetcher = vi.fn()
+
+        await expect(searchWithMissingConfig('arb', { fetcher }))
+            .rejects.toThrow('Dictionary is not configured.')
+        expect(fetcher).not.toHaveBeenCalled()
     })
 })
 
