@@ -17,9 +17,10 @@ Issue expectations:
 - Large tasks use one parent issue plus child issues for independently shippable slices
 - Small fixes and improvements use a quick-fix issue with the problem, expected result, and verification notes
 - Commits should reference the relevant issue with `Refs #N` or `Closes #N` when useful
+- When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history.
 - Close issues only after implementation, tests, docs, and review are complete
 
-When GitHub CLI authentication is available, Codex may create, edit, comment on, and close issues as part of this workflow. If authentication is unavailable, draft the exact issue title/body/labels for manual creation.
+When GitHub CLI authentication is available, Codex may create, edit, comment on, and close issues as part of this workflow. If authentication is unavailable, draft the exact issue title/body/labels or issue comment for manual creation.
 
 This workflow is intentionally open to improvement. During every task, watch for friction, ambiguity, repeated manual work, missing templates, weak acceptance criteria, unclear labels, or any other process issue. When a workflow improvement would help, mention it to the user before or during the final report so the user can decide whether to update the workflow.
 
