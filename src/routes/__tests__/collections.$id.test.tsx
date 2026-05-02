@@ -1,15 +1,20 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { ReactNode } from 'react'
-import type { Challenge, Collection } from '@/types/challenge'
+import type { Collection } from '@/types/challenge'
 import type { SRSCard } from '@/types/srs'
+import type { MockInstance } from 'vitest'
 
 const mockNavigate = vi.fn()
+let randomSpy: MockInstance
 const mockSRSState = vi.hoisted(() => ({
     cards: {} as Record<string, SRSCard>,
     lastPlayedAt: {} as Record<string, number>,
-    _hasHydrated: false,
+    _hasHydrated: true,
     recordPlay: vi.fn(),
+    recordReview: vi.fn(),
+    recordReviewWithInterval: vi.fn(),
+    resetCollection: vi.fn(),
 }))
 
 vi.mock('@tanstack/react-router', async (importOriginal) => {
@@ -29,62 +34,20 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
     }
 })
 
-vi.mock('@/components/features/TypingGame', () => ({
-    TypingGame: ({
-        challenges,
-        onQuestionChange,
-        onFinished,
-        initialQuestionId,
-    }: {
-        challenges: Challenge[]
-        onQuestionChange?: (questionId: string) => void
-        onFinished?: () => void
-        initialQuestionId?: string
-    }) => (
-        <div
-            data-testid="typing-game"
-            data-initial-question-id={initialQuestionId ?? ''}
-            data-challenge-ids={challenges.map((challenge) => challenge.id).join(',')}
-        >
-            <button onClick={() => onQuestionChange?.('next-id')} data-testid="next-question-btn">
-                Next Question
-            </button>
-            <button onClick={() => onFinished?.()} data-testid="finish-btn">
-                Finish
-            </button>
-        </div>
-    ),
-}))
-
-vi.mock('@/components/features/ModePicker', () => ({
-    ModePicker: () => <div data-testid="mode-picker" />,
-}))
-
-vi.mock('@/components/features/SRSAllDoneScreen', () => ({
-    SRSAllDoneScreen: () => <div data-testid="srs-all-done" />,
-}))
-
 vi.mock('@/store/useSRSStore', () => ({
     useSRSStore: <T,>(selector: (state: typeof mockSRSState) => T) => selector(mockSRSState),
 }))
 
-vi.mock('@/lib/srsAlgorithm', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('@/lib/srsAlgorithm')>()
-    return {
-        ...actual,
-        getDueChallengeIds: vi.fn((...args: Parameters<typeof actual.getDueChallengeIds>) =>
-            actual.getDueChallengeIds(...args)
-        ),
-    }
-})
-
-import { getDueChallengeIds } from '@/lib/srsAlgorithm'
 import { CollectionGamePage, Route } from '../collections.$id'
 
 const mockCollection: Collection = {
     id: 'test',
     title: 'Test',
-    challenges: [{ id: '1', original: 'a', translation: 'b' }],
+    description: 'Route test collection',
+    challenges: [
+        { id: '1', original: 'Hello', translation: 'Hallo' },
+        { id: '2', original: 'World', translation: 'Welt' },
+    ],
 }
 
 function reviewedCard(collectionId: string, challengeId: string): SRSCard {
@@ -101,16 +64,18 @@ function reviewedCard(collectionId: string, challengeId: string): SRSCard {
 
 describe('CollectionGamePage', () => {
     beforeEach(() => {
+        vi.useFakeTimers()
         vi.clearAllMocks()
+        randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99)
         mockSRSState.cards = {}
-        vi.mocked(getDueChallengeIds).mockImplementation((collectionId, challengeIds, cards) =>
-            challengeIds.filter((id) => {
-                const card = cards[`${collectionId}:${id}`]
-                return !card || card.nextReviewAt === 0 || card.nextReviewAt <= Date.now()
-            })
-        )
+        mockSRSState._hasHydrated = true
         vi.mocked(Route.useLoaderData).mockReturnValue(mockCollection)
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'normal' })
+    })
+
+    afterEach(() => {
+        randomSpy.mockRestore()
+        vi.useRealTimers()
     })
 
     it('renders the mode picker when no mode is selected', () => {
@@ -118,79 +83,101 @@ describe('CollectionGamePage', () => {
 
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('mode-picker')).toBeInTheDocument()
-        expect(screen.queryByTestId('typing-game')).not.toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Test' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /practice all/i })).toBeInTheDocument()
+        expect(screen.queryByRole('textbox', { name: 'Translation answer' })).not.toBeInTheDocument()
     })
 
     it('renders the game when mode=normal', () => {
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('typing-game')).toBeInTheDocument()
-        expect(screen.queryByTestId('mode-picker')).not.toBeInTheDocument()
+        expect(screen.getByText('Hello')).toBeInTheDocument()
+        expect(screen.getByRole('textbox', { name: 'Translation answer' })).toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: /practice all/i })).not.toBeInTheDocument()
     })
 
     it('renders the SRS all-done screen when mode=srs and no cards are due', () => {
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-        vi.mocked(getDueChallengeIds).mockReturnValue([])
+        mockSRSState.cards = {
+            'test:1': reviewedCard('test', '1'),
+            'test:2': reviewedCard('test', '2'),
+        }
 
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('srs-all-done')).toBeInTheDocument()
-        expect(screen.queryByTestId('typing-game')).not.toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'All caught up!' })).toBeInTheDocument()
+        expect(screen.getByText(/Next cards due in/i)).toBeInTheDocument()
+        expect(screen.queryByRole('textbox', { name: 'Translation answer' })).not.toBeInTheDocument()
     })
 
     it('renders the game when mode=srs and cards are due', () => {
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-        vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
 
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('typing-game')).toBeInTheDocument()
-        expect(screen.queryByTestId('srs-all-done')).not.toBeInTheDocument()
+        expect(screen.getByText('Hello')).toBeInTheDocument()
+        expect(screen.getByText('1 card remaining')).toBeInTheDocument()
+        expect(screen.queryByRole('heading', { name: 'All caught up!' })).not.toBeInTheDocument()
     })
 
-    it('navigates when game triggers question change', () => {
+    it('navigates when the real game advances to the next question', () => {
         render(<CollectionGamePage />)
 
-        screen.getByTestId('next-question-btn').click()
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
+        fireEvent.change(input, { target: { value: 'Hallo' } })
+        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+
+        act(() => {
+            vi.advanceTimersByTime(5100)
+        })
 
         expect(mockNavigate).toHaveBeenCalledWith(
             expect.objectContaining({ replace: true })
         )
 
-        const callArg = mockNavigate.mock.calls[0][0]
+        const callArg = mockNavigate.mock.calls.at(-1)?.[0]
         const updatedSearch = callArg.search({ mode: 'normal' })
-        expect(updatedSearch).toMatchObject({ questionId: 'next-id', mode: 'normal' })
+        expect(updatedSearch).toMatchObject({ questionId: 2, mode: 'normal' })
     })
 
-    it('navigates to picker when SRS session finishes', () => {
+    it('navigates to picker when the real SRS game finishes', () => {
+        vi.mocked(Route.useLoaderData).mockReturnValue({
+            ...mockCollection,
+            challenges: [{ id: '1', original: 'Hello', translation: 'Hallo' }],
+        })
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-        vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
 
         render(<CollectionGamePage />)
 
-        fireEvent.click(screen.getByTestId('finish-btn'))
+        const input = screen.getByRole('textbox', { name: 'Translation answer' })
+        fireEvent.change(input, { target: { value: 'Hallo' } })
+        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+        fireEvent.click(screen.getByRole('button', { name: '1d' }))
+
+        act(() => {
+            vi.advanceTimersByTime(2100)
+        })
 
         expect(mockNavigate).toHaveBeenCalledWith(
             expect.objectContaining({ search: expect.any(Function) })
         )
-        const callArg = mockNavigate.mock.calls[0][0]
+        const callArg = mockNavigate.mock.calls.at(-1)?.[0]
         expect(callArg.search({})).toEqual({})
     })
 
     it('passes initialQuestionId from URL to TypingGame', () => {
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: '1', mode: 'srs' })
-        vi.mocked(getDueChallengeIds).mockReturnValue(['1'])
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: '2', mode: 'srs' })
 
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('1')
+        expect(screen.getByText('World')).toBeInTheDocument()
+        expect(screen.queryByText('Hello')).not.toBeInTheDocument()
     })
 
     it('passes no initialQuestionId when questionId is absent', () => {
         render(<CollectionGamePage />)
 
-        expect(screen.getByTestId('typing-game').dataset.initialQuestionId).toBe('')
+        expect(screen.getByText('Hello')).toBeInTheDocument()
     })
 
     it('snapshots due SRS challenges when the session starts', () => {
@@ -207,8 +194,9 @@ describe('CollectionGamePage', () => {
 
         render(<CollectionGamePage />)
 
-        const challengeIds = screen.getByTestId('typing-game').dataset.challengeIds?.split(',').sort()
-        expect(challengeIds).toEqual(['1', '3'])
+        expect(screen.getByText(/Hello|Test/)).toBeInTheDocument()
+        expect(screen.queryByText('World')).not.toBeInTheDocument()
+        expect(screen.getByText('1 card remaining')).toBeInTheDocument()
     })
 
     it('keeps the active SRS challenge snapshot when cards change mid-session', () => {
@@ -231,8 +219,8 @@ describe('CollectionGamePage', () => {
         }
         rerender(<CollectionGamePage />)
 
-        expect(screen.getByTestId('typing-game').dataset.challengeIds?.split(',')).toHaveLength(3)
-        expect(screen.queryByTestId('srs-all-done')).not.toBeInTheDocument()
+        expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
+        expect(screen.queryByRole('heading', { name: 'All caught up!' })).not.toBeInTheDocument()
     })
 
     it('records collection play when a session mode is active', () => {
