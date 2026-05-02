@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import type { Collection } from '@/types/challenge'
 import type { SRSCard } from '@/types/srs'
 import type { MockInstance } from 'vitest'
+import type { CustomCollection } from '@/store/useCustomCollectionsStore'
 
 const mockNavigate = vi.fn()
 let randomSpy: MockInstance
@@ -15,6 +16,10 @@ const mockSRSState = vi.hoisted(() => ({
     recordReview: vi.fn(),
     recordReviewWithInterval: vi.fn(),
     resetCollection: vi.fn(),
+}))
+const mockCustomCollectionsState = vi.hoisted(() => ({
+    collections: {} as Record<string, CustomCollection>,
+    _hasHydrated: true,
 }))
 
 vi.mock('@tanstack/react-router', async (importOriginal) => {
@@ -38,6 +43,16 @@ vi.mock('@/store/useSRSStore', () => ({
     useSRSStore: <T,>(selector: (state: typeof mockSRSState) => T) => selector(mockSRSState),
 }))
 
+vi.mock('@/store/useCustomCollectionsStore', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@/store/useCustomCollectionsStore')>()
+    return {
+        ...actual,
+        useCustomCollectionsStore: <T,>(selector: (state: typeof mockCustomCollectionsState) => T) => (
+            selector(mockCustomCollectionsState)
+        ),
+    }
+})
+
 import { CollectionGamePage, Route } from '../collections.$id'
 
 const mockCollection: Collection = {
@@ -49,6 +64,16 @@ const mockCollection: Collection = {
         { id: '2', original: 'World', translation: 'Welt' },
     ],
 }
+
+const bundledLoaderData = (collection: Collection) => ({
+    kind: 'bundled' as const,
+    collection,
+})
+
+const customLoaderData = (id: string) => ({
+    kind: 'custom' as const,
+    id,
+})
 
 function reviewedCard(collectionId: string, challengeId: string): SRSCard {
     return {
@@ -69,7 +94,9 @@ describe('CollectionGamePage', () => {
         randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99)
         mockSRSState.cards = {}
         mockSRSState._hasHydrated = true
-        vi.mocked(Route.useLoaderData).mockReturnValue(mockCollection)
+        mockCustomCollectionsState.collections = {}
+        mockCustomCollectionsState._hasHydrated = true
+        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData(mockCollection))
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'normal' })
     })
 
@@ -141,10 +168,10 @@ describe('CollectionGamePage', () => {
     })
 
     it('navigates to picker when the real SRS game finishes', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue({
+        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
             ...mockCollection,
             challenges: [{ id: '1', original: 'Hello', translation: 'Hallo' }],
-        })
+        }))
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
 
         render(<CollectionGamePage />)
@@ -192,7 +219,7 @@ describe('CollectionGamePage', () => {
                 { id: 'ch_mooolutc_843ims', original: 'The child plays with its toy.', translation: '(Das Kind spielt mit )seinem( Spielzeug.)' },
             ],
         }
-        vi.mocked(Route.useLoaderData).mockReturnValue(importedCollection)
+        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData(importedCollection))
         vi.mocked(Route.useSearch).mockReturnValue({
             questionId: 'ch_mooolutc_843imj',
             mode: 'srs',
@@ -206,6 +233,53 @@ describe('CollectionGamePage', () => {
         expect(screen.getByText('Hund.')).toBeInTheDocument()
     })
 
+    it('shows a loading state for custom routes while custom collection storage hydrates', () => {
+        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_ready'))
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
+        mockCustomCollectionsState._hasHydrated = false
+
+        render(<CollectionGamePage />)
+
+        expect(screen.getByText('Loading collection...')).toBeInTheDocument()
+        expect(screen.queryByRole('heading', { name: 'Collection not found' })).not.toBeInTheDocument()
+    })
+
+    it('renders the mode picker for a hydrated valid custom collection route', () => {
+        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_ready'))
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
+        mockCustomCollectionsState.collections = {
+            custom_ready: {
+                id: 'custom_ready',
+                title: 'Ready custom',
+                description: 'Local collection',
+                tags: ['Custom'],
+                freeInput: true,
+                challenges: [
+                    { id: 'local_1', original: 'Good day', translation: 'Guten Tag' },
+                ],
+                createdAt: 1,
+                updatedAt: 2,
+            },
+        }
+
+        render(<CollectionGamePage />)
+
+        expect(screen.getByRole('heading', { name: 'Ready custom' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /practice all/i })).toBeInTheDocument()
+        expect(screen.queryByText('Collection not found')).not.toBeInTheDocument()
+    })
+
+    it('renders a route-local not-found state for a missing hydrated custom collection route', () => {
+        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_missing'))
+        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
+
+        render(<CollectionGamePage />)
+
+        expect(screen.getByRole('heading', { name: 'Collection not found' })).toBeInTheDocument()
+        expect(screen.getByText('This custom collection is not saved or is not playable on this device.')).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
+    })
+
     it('passes no initialQuestionId when questionId is absent', () => {
         render(<CollectionGamePage />)
 
@@ -213,14 +287,14 @@ describe('CollectionGamePage', () => {
     })
 
     it('snapshots due SRS challenges when the session starts', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue({
+        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
             ...mockCollection,
             challenges: [
                 { id: '1', translation: 'one' },
                 { id: '2', translation: 'two' },
                 { id: '3', translation: 'three' },
             ],
-        })
+        }))
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
         mockSRSState.cards = { 'test:2': reviewedCard('test', '2') }
 
@@ -232,14 +306,14 @@ describe('CollectionGamePage', () => {
     })
 
     it('keeps the active SRS challenge snapshot when cards change mid-session', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue({
+        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
             ...mockCollection,
             challenges: [
                 { id: '1', translation: 'one' },
                 { id: '2', translation: 'two' },
                 { id: '3', translation: 'three' },
             ],
-        })
+        }))
         vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
 
         const { rerender } = render(<CollectionGamePage />)

@@ -1,25 +1,32 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Route } from '../collections.$id'
 import * as challengeService from '@/services/challengeService'
 import type { Collection } from '@/types/challenge'
 
-type CollectionLoader = (context: { params: { id: string } }) => Promise<Collection>
+type CollectionLoader = (context: { params: { id: string } }) => Promise<
+    | { kind: 'bundled'; collection: Collection }
+    | { kind: 'custom'; id: string }
+>
 
 const loadCollection = Route.options.loader as CollectionLoader
 
 describe('collections.$id route logic', () => {
+    beforeEach(() => {
+        vi.restoreAllMocks()
+    })
+
     describe('loader', () => {
-        it('returns collection for valid id', async () => {
+        it('returns bundled collection data for valid built-in id', async () => {
             const mockCollection: Collection = { id: 'test', title: 'Test' }
             const getCollectionSpy = vi.spyOn(challengeService, 'getCollection').mockResolvedValue(mockCollection)
 
             const result = await loadCollection({ params: { id: 'test' } })
 
-            expect(result).toEqual(mockCollection)
+            expect(result).toEqual({ kind: 'bundled', collection: mockCollection })
             expect(getCollectionSpy).toHaveBeenCalledWith('test')
         })
 
-        it('throws notFound for invalid id', async () => {
+        it('throws notFound for missing built-in id', async () => {
             vi.spyOn(challengeService, 'getCollection').mockResolvedValue(undefined)
 
             await expect(async () => {
@@ -27,6 +34,14 @@ describe('collections.$id route logic', () => {
             }).rejects.toThrow() // notFound() throws an error or response
         })
 
+        it('returns a custom placeholder without loading custom ids through challengeService', async () => {
+            const getCollectionSpy = vi.spyOn(challengeService, 'getCollection')
+
+            const result = await loadCollection({ params: { id: 'custom_ready' } })
+
+            expect(result).toEqual({ kind: 'custom', id: 'custom_ready' })
+            expect(getCollectionSpy).not.toHaveBeenCalled()
+        })
     })
 
     describe('validateSearch', () => {

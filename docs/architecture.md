@@ -75,6 +75,8 @@ Route loader → `challengeService` (Vite `import.meta.glob`) → shuffled chall
 
 **`challengeService`** (`src/services/challengeService.ts`) — Loads built-in JSON collections at build time using `import.meta.glob` and merges in valid local custom collections from the custom collection store. No runtime API calls are used.
 
+The collection practice route (`/collections/$id`) loads bundled collection ids through `challengeService` in the route loader. Custom collection practice ids are identified by the `custom_` prefix and resolved in the route component after the IndexedDB-backed custom collection store hydrates, because loaders cannot reliably read browser-local IndexedDB state during direct refresh or deep-link startup.
+
 **`dictionaryService`** (`src/services/dictionaryService.ts`) — Runtime static JSON access for dictionary search/detail chunks. It normalizes German search terms (`ä/ö/ü`, `ß`, whitespace, case), fetches and caches the search index and the correct prefix shards, dedupes entries, ranks lemma matches ahead of form matches, and loads entry buckets on demand.
 
 **`useDictionarySearch`** (`src/hooks/useDictionarySearch.ts`) — Owns Dictionary page query state, debouncing, result loading, selected entry loading, error text, and mobile sheet state. UI components receive typed props and do not fetch dictionary data directly.

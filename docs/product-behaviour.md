@@ -43,6 +43,8 @@ All state lives in URL search params. The page renders one of four views dependi
 | `?mode=normal` | Game — all cards shuffled, no SRS recording |
 | `?mode=srs` | Game — only due cards, full SRS flow (see below) |
 
+Bundled collections are loaded by the route loader. Local custom collection deep links (`/collections/custom_*`) wait for IndexedDB-backed custom collection storage to hydrate before deciding whether the collection exists. If the custom collection is not saved on the current device or is still a draft with no playable challenges, the collection route shows a local "Collection not found" state instead of the root 404.
+
 Back button always navigates to `?` (clears params) → mode picker. Retry state is reset via a `useEffect` watching `mode`, not before `navigate()`, to avoid a transient render where `mode=srs` + `retryCount=0` would flash the all-done screen.
 
 ## SRS Session Flow
