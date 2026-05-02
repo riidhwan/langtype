@@ -21,6 +21,21 @@ Issue expectations:
 - When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Do not post outcome or completion comments while the relevant changes are only local and unpushed; wait until the commit/PR is pushed, or draft the comment for manual posting when handing off unpushed work. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history.
 - Close issues only after implementation, tests, docs, and review are complete
 
+Large-change workflow:
+- Treat work as large when it spans multiple features, broad refactors, risky behaviour changes, persistence/data-flow changes, or thousands of lines of code
+- Use one parent issue for the end goal and child issues for independently shippable slices
+- Keep every child issue safe to merge: the app must remain buildable, testable, and deployable from `main`
+- Prefer vertical slices over layer-only mega-PRs: add inactive data/model support, introduce abstractions behind current behaviour, add hidden UI/routes, wire incomplete user-facing behaviour behind a flag, enable it, then remove old paths and flags
+- Use branch-by-abstraction for deep internals so old and new implementations can coexist behind a stable interface during migration
+
+Feature flag expectations:
+- Use flags when incomplete user-facing behaviour must land before it is ready for normal users
+- Start with lightweight Vite build-time flags named `VITE_FEATURE_*`; add a central feature flag module only when the first real flag is needed
+- Flags are appropriate for new routes, new UI modes, alternate user flows, and risky temporary refactors
+- Flags are not appropriate for hiding broken shared code, avoiding tests, long-lived parallel architectures, or security/permission boundaries
+- Every flag must have an owner issue, default state, reason for existing, enable/removal condition, and cleanup child issue
+- Do not close a large-change parent issue until temporary flags, old code paths, and migration scaffolding are removed or explicitly moved to follow-up issues
+
 When GitHub CLI authentication is available, Codex may create, edit, comment on, and close issues as part of this workflow. If authentication is unavailable, draft the exact issue title/body/labels or issue comment for manual creation.
 
 This workflow is intentionally open to improvement. During every task, watch for friction, ambiguity, repeated manual work, missing templates, weak acceptance criteria, unclear labels, or any other process issue. When a workflow improvement would help, mention it to the user before or during the final report so the user can decide whether to update the workflow.

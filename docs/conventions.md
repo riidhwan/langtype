@@ -168,6 +168,23 @@ Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore
 
 GitHub Issues are used for task tracking. Before implementation, check for an existing issue or create/draft one unless the change is truly tiny. Use `Refs #N` or `Closes #N` in commit messages when useful.
 
+Large changes are work that spans multiple features, broad refactors, risky behaviour changes, persistence/data-flow changes, or thousands of lines of code. Use one parent issue for the end goal and child issues for independently shippable slices. Each child issue must leave `main` buildable, testable, deployable, and safe for normal users.
+
+Prefer vertical slices over layer-only mega-PRs:
+
+- Add inactive data/model support before switching behaviour
+- Introduce service, hook, or component abstractions behind current behaviour
+- Add hidden UI, routes, or components before exposing them
+- Wire incomplete user-facing behaviour behind a feature flag
+- Enable the feature only after the flagged path is complete and verified
+- Remove old paths, migration scaffolding, and feature flags as explicit cleanup work
+
+Use branch-by-abstraction for deep internals so old and new implementations can coexist behind a stable interface during migration.
+
+Feature flags are for incomplete user-facing behaviour that must land before it is ready for normal users. Start with lightweight Vite build-time flags named `VITE_FEATURE_*`, and add a central feature flag module only when the first real flag is needed. Flags are appropriate for new routes, new UI modes, alternate user flows, and risky temporary refactors. They are not appropriate for hiding broken shared code, avoiding tests, long-lived parallel architectures, or security/permission boundaries.
+
+Every feature flag must have an owner issue, default state, reason for existing, enable/removal condition, and cleanup child issue. Do not close a large-change parent issue until temporary flags, old code paths, and migration scaffolding are removed or explicitly moved to follow-up issues.
+
 For complete, verified issue-backed work, use `Closes #N` when the commit should close the issue on merge or push. Do not downgrade to `Refs #N` solely because a post-commit review might happen; the explicit commit/push request is the review approval unless the user says otherwise.
 
 When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Do not post outcome or completion comments while the relevant changes are only local and unpushed; wait until the commit/PR is pushed, or draft the comment for manual posting when handing off unpushed work. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history. If GitHub access is unavailable, include the exact comment text in the final report so it can be posted manually.
