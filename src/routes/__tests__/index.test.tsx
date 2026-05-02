@@ -1,52 +1,57 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { ReactNode } from 'react'
-import type { CustomCollectionsStore } from '@/store/useCustomCollectionsStore'
-import type { SRSStore } from '@/store/useSRSStore'
 import type { Collection } from '@/types/challenge'
 import type { SRSCard } from '@/types/srs'
 
 vi.mock('@/config', () => ({ DEFAULT_HOME_TAG: null }))
+
+const idb = vi.hoisted(() => ({
+    get: vi.fn(() => Promise.resolve(null)),
+    set: vi.fn(() => Promise.resolve()),
+    del: vi.fn(() => Promise.resolve()),
+}))
+
+vi.mock('idb-keyval', () => ({
+    get: idb.get,
+    set: idb.set,
+    del: idb.del,
+}))
 
 const mockUseLoaderData = vi.hoisted(() => vi.fn())
 
 interface MockLinkProps {
     children: ReactNode
     className?: string
+    params?: Record<string, string>
+    title?: string
+    to: string
 }
 
 vi.mock('@tanstack/react-router', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@tanstack/react-router')>()
     return {
         ...actual,
-        Link: ({ children, className }: MockLinkProps) => <div className={className}>{children}</div>,
+        Link: ({ children, className, params, title, to }: MockLinkProps) => {
+            const href = params
+                ? Object.entries(params).reduce(
+                    (path, [key, value]) => path.replace(`$${key}`, value),
+                    to,
+                )
+                : to
+
+            return (
+                <a href={href} className={className} title={title}>
+                    {children}
+                </a>
+            )
+        },
         createFileRoute: () => () => ({ useLoaderData: mockUseLoaderData }),
     }
 })
 
-const mockSRSState = vi.hoisted(() => ({
-    cards: {} as Record<string, SRSCard>,
-    _hasHydrated: true,
-    lastPlayedAt: {} as Record<string, number>,
-}))
-
-vi.mock('@/store/useSRSStore', () => ({
-    useSRSStore: <T,>(selector: (state: Pick<SRSStore, 'cards' | '_hasHydrated' | 'lastPlayedAt'>) => T) => selector(mockSRSState),
-}))
-
-const mockCustomState = vi.hoisted(() => ({
-    collections: {} as CustomCollectionsStore['collections'],
-    _hasHydrated: true,
-}))
-
-vi.mock('@/store/useCustomCollectionsStore', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('@/store/useCustomCollectionsStore')>()
-    return {
-        ...actual,
-        useCustomCollectionsStore: <T,>(selector: (state: Pick<CustomCollectionsStore, 'collections' | '_hasHydrated'>) => T) => selector(mockCustomState),
-    }
-})
-
+import { useCustomCollectionsStore } from '@/store/useCustomCollectionsStore'
+import { useSRSStore } from '@/store/useSRSStore'
 import { Home } from '../index'
 
 // --- Helpers ---
@@ -76,48 +81,64 @@ const collections = [
 
 describe('Home — tag filtering', () => {
     beforeEach(() => {
-        mockSRSState.cards = {}
-        mockSRSState._hasHydrated = true
-        mockSRSState.lastPlayedAt = {}
-        mockCustomState.collections = {}
-        mockCustomState._hasHydrated = true
+        vi.clearAllMocks()
+        useSRSStore.setState({
+            cards: {},
+            _hasHydrated: true,
+            lastPlayedAt: {},
+        })
+        useCustomCollectionsStore.setState({
+            collections: {},
+            _hasHydrated: true,
+        })
         mockUseLoaderData.mockReturnValue({ collections })
     })
 
     it('renders the custom collection creation entry point', () => {
         render(<Home />)
-        expect(screen.getByText('Create collection')).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Create collection' })).toHaveAttribute(
+            'href',
+            '/custom-collections/new',
+        )
     })
 
     it('renders valid custom collections with a custom marker', () => {
-        mockCustomState.collections = {
-            custom_ready: {
-                id: 'custom_ready',
-                title: 'My German Set',
-                description: 'Personal practice',
-                tags: ['Custom'],
-                challenges: [{ id: '1', translation: 'Hallo' }],
-                createdAt: 1,
-                updatedAt: 2,
+        useCustomCollectionsStore.setState({
+            collections: {
+                custom_ready: {
+                    id: 'custom_ready',
+                    title: 'My German Set',
+                    description: 'Personal practice',
+                    tags: ['Custom'],
+                    challenges: [{ id: '1', translation: 'Hallo' }],
+                    createdAt: 1,
+                    updatedAt: 2,
+                },
             },
-        }
+        })
 
         render(<Home />)
 
         expect(screen.getByText('My German Set')).toBeInTheDocument()
         expect(screen.getAllByText('Custom').length).toBeGreaterThan(0)
+        expect(screen.getByTitle('Edit collection')).toHaveAttribute(
+            'href',
+            '/custom-collections/custom_ready/edit',
+        )
     })
 
     it('hides custom drafts that are not practice-ready', () => {
-        mockCustomState.collections = {
-            custom_draft: {
-                id: 'custom_draft',
-                title: 'Incomplete set',
-                challenges: [],
-                createdAt: 1,
-                updatedAt: 2,
+        useCustomCollectionsStore.setState({
+            collections: {
+                custom_draft: {
+                    id: 'custom_draft',
+                    title: 'Incomplete set',
+                    challenges: [],
+                    createdAt: 1,
+                    updatedAt: 2,
+                },
             },
-        }
+        })
 
         render(<Home />)
 
@@ -176,9 +197,11 @@ describe('Home — tag filtering', () => {
     })
 
     it('filters due collections using memoized row due counts', () => {
-        mockSRSState.cards = {
-            'a:1': card('a', '1', 0),
-        }
+        useSRSStore.setState({
+            cards: {
+                'a:1': card('a', '1', 0),
+            },
+        })
 
         render(<Home />)
         fireEvent.click(screen.getByRole('button', { name: 'Due (1)' }))
