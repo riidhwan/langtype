@@ -174,6 +174,38 @@ describe('CollectionGamePage', () => {
         expect(screen.queryByText('Hello')).not.toBeInTheDocument()
     })
 
+    it('renders deep-linked AI-imported custom collection challenges in SRS free-input mode', () => {
+        const importedCollection: Collection = {
+            id: 'custom_moooa5bf_das60i',
+            title: 'AI imported',
+            freeInput: true,
+            challenges: [
+                { id: 'ch_mooolutc_843imj', original: 'This is my dog.', translation: '(Das ist )mein( Hund.)' },
+                { id: 'ch_mooolutc_843imk', original: 'Where is your (informal) key?', translation: '(Wo ist )dein( Schlüssel?)' },
+                { id: 'ch_mooolutc_843iml', original: 'His sister is tall.', translation: 'Seine( Schwester ist groß.)' },
+                { id: 'ch_mooolutc_843imm', original: 'Her cat is sleeping.', translation: 'Ihre( Katze schläft.)' },
+                { id: 'ch_mooolutc_843imn', original: 'We love our house.', translation: '(Wir lieben )unser( Haus.)' },
+                { id: 'ch_mooolutc_843imo', original: 'Is that your (plural/informal) car?', translation: '(Ist das )euer( Auto?)' },
+                { id: 'ch_mooolutc_843imp', original: 'They are looking for their books.', translation: '(Sie suchen )ihre( Bücher.)' },
+                { id: 'ch_mooolutc_843imq', original: 'What is your (formal) name?', translation: '(Wie ist )Ihr( Name?)' },
+                { id: 'ch_mooolutc_843imr', original: 'My parents are here.', translation: 'Meine( Eltern sind hier.)' },
+                { id: 'ch_mooolutc_843ims', original: 'The child plays with its toy.', translation: '(Das Kind spielt mit )seinem( Spielzeug.)' },
+            ],
+        }
+        vi.mocked(Route.useLoaderData).mockReturnValue(importedCollection)
+        vi.mocked(Route.useSearch).mockReturnValue({
+            questionId: 'ch_mooolutc_843imj',
+            mode: 'srs',
+        })
+
+        render(<CollectionGamePage />)
+
+        expect(screen.getByText('This is my dog.')).toBeInTheDocument()
+        expect(screen.getByText('Das ist')).toBeInTheDocument()
+        expect(screen.getByRole('textbox', { name: 'Translation gap 1' })).toBeInTheDocument()
+        expect(screen.getByText('Hund.')).toBeInTheDocument()
+    })
+
     it('passes no initialQuestionId when questionId is absent', () => {
         render(<CollectionGamePage />)
 

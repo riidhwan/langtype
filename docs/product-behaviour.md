@@ -26,6 +26,10 @@ Custom collections are local-only and persisted in IndexedDB on the current devi
 
 Each challenge has an optional prompt (`original`) and a required answer (`translation`). Parentheses in answers keep the existing pre-filled hint behaviour. Empty answer rows may exist in drafts but are filtered out of playable collections. The Practice action is disabled until the collection is valid.
 
+The editor also supports AI chat import as a local-only helper. Langtype generates a copyable prompt for the user's preferred external AI chat, but never calls AI providers and never stores prompts, pasted JSON, provider names, API keys, or AI metadata. The prompt asks the AI to return only one JSON code block containing an array of challenges with ordered `segments`; `type` segments are learner-typed German text, and `prefill` segments are automatic context/hints. Users paste the copied JSON code block content into Langtype, review a preview, then insert valid rows.
+
+AI chat import accepts raw top-level JSON arrays and tolerates one accidentally pasted outer ` ```json ` fenced block. Segment rows must include at least one non-empty `type` segment, may include `prefill` segments, and must use non-empty text. Adjacent segments of the same kind are merged. On insertion, `prefill` segments are converted to native parenthesized answer markup and `type` segments are left unwrapped. As an advanced fallback, rows with native non-empty `translation` strings are accepted unchanged. Valid rows append to the current draft with generated local challenge ids; invalid rows are skipped and counted in the preview.
+
 Deleting a custom collection asks for confirmation, removes the local collection, and clears its SRS progress.
 
 ## Collection Page (`/collections/$id`)

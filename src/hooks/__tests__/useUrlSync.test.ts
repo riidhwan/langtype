@@ -27,13 +27,14 @@ describe('useUrlSync', () => {
 
     it('updates internal index when initialQuestionId changes (external navigation)', () => {
         const setCurrentIndex = vi.fn()
+        const onQuestionChange = vi.fn()
 
         const { rerender } = renderHook(({ initialId }) => useUrlSync({
             currentIndex: 0,
             challenges,
             initialQuestionId: initialId,
             setCurrentIndex,
-            onQuestionChange: vi.fn(),
+            onQuestionChange,
         }), {
             initialProps: { initialId: '1' }
         })
@@ -45,6 +46,23 @@ describe('useUrlSync', () => {
         rerender({ initialId: '2' })
 
         expect(setCurrentIndex).toHaveBeenCalledWith(1) // index of id '2' is 1
+        expect(onQuestionChange).not.toHaveBeenCalledWith('1')
+    })
+
+    it('does not write stale currentIndex while waiting for an incoming questionId to apply', () => {
+        const setCurrentIndex = vi.fn()
+        const onQuestionChange = vi.fn()
+
+        renderHook(() => useUrlSync({
+            currentIndex: 0,
+            challenges,
+            initialQuestionId: '2',
+            setCurrentIndex,
+            onQuestionChange,
+        }))
+
+        expect(setCurrentIndex).toHaveBeenCalledWith(1)
+        expect(onQuestionChange).not.toHaveBeenCalled()
     })
 
     it('does not call setCurrentIndex if initialId matches current index (loop prevention)', () => {
@@ -59,6 +77,20 @@ describe('useUrlSync', () => {
         }))
 
         expect(setCurrentIndex).not.toHaveBeenCalled()
+    })
+
+    it('does not write the same initialQuestionId back to the URL', () => {
+        const onQuestionChange = vi.fn()
+
+        renderHook(() => useUrlSync({
+            currentIndex: 1,
+            challenges,
+            initialQuestionId: '2',
+            setCurrentIndex: vi.fn(),
+            onQuestionChange,
+        }))
+
+        expect(onQuestionChange).not.toHaveBeenCalled()
     })
 
     it('does not resync from the URL when only currentIndex changes', () => {

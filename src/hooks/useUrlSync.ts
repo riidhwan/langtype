@@ -18,16 +18,17 @@ export function useUrlSync({
     const currentIndexRef = useRef(currentIndex)
     currentIndexRef.current = currentIndex
 
-    // Keep track of the last synced ID to prevent loops if necessary,
-    // though the logic relies mainly on checking indexes.
-
     // 1. Sync Logic: Game State (currentIndex) -> URL (onQuestionChange)
     useEffect(() => {
         const currentId = challenges[currentIndex]?.id
-        if (currentId && onQuestionChange) {
+        if (initialQuestionId) {
+            const initialIndex = challenges.findIndex((c) => c.id === initialQuestionId)
+            if (initialIndex !== -1 && initialIndex !== currentIndex) return
+        }
+        if (currentId && currentId !== initialQuestionId && onQuestionChange) {
             onQuestionChange(currentId)
         }
-    }, [currentIndex, challenges, onQuestionChange])
+    }, [currentIndex, challenges, initialQuestionId, onQuestionChange])
 
     // 2. Sync Logic: URL (top-level prop) -> Game State (setCurrentIndex)
     // This handles deep links, back/forward buttons, etc.

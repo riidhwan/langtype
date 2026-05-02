@@ -27,6 +27,7 @@ Agreed terms for pages, views, and concepts. Use these consistently when discuss
 | **Challenge** | A single question/answer pair |
 | **Original** | The prompt shown above the input (English meaning or German context) |
 | **Translation** | The German text the user types |
+| **AI chat import** | Local-only custom collection editor workflow where Langtype generates a prompt for an external AI chat and imports pasted JSON without calling or storing AI-provider data |
 
 ## Dictionary Concepts
 

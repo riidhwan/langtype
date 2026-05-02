@@ -182,6 +182,78 @@ describe('CollectionEditor', () => {
         expect(useCustomCollectionsStore.getState().collections.custom_ready.challenges).toHaveLength(1)
     })
 
+    it('generates an AI chat import prompt from the settings', () => {
+        render(<CollectionEditor collection={baseCollection} />)
+
+        fireEvent.click(screen.getByRole('button', { name: 'Import from AI chat' }))
+        fireEvent.change(screen.getByPlaceholderText('Practice ordering food with separable verbs'), {
+            target: { value: 'Practice restaurant phrases' },
+        })
+        fireEvent.change(screen.getByDisplayValue('10'), {
+            target: { value: '7' },
+        })
+        fireEvent.change(screen.getByPlaceholderText('Optional, for example A2 casual speech'), {
+            target: { value: 'A2 casual' },
+        })
+
+        const prompt = screen.getByLabelText('copy prompt') as HTMLTextAreaElement
+
+        expect(prompt.value).toContain('Create 7 German translation typing challenges.')
+        expect(prompt.value).toContain('Return only one JSON code block and no explanation.')
+        expect(prompt.value).toContain('These are fill-in-the-blank challenges')
+        expect(prompt.value).toContain('"segments"')
+        expect(prompt.value).toContain('"kind":"prefill"')
+        expect(prompt.value).toContain('"kind":"type"')
+        expect(prompt.value).toContain('A2 casual')
+    })
+
+    it('previews valid pasted AI chat JSON and appends imported challenges', () => {
+        render(<CollectionEditor collection={baseCollection} />)
+
+        fireEvent.click(screen.getByRole('button', { name: 'Import from AI chat' }))
+        fireEvent.change(screen.getByPlaceholderText(/Can you help me/), {
+            target: {
+                value: JSON.stringify([
+                    {
+                        original: 'Can you help me?',
+                        segments: [
+                            { kind: 'prefill', text: 'Kannst du ' },
+                            { kind: 'type', text: 'mir helfen' },
+                            { kind: 'prefill', text: '?' },
+                        ],
+                    },
+                ]),
+            },
+        })
+
+        expect(screen.getByText('1 valid, 0 skipped')).toBeInTheDocument()
+        expect(screen.getByText('Can you help me?')).toBeInTheDocument()
+        expect(screen.getByText('(Kannst du )mir helfen(?)')).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole('button', { name: 'Insert 1 challenges' }))
+
+        const challenges = useCustomCollectionsStore.getState().collections.custom_ready.challenges ?? []
+        expect(challenges).toHaveLength(2)
+        expect(challenges[1]).toMatchObject({
+            original: 'Can you help me?',
+            translation: '(Kannst du )mir helfen(?)',
+        })
+        expect(challenges[1].id).toMatch(/^ch_/)
+    })
+
+    it('shows invalid AI chat JSON errors without mutating challenges', () => {
+        render(<CollectionEditor collection={baseCollection} />)
+
+        fireEvent.click(screen.getByRole('button', { name: 'Import from AI chat' }))
+        fireEvent.change(screen.getByPlaceholderText(/Can you help me/), {
+            target: { value: '[{' },
+        })
+
+        expect(screen.getByText('The pasted JSON could not be parsed.')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Insert challenges' })).toBeDisabled()
+        expect(useCustomCollectionsStore.getState().collections.custom_ready.challenges).toEqual(baseCollection.challenges)
+    })
+
     it('deletes the collection and resets its progress after confirmation', () => {
         render(<CollectionEditor collection={baseCollection} />)
 

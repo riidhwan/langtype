@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { Challenge } from '@/types/challenge'
 import {
     CustomCollection,
@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
 import { IconArrowDown, IconArrowUp, IconPlus, IconTrash } from '@/components/ui/icons'
+import { buildAiChatImportPrompt, parseAiChatImportJson } from '@/lib/aiChatImport'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -24,12 +25,24 @@ interface Props {
 export function CollectionEditor({ collection }: Props) {
     const navigate = useNavigate()
     const [tagInput, setTagInput] = useState('')
+    const [isImportOpen, setIsImportOpen] = useState(false)
+    const [importRequest, setImportRequest] = useState('')
+    const [importCount, setImportCount] = useState('10')
+    const [importLevelStyle, setImportLevelStyle] = useState('')
+    const [importJson, setImportJson] = useState('')
+    const [copyStatus, setCopyStatus] = useState('')
     const upsertCollection = useCustomCollectionsStore((s) => s.upsertCollection)
     const deleteCollection = useCustomCollectionsStore((s) => s.deleteCollection)
     const resetCollection = useSRSStore((s) => s.resetCollection)
 
     const isPlayable = isValidCustomCollection(collection)
     const validChallengeCount = (collection.challenges ?? []).filter((challenge) => challenge.translation.trim()).length
+    const parsedImport = useMemo(() => parseAiChatImportJson(importJson), [importJson])
+    const importPrompt = useMemo(() => buildAiChatImportPrompt({
+        request: importRequest,
+        count: Number.parseInt(importCount, 10),
+        levelStyle: importLevelStyle,
+    }), [importCount, importLevelStyle, importRequest])
 
     const updateCollection = (updates: Partial<CustomCollection>) => {
         upsertCollection({ ...collection, ...updates })
@@ -80,6 +93,28 @@ export function CollectionEditor({ collection }: Props) {
                 { id: makeChallengeId(), original: '', translation: '' },
             ],
         })
+    }
+
+    const importChallenges = () => {
+        if (parsedImport.challenges.length === 0) return
+
+        updateCollection({
+            challenges: [
+                ...(collection.challenges ?? []),
+                ...parsedImport.challenges.map((challenge) => ({
+                    id: makeChallengeId(),
+                    ...challenge,
+                })),
+            ],
+        })
+        setImportJson('')
+        setCopyStatus('')
+    }
+
+    const copyImportPrompt = async () => {
+        if (!navigator.clipboard) return
+        await navigator.clipboard.writeText(importPrompt)
+        setCopyStatus('Copied')
     }
 
     const removeChallenge = (id: string) => {
@@ -216,13 +251,115 @@ export function CollectionEditor({ collection }: Props) {
                 <section className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-3">
                         <h2 className="text-lg font-semibold">Challenges</h2>
-                        <Button
-                            onClick={addChallenge}
-                        >
-                            <IconPlus className="h-4 w-4" />
-                            Add
-                        </Button>
+                        <div className="flex flex-wrap justify-end gap-2">
+                            <Button onClick={() => setIsImportOpen((isOpen) => !isOpen)}>
+                                Import from AI chat
+                            </Button>
+                            <Button
+                                onClick={addChallenge}
+                            >
+                                <IconPlus className="h-4 w-4" />
+                                Add
+                            </Button>
+                        </div>
                     </div>
+
+                    {isImportOpen && (
+                        <div className="grid gap-4 rounded-[var(--radius)] border border-border bg-card p-4">
+                            <div className="grid gap-3 md:grid-cols-[1fr_120px]">
+                                <label className="flex flex-col gap-1">
+                                    <span className="mono-label">request</span>
+                                    <Textarea
+                                        value={importRequest}
+                                        onChange={(event) => setImportRequest(event.target.value)}
+                                        className="bg-background"
+                                        placeholder="Practice ordering food with separable verbs"
+                                    />
+                                </label>
+                                <label className="flex flex-col gap-1">
+                                    <span className="mono-label">count</span>
+                                    <Input
+                                        type="number"
+                                        min={1}
+                                        value={importCount}
+                                        onChange={(event) => setImportCount(event.target.value)}
+                                        className="bg-background"
+                                    />
+                                </label>
+                                <label className="flex flex-col gap-1 md:col-span-2">
+                                    <span className="mono-label">level/style</span>
+                                    <Input
+                                        value={importLevelStyle}
+                                        onChange={(event) => setImportLevelStyle(event.target.value)}
+                                        className="bg-background"
+                                        placeholder="Optional, for example A2 casual speech"
+                                    />
+                                </label>
+                            </div>
+
+                            <label className="flex flex-col gap-1">
+                                <span className="mono-label">copy prompt</span>
+                                <Textarea
+                                    readOnly
+                                    value={importPrompt}
+                                    className="min-h-72 bg-background font-mono text-[12px]"
+                                />
+                            </label>
+                            <div className="flex items-center gap-3">
+                                <Button onClick={copyImportPrompt}>Copy prompt</Button>
+                                {copyStatus && <span className="font-mono text-[11px] text-muted-foreground">{copyStatus}</span>}
+                            </div>
+
+                            <label className="flex flex-col gap-1">
+                                <span className="mono-label">paste JSON code block content</span>
+                                <Textarea
+                                    value={importJson}
+                                    onChange={(event) => setImportJson(event.target.value)}
+                                    className="min-h-40 bg-background font-mono text-[13px]"
+                                    placeholder='[{"original":"Can you help me?","segments":[{"kind":"prefill","text":"Kannst du "},{"kind":"type","text":"mir helfen"},{"kind":"prefill","text":"?"}]}]'
+                                />
+                            </label>
+
+                            {importJson.trim() && (
+                                <div className="grid gap-3">
+                                    {parsedImport.error ? (
+                                        <div className="rounded-[var(--radius)] border border-[var(--incorrect)] bg-[var(--incorrect-bg)] px-3 py-2 text-sm">
+                                            {parsedImport.error}
+                                        </div>
+                                    ) : (
+                                        <div className="text-sm text-muted-foreground">
+                                            {parsedImport.challenges.length} valid, {parsedImport.skippedCount} skipped
+                                        </div>
+                                    )}
+
+                                    {parsedImport.challenges.length > 0 && (
+                                        <div className="divide-y divide-border overflow-hidden rounded-[var(--radius)] border border-border bg-background">
+                                            {parsedImport.challenges.slice(0, 5).map((challenge, index) => (
+                                                <div key={`${challenge.original ?? ''}-${challenge.translation}-${index}`} className="grid gap-1 px-3 py-2 text-sm">
+                                                    {challenge.original && <span className="text-muted-foreground">{challenge.original}</span>}
+                                                    <span className="font-mono text-[13px]">{challenge.translation}</span>
+                                                </div>
+                                            ))}
+                                            {parsedImport.challenges.length > 5 && (
+                                                <div className="px-3 py-2 text-sm text-muted-foreground">
+                                                    {parsedImport.challenges.length - 5} more ready to import
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="flex justify-end">
+                                <Button
+                                    onClick={importChallenges}
+                                    disabled={parsedImport.challenges.length === 0}
+                                >
+                                    Insert {parsedImport.challenges.length || ''} challenges
+                                </Button>
+                            </div>
+                        </div>
+                    )}
 
                     {(collection.challenges ?? []).length === 0 ? (
                         <div className="rounded-[var(--radius)] border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">

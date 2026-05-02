@@ -71,6 +71,35 @@ describe('TypingGame', () => {
         expect(onQuestionChange).toHaveBeenCalledWith('2')
     })
 
+    it('renders AI-imported fill-in-the-blank challenges in free input mode', () => {
+        const importedChallenges: Challenge[] = [
+            { id: '1', original: 'This is my dog.', translation: '(Das ist )mein( Hund.)' },
+            { id: '2', original: 'Where is your (informal) key?', translation: '(Wo ist )dein( Schlüssel?)' },
+            { id: '3', original: 'His sister is tall.', translation: 'Seine( Schwester ist groß.)' },
+            { id: '4', original: 'Her cat is sleeping.', translation: 'Ihre( Katze schläft.)' },
+            { id: '5', original: 'We love our house.', translation: '(Wir lieben )unser( Haus.)' },
+            { id: '6', original: 'Is that your (plural/informal) car?', translation: '(Ist das )euer( Auto?)' },
+            { id: '7', original: 'They are looking for their books.', translation: '(Sie suchen )ihre( Bücher.)' },
+            { id: '8', original: 'What is your (formal) name?', translation: '(Wie ist )Ihr( Name?)' },
+            { id: '9', original: 'My parents are here.', translation: 'Meine( Eltern sind hier.)' },
+            { id: '10', original: 'The child plays with its toy.', translation: '(Das Kind spielt mit )seinem( Spielzeug.)' },
+        ]
+
+        render(
+            <TypingGame
+                challenges={importedChallenges}
+                freeInput
+                initialQuestionId="1"
+                srsContext={{ collectionId: 'custom_test', skipRecording: true }}
+            />
+        )
+
+        expect(screen.getByText('This is my dog.')).toBeInTheDocument()
+        expect(screen.getByText('Das ist')).toBeInTheDocument()
+        expect(screen.getByRole('textbox', { name: 'Translation gap 1' })).toBeInTheDocument()
+        expect(screen.getByText('Hund.')).toBeInTheDocument()
+    })
+
     it('does not revert state if internal navigation happens ahead of prop update', () => {
         // This tests the fix for the infinite loop / state reversion bug
         const onQuestionChange = vi.fn()
