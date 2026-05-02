@@ -170,7 +170,7 @@ GitHub Issues are used for task tracking. Before implementation, check for an ex
 
 For complete, verified issue-backed work, use `Closes #N` when the commit should close the issue on merge or push. Do not downgrade to `Refs #N` solely because a post-commit review might happen; the explicit commit/push request is the review approval unless the user says otherwise.
 
-When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history. If GitHub access is unavailable, include the exact comment text in the final report so it can be posted manually.
+When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Do not post outcome or completion comments while the relevant changes are only local and unpushed; wait until the commit/PR is pushed, or draft the comment for manual posting when handing off unpushed work. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history. If GitHub access is unavailable, include the exact comment text in the final report so it can be posted manually.
 
 For refactors that introduce lint rules, shared primitives, or other durable enforcement, include a final issue checklist item that explicitly confirms the enforcement boundary and whether the issue should close or split follow-up cleanup into a new issue.
 

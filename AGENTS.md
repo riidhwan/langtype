@@ -18,7 +18,7 @@ Issue expectations:
 - Small fixes and improvements use a quick-fix issue with the problem, expected result, and verification notes
 - Commits should reference the relevant issue with `Refs #N` or `Closes #N` when useful
 - For complete, verified issue-backed work, use `Closes #N` when the commit should close the issue on merge or push. Do not downgrade to `Refs #N` solely because a post-commit review might happen; the explicit commit/push request is the review approval unless the user says otherwise.
-- When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history.
+- When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Do not post outcome or completion comments while the relevant changes are only local and unpushed; wait until the commit/PR is pushed, or draft the comment for manual posting when handing off unpushed work. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history.
 - Close issues only after implementation, tests, docs, and review are complete
 
 When GitHub CLI authentication is available, Codex may create, edit, comment on, and close issues as part of this workflow. If authentication is unavailable, draft the exact issue title/body/labels or issue comment for manual creation.
