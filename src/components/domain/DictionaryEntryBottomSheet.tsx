@@ -24,6 +24,7 @@ export function DictionaryEntryBottomSheet({
 
     return (
         <div className="fixed inset-0 z-40 lg:hidden">
+            {/* eslint-disable-next-line langtype/no-raw-ui-controls -- Structural backdrop dismiss layer needs a full-overlay native button, not the app Button variants. */}
             <button
                 type="button"
                 aria-label="Close dictionary entry"

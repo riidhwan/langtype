@@ -170,6 +170,8 @@ GitHub Issues are used for task tracking. Before implementation, check for an ex
 
 When finishing issue-backed work, always consider whether the issue needs a comment summarizing the outcome, verification, remaining risks, blockers, or handoff notes. Comment when it would leave useful durable context; skip it only when the final state is already obvious from the issue, commits, and PR/branch history. If GitHub access is unavailable, include the exact comment text in the final report so it can be posted manually.
 
+For refactors that introduce lint rules, shared primitives, or other durable enforcement, include a final issue checklist item that explicitly confirms the enforcement boundary and whether the issue should close or split follow-up cleanup into a new issue.
+
 Issue labels stay intentionally small:
 
 | Group | Labels |

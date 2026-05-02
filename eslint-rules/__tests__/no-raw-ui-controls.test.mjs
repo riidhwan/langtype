@@ -22,12 +22,32 @@ ruleTester.run('no-raw-ui-controls', noRawUiControls, {
             code: 'export function Input() { return <input /> }',
         },
         {
+            filename: '/repo/src/components/ui/Button.tsx',
+            code: 'export function Button() { return <button /> }',
+        },
+        {
+            filename: '/repo/src/components/ui/IconButton.tsx',
+            code: 'export function IconButton() { return <button /> }',
+        },
+        {
+            filename: '/repo/src/components/ui/ConfirmButton.tsx',
+            code: 'export function ConfirmButton() { return <button /> }',
+        },
+        {
             filename: '/repo/src/components/domain/SlotTranslationInput.tsx',
             code: 'export function SlotTranslationInput() { return <input /> }',
         },
         {
+            filename: '/repo/src/routes/__tests__/collections.$id.test.tsx',
+            code: 'export function TestDouble() { return <button /> }',
+        },
+        {
             filename: '/repo/src/components/features/Tags.tsx',
             code: 'export function Tags() { return <div>{\n/* eslint-disable-next-line rule-to-test/no-raw-ui-controls -- compound chip editor */\n<input />}</div> }',
+        },
+        {
+            filename: '/repo/src/components/features/TypingGame.tsx',
+            code: 'export function TypingGame() { return <div>{\n/* eslint-disable-next-line rule-to-test/no-raw-ui-controls -- keycap-like game control */\n<button />}</div> }',
         },
         {
             filename: '/repo/src/components/ui/ConfirmButton.tsx',
@@ -54,6 +74,11 @@ ruleTester.run('no-raw-ui-controls', noRawUiControls, {
             filename: '/repo/src/components/features/Delete.tsx',
             code: "export function Delete() { window.confirm('Delete?') }",
             errors: [{ messageId: 'rawConfirm' }],
+        },
+        {
+            filename: '/repo/src/components/features/Action.tsx',
+            code: 'export function Action() { return <button /> }',
+            errors: [{ messageId: 'rawButton' }],
         },
     ],
 })

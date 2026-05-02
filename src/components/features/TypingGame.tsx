@@ -147,6 +147,7 @@ export function TypingGame({ challenges, initialQuestionId, onQuestionChange, on
                                     <p className="mono-label">Review again in:</p>
                                     <div className="flex flex-wrap justify-center gap-2">
                                         {SRS_INTERVAL_ORDER.map((choice, i) => (
+                                            // eslint-disable-next-line langtype/no-raw-ui-controls -- SRS interval choices are keycap-like game controls with number-key affordances.
                                             <button
                                                 key={choice}
                                                 onClick={() => handleIntervalClick(choice)}

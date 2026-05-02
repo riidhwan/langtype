@@ -54,7 +54,7 @@ Do not use these primitives for specialized typing controls whose behavior depen
 
 Raw buttons are allowed only for specialized controls where a primitive would obscure the control's structure or interaction contract, such as typing/game keycaps, structural overlay dismiss layers, and route links rendered by router primitives. Prefer `IconButton` for icon-only floating/toggle controls.
 
-`langtype/no-raw-ui-controls` enforces the form-control side of this convention in feature and domain code. If a raw `input`, `textarea`, or `select` is genuinely part of a specialized compound control, add a targeted `eslint-disable-next-line langtype/no-raw-ui-controls` comment that states why the primitive does not fit. Direct `window.confirm` calls are only allowed inside `ConfirmButton`.
+`langtype/no-raw-ui-controls` enforces this convention in feature, domain, and route code. If a raw `input`, `textarea`, `select`, or `button` is genuinely part of a specialized compound control, add a targeted `eslint-disable-next-line langtype/no-raw-ui-controls` comment that states why the primitive does not fit. Direct `window.confirm` calls are only allowed inside `ConfirmButton`.
 
 ## Typography
 
