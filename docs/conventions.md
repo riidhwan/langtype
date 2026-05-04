@@ -207,7 +207,7 @@ Treat the workflow itself as improvable. If a task reveals unclear issue criteri
 
 ## Testing
 
-**Always consider whether unit tests and/or E2E tests are needed after every implementation — do not wait to be asked.** Write unit tests when new code has non-obvious threshold values, branching logic, or derived state that could silently regress. Write E2E tests when the change affects visual layout, positioning, or CSS properties that jsdom cannot verify. If unsure, ask.
+**Always check whether unit tests and/or E2E tests are needed before and after every implementation — do not wait to be asked.** Before editing, use the task shape to decide the likely test level. After editing, re-check the actual change and add or update tests when the final behavior requires more coverage than originally expected. Write unit tests when new code has non-obvious threshold values, branching logic, or derived state that could silently regress. Write E2E tests when the change affects visual layout, positioning, CSS properties that jsdom cannot verify, route-to-route flows, persisted browser state, or real-browser keyboard/focus behavior. If unsure, ask.
 
 **Bug fixes must include a regression test.** The test documents the invariant and prevents the same issue from reappearing silently.
 
@@ -304,9 +304,45 @@ See `src/routes/__tests__/index.test.tsx` and `src/routes/__tests__/collections.
 
 ### E2E Tests
 
-Live in `e2e/`, run with `npm run test:e2e`. Use Playwright + Chromium only. Update baselines with `npx playwright test --update-snapshots`; commit new PNGs alongside the code change.
+Live in `e2e/`, run with `npm run test:e2e`. Use Playwright + Chromium only. Keep E2E tests focused on user-observable browser behavior that cannot be proven as clearly or cheaply with unit/component tests.
 
-*When to write E2E over unit:* visual layout, computed CSS that jsdom ignores, pixel-level screenshot regression.
+Every task must explicitly check whether E2E coverage is needed twice:
+
+- Before implementation: decide from the task shape whether E2E is expected, likely unnecessary, or a judgment call.
+- After implementation: re-check the actual diff, affected behavior, and bug risk before declaring verification complete.
+
+Record the decision in the issue, PR notes, or final handoff when the answer is not obvious.
+
+Use this decision matrix:
+
+| Task shape | E2E expectation |
+|---|---|
+| Critical user journey, route-to-route flow, or first-run path | Must include one representative E2E happy path or update an existing one |
+| Regression that only appears in a real browser, route integration, persisted storage, keyboard/focus behavior, layout, computed CSS, or screenshots | Must include an E2E regression test |
+| New user-facing flow, feature flag that changes navigation/interaction, or risky route/store/service integration | Should include focused E2E coverage for the main path and highest-risk failure mode |
+| Pure logic, hooks, services, derived state, validation, data transforms, or branch-heavy behavior | Prefer unit/component tests; add E2E only for the browser-level contract |
+| Copy-only, docs-only, metadata-only, or isolated styling with no layout risk | Usually no E2E needed; document the reason if the task is issue-backed |
+
+Best practices:
+
+- Test through visible behavior: roles, labels, text, route changes, persisted state that survives reload, focus movement, or screenshots.
+- Keep each spec small, deterministic, and tied to one user or regression invariant.
+- Prefer role/name selectors. Use `data-testid` when accessible selectors are unstable or the element has no meaningful accessible surface.
+- Seed state through stable routes, query params, localStorage init scripts, or small test collections instead of repeating long setup flows.
+- Use explicit readiness checks: visible UI, loaded route state, `expect(...).toBeVisible()`, or `document.fonts.ready` before screenshots.
+- Scope screenshot assertions to the smallest meaningful element or region.
+- Keep visual tolerances explicit and small when asserting geometry.
+- Reuse helpers only after the same setup appears in multiple specs.
+
+Avoid:
+
+- Duplicating unit/component coverage in slower browser tests.
+- Broad "everything works" flows with many unrelated assertions.
+- Assertions against CSS class names, private implementation state, incidental DOM structure, or internal function calls.
+- Arbitrary sleeps, real network dependence, random data, or unbounded retries.
+- Snapshot or screenshot updates without reviewing the rendered diff.
+- Full-page screenshots when a component or region screenshot would protect the invariant better.
+- Adding browser projects beyond Chromium unless the task explicitly expands browser support.
 
 Standard setup:
 
@@ -333,10 +369,28 @@ test('renders correctly', async ({ page }) => {
 })
 ```
 
+Maintenance:
+
+- Update baselines with `npx playwright test --update-snapshots` only after confirming the visual change is intentional.
+- Commit new or updated PNG snapshots alongside the code change that requires them.
+- Remove or rewrite E2E tests when the protected behavior no longer exists.
+- Keep the `data-testid` inventory below updated when adding, renaming, or removing test IDs.
+- If E2E setup becomes repetitive across specs, add a small local helper in `e2e/` rather than hiding behavior in global fixtures.
+- Keep the suite lean enough that `npm run test:e2e` remains practical for routine verification.
+
 Key gotchas:
 - `reuseExistingServer: !process.env.CI` — kill the dev server before running tests after code changes, or Playwright reuses the stale one.
 - `@playwright/test` is the test runner; `playwright` is the browser library — they are separate packages.
-- Prefer `data-testid` selectors over CSS class selectors.
+
+E2E audit checklist:
+
+- The test protects a user journey, browser-only behavior, visual/layout contract, or integration invariant.
+- The same behavior cannot be tested more clearly as a unit/component test.
+- The setup is deterministic and does not depend on arbitrary timing or external network state.
+- Selectors describe user-facing semantics where possible; `data-testid` is used for stable non-semantic targets.
+- Screenshots are scoped, reviewed, and updated only for intentional changes.
+- Bug fixes include a regression test at the lowest reliable level, with E2E used for real-browser or full-app regressions.
+- The suite remains maintainable: no long unrelated flows, no stale snapshots, and no orphaned test IDs.
 
 ### `data-testid` Inventory
 
