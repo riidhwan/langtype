@@ -101,6 +101,8 @@ If verification cannot run, report why.
 
 Never run `git commit` or `git push` unless the user explicitly asks. When the user explicitly asks Codex to commit and push, treat that as approval that the pre-commit review gate is satisfied unless the user says otherwise.
 
+Routine development should use a topic branch and pull request into `master`. Direct pushes to `master` are reserved for emergencies. Required PR checks run lint, unit/component tests, production build, and Playwright E2E tests. GitHub-native secret scanning and push protection are the expected secret leak controls unless the workflow is intentionally revised.
+
 When committing, stage only files relevant to the requested change. Leave local metadata, editor files, and unrelated dirty files uncommitted unless the user explicitly asks to include them.
 
 When asked to commit, inspect recent history with `git log` and follow the established commit message style:

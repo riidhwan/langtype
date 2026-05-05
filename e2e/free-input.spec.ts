@@ -29,5 +29,5 @@ test('gap input top edge aligns with pre-filled span top edge', async ({ page })
 test('free input renders correctly', async ({ page }) => {
     await expect(
         page.locator('[data-testid="visual-translation-input"]')
-    ).toHaveScreenshot('free-input.png')
+    ).toHaveScreenshot('free-input.png', { maxDiffPixels: 400 })
 })

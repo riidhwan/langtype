@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/reports
 /test-results
 /playwright-report
 
@@ -54,6 +55,8 @@ scripts/*
 !scripts/__tests__/**
 !scripts/dictionary/
 !scripts/dictionary/**
+!scripts/github/
+!scripts/github/**
 
 # Local dictionary source data and generated static artifacts are too large to commit.
 data/dictionary/raw/*
