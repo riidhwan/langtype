@@ -40,7 +40,7 @@ export default [
     {
         files: ["**/*.{js,mjs}"],
         languageOptions: {
-            globals: { console: "readonly", process: "readonly" },
+            globals: { console: "readonly", fetch: "readonly", process: "readonly" },
         },
     },
     {

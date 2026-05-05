@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
@@ -36,21 +38,25 @@ jobs:
         run: npm ci
 
       - name: Prepare report directories
-        run: mkdir -p reports/vitest
+        run: mkdir -p reports/vitest reports/playwright
 
       - name: Lint
+        id: lint
         run: npm run lint
 
       - name: Unit and component tests
+        id: unit-tests
         run: npm test -- --run --reporter=default --reporter=junit --outputFile=reports/vitest/junit.xml
 
       - name: Build
+        id: build
         run: npm run build
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: End-to-end tests
+        id: e2e-tests
         run: npm run test:e2e
 
       - name: Publish CI summary
@@ -94,3 +100,22 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
           retention-days: 14
+
+      - name: Upload Playwright JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-json-report
+          path: reports/playwright/results.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Comment PR test report
+        if: always() && github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINT_OUTCOME: ${{ steps.lint.outcome }}
+          UNIT_OUTCOME: ${{ steps.unit-tests.outcome }}
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          E2E_OUTCOME: ${{ steps.e2e-tests.outcome }}
+        run: node scripts/github/comment-ci-report.mjs

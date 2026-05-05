@@ -1,0 +1,211 @@
+import fs from 'node:fs'
+
+const MARKER = '<!-- langtype-ci-report -->'
+const MAX_FAILURES = 10
+
+const env = process.env
+
+main().catch((error) => {
+    console.error(error)
+    process.exit(1)
+})
+
+async function main() {
+    const context = getContext()
+    const body = buildComment(context)
+    const comments = await githubRequest(context, `/repos/${context.repository}/issues/${context.issueNumber}/comments`)
+    const existing = comments.find((comment) => {
+        return comment.user?.type === 'Bot' && comment.body?.includes(MARKER)
+    })
+
+    if (existing) {
+        await githubRequest(context, `/repos/${context.repository}/issues/comments/${existing.id}`, {
+            method: 'PATCH',
+            body: { body },
+        })
+        return
+    }
+
+    await githubRequest(context, `/repos/${context.repository}/issues/${context.issueNumber}/comments`, {
+        method: 'POST',
+        body: { body },
+    })
+}
+
+function getContext() {
+    const event = JSON.parse(readText(env.GITHUB_EVENT_PATH))
+    const issueNumber = event.pull_request?.number
+
+    if (!issueNumber) {
+        throw new Error('CI report comments require a pull_request event payload.')
+    }
+
+    return {
+        apiUrl: env.GITHUB_API_URL ?? 'https://api.github.com',
+        repository: requiredEnv('GITHUB_REPOSITORY'),
+        runId: requiredEnv('GITHUB_RUN_ID'),
+        serverUrl: env.GITHUB_SERVER_URL ?? 'https://github.com',
+        token: requiredEnv('GITHUB_TOKEN'),
+        issueNumber,
+    }
+}
+
+function buildComment(context) {
+    const vitest = parseVitest()
+    const playwright = parsePlaywright()
+    const runUrl = `${context.serverUrl}/${context.repository}/actions/runs/${context.runId}`
+    const lines = [
+        MARKER,
+        '## CI test report',
+        '',
+        '| Check | Result | Details |',
+        '| --- | --- | --- |',
+        `| Lint | ${formatOutcome(env.LINT_OUTCOME)} | \`npm run lint\` |`,
+        `| Unit/component tests | ${formatOutcome(env.UNIT_OUTCOME)} | ${escapeCell(vitest.summary)} |`,
+        `| Production build | ${formatOutcome(env.BUILD_OUTCOME)} | \`npm run build\` |`,
+        `| End-to-end tests | ${formatOutcome(env.E2E_OUTCOME)} | ${escapeCell(playwright.summary)} |`,
+        '',
+        `[Workflow run and artifacts](${runUrl})`,
+    ]
+
+    addFailures(lines, 'Vitest failures', vitest.failures)
+    addFailures(lines, 'Playwright failures', playwright.failures)
+
+    return lines.join('\n')
+}
+
+function parseVitest() {
+    const xml = readText('reports/vitest/junit.xml')
+
+    if (!xml) {
+        return { summary: 'No JUnit report found.', failures: [] }
+    }
+
+    const suites = [...xml.matchAll(/<testsuite\b([^>]*)>/g)].map((match) => match[1])
+    const totals = suites.reduce((acc, attrs) => {
+        for (const key of ['tests', 'failures', 'errors', 'skipped']) {
+            acc[key] += readNumericAttribute(attrs, key)
+        }
+
+        return acc
+    }, { tests: 0, failures: 0, errors: 0, skipped: 0 })
+    const failures = [...xml.matchAll(/<testcase\b([^>]*)>[\s\S]*?<(failure|error)\b/g)]
+        .slice(0, MAX_FAILURES)
+        .map((match) => {
+            const attrs = match[1]
+            const classname = readStringAttribute(attrs, 'classname') ?? 'unknown suite'
+            const name = readStringAttribute(attrs, 'name') ?? 'unknown test'
+            return `${classname} - ${name}`
+        })
+
+    return {
+        summary: `${totals.tests} tests, ${totals.failures + totals.errors} failed, ${totals.skipped} skipped`,
+        failures,
+    }
+}
+
+function parsePlaywright() {
+    const raw = readText('reports/playwright/results.json')
+
+    if (!raw) {
+        return { summary: 'No Playwright JSON report found.', failures: [] }
+    }
+
+    const report = JSON.parse(raw)
+    const tests = collectPlaywrightTests(report)
+    const failed = tests.filter((test) => test.status !== 'expected' && test.status !== 'skipped')
+    const skipped = tests.filter((test) => test.status === 'skipped').length
+
+    return {
+        summary: `${tests.length} tests, ${failed.length} failed, ${skipped} skipped`,
+        failures: failed.slice(0, MAX_FAILURES).map((test) => test.title),
+    }
+}
+
+function collectPlaywrightTests(report) {
+    const tests = []
+
+    for (const suite of report.suites ?? []) {
+        visitPlaywrightSuite(suite, [suite.title].filter(Boolean), tests)
+    }
+
+    return tests
+}
+
+function visitPlaywrightSuite(suite, parents, tests) {
+    for (const spec of suite.specs ?? []) {
+        for (const test of spec.tests ?? []) {
+            tests.push({
+                title: [...parents, spec.title].filter(Boolean).join(' > '),
+                status: test.outcome ?? test.status ?? 'unknown',
+            })
+        }
+    }
+
+    for (const child of suite.suites ?? []) {
+        visitPlaywrightSuite(child, [...parents, child.title].filter(Boolean), tests)
+    }
+}
+
+async function githubRequest(context, path, options = {}) {
+    const response = await fetch(`${context.apiUrl}${path}`, {
+        method: options.method ?? 'GET',
+        headers: {
+            Accept: 'application/vnd.github+json',
+            Authorization: `Bearer ${context.token}`,
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+        },
+        body: options.body ? JSON.stringify(options.body) : undefined,
+    })
+
+    if (!response.ok) {
+        throw new Error(`GitHub API ${response.status}: ${await response.text()}`)
+    }
+
+    return response.status === 204 ? null : response.json()
+}
+
+function addFailures(lines, title, failures) {
+    if (failures.length === 0) return
+
+    lines.push('', `<details><summary>${title}</summary>`, '')
+    lines.push(...failures.map((failure) => `- ${failure}`))
+    lines.push('', '</details>')
+}
+
+function formatOutcome(outcome) {
+    if (outcome === 'success') return 'pass'
+    if (outcome === 'failure') return 'fail'
+    if (outcome === 'cancelled') return 'cancelled'
+    if (outcome === 'skipped') return 'skipped'
+    return 'not run'
+}
+
+function escapeCell(value) {
+    return String(value).replaceAll('|', '\\|').replaceAll('\n', '<br>')
+}
+
+function readText(path) {
+    if (!path || !fs.existsSync(path)) return ''
+    return fs.readFileSync(path, 'utf8')
+}
+
+function readNumericAttribute(attrs, name) {
+    const value = attrs.match(new RegExp(`${name}="(\\d+)"`))
+    return value ? Number(value[1]) : 0
+}
+
+function readStringAttribute(attrs, name) {
+    return attrs.match(new RegExp(`${name}="([^"]*)"`))?.[1]
+}
+
+function requiredEnv(name) {
+    const value = env[name]
+
+    if (!value) {
+        throw new Error(`Missing required environment variable: ${name}`)
+    }
+
+    return value
+}
