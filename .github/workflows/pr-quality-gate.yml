@@ -223,7 +223,7 @@ jobs:
             echo "| --- | --- | --- |"
             echo "| Lint | \`npm run lint\` | ${{ needs.lint.result }} |"
             echo "| Unit/component tests | \`npm test -- --run\` | ${{ needs.unit.result }} |"
-            echo "| Coverage | \`npm run test:coverage -- --coverage.reporter=json-summary --coverage.reporter=text-summary\` | ${{ needs.coverage.result }} |"
+            echo "| Coverage | \`npm run test:coverage -- --coverage.reporter=json-summary --coverage.reporter=text-summary\`<br>Thresholds: lines 90%, statements 90%, functions 90%, branches 80% | ${{ needs.coverage.result }} |"
             echo "| Production build | \`npm run build\` | ${{ needs.build.result }} |"
             echo "| End-to-end tests | \`npm run test:e2e\` | ${{ needs.e2e.result }} |"
             echo ""

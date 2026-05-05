@@ -1,15 +1,24 @@
 import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
 const MARKER = '<!-- langtype-ci-report -->'
 const MAX_FAILURES = 10
 const ARTIFACTS_DIR = process.env.CI_ARTIFACTS_DIR ?? 'artifacts'
+const COVERAGE_THRESHOLDS = {
+    lines: 90,
+    statements: 90,
+    functions: 90,
+    branches: 80,
+}
 
 const env = process.env
 
-main().catch((error) => {
-    console.error(error)
-    process.exit(1)
-})
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
+    main().catch((error) => {
+        console.error(error)
+        process.exit(1)
+    })
+}
 
 async function main() {
     const context = getContext()
@@ -51,11 +60,20 @@ function getContext() {
     }
 }
 
-function buildComment(context) {
+export function buildComment(context) {
     const vitest = parseVitest()
     const coverage = parseCoverage()
     const playwright = parsePlaywright()
     const runUrl = `${context.serverUrl}/${context.repository}/actions/runs/${context.runId}`
+    const coverageDetails = coverage.totals
+        ? [
+            coverageFailureNote(),
+            'see coverage tables below',
+        ].filter(Boolean).join('; ')
+        : [
+            coverage.summary,
+            coverageFailureNote(),
+        ].filter(Boolean).join('; ')
     const lines = [
         MARKER,
         '## PR Quality Gate report',
@@ -64,7 +82,7 @@ function buildComment(context) {
         '| --- | --- | --- |',
         `| Lint | ${formatOutcome(env.LINT_OUTCOME)} | \`npm run lint\` |`,
         `| Unit/component tests | ${formatOutcome(env.UNIT_OUTCOME)} | ${escapeCell(vitest.summary)} |`,
-        `| Coverage | ${formatOutcome(env.COVERAGE_OUTCOME)} | ${escapeCell(coverage.summary)}; see table below |`,
+        `| Coverage | ${formatOutcome(env.COVERAGE_OUTCOME)} | ${escapeCell(coverageDetails)} |`,
         `| Production build | ${formatOutcome(env.BUILD_OUTCOME)} | \`npm run build\` |`,
         `| End-to-end tests | ${formatOutcome(env.E2E_OUTCOME)} | ${escapeCell(playwright.summary)} |`,
         '',
@@ -129,7 +147,8 @@ function parseCoverage() {
     }
 
     return {
-        summary: formatCoverageSummary(total),
+        summary: 'Coverage totals and thresholds reported below.',
+        totals: formatCoverageTotals(total),
         rows: buildCoverageRows(report),
     }
 }
@@ -208,7 +227,18 @@ function addFailures(lines, title, failures) {
 }
 
 function addCoverageTable(lines, coverage) {
-    if (coverage.rows.length === 0) return
+    if (!coverage.totals || coverage.rows.length === 0) return
+
+    lines.push(
+        '',
+        '### Coverage totals',
+        '',
+        '| Metric | Total | Threshold |',
+        '| --- | ---: | ---: |',
+    )
+    lines.push(...coverage.totals.map((row) => {
+        return `| ${row.metric} | ${row.total} | ${row.threshold} |`
+    }))
 
     lines.push(
         '',
@@ -246,13 +276,22 @@ function formatCoverageRow(file, metrics) {
     }
 }
 
-function formatCoverageSummary(total) {
+function formatCoverageTotals(total) {
     return [
-        `lines ${formatPercent(total.lines?.pct)}`,
-        `statements ${formatPercent(total.statements?.pct)}`,
-        `functions ${formatPercent(total.functions?.pct)}`,
-        `branches ${formatPercent(total.branches?.pct)}`,
-    ].join(', ')
+        { metric: 'Lines', total: formatPercent(total.lines?.pct), threshold: formatThreshold('lines') },
+        { metric: 'Statements', total: formatPercent(total.statements?.pct), threshold: formatThreshold('statements') },
+        { metric: 'Functions', total: formatPercent(total.functions?.pct), threshold: formatThreshold('functions') },
+        { metric: 'Branches', total: formatPercent(total.branches?.pct), threshold: formatThreshold('branches') },
+    ]
+}
+
+function formatThreshold(metric) {
+    return `${COVERAGE_THRESHOLDS[metric]}%`
+}
+
+function coverageFailureNote() {
+    if (env.COVERAGE_OUTCOME !== 'failure') return ''
+    return 'failed job may be from tests or threshold enforcement; see artifacts for details'
 }
 
 function formatOutcome(outcome) {

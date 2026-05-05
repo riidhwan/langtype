@@ -166,7 +166,7 @@ export function CollectionPage() {
 
 Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`. Never run `git commit` or `git push` unless explicitly asked. When the user explicitly asks Codex to commit and push, treat that as approval that the pre-commit review gate is satisfied unless the user says otherwise.
 
-Routine development happens on topic branches and merges to `master` through pull requests. Direct pushes to `master` are reserved for emergencies. Pull requests must pass the required `required / quality gate` check from the PR Quality Gate workflow before merge. That aggregate job depends on visible lint, unit/component test, coverage, production build, and Playwright E2E jobs, then posts the PR report and fails if any upstream job did not succeed. GitHub-native secret scanning and push protection are the secret leak controls for this repo; do not add a third-party secret scanner unless the workflow is intentionally revised.
+Routine development happens on topic branches and merges to `master` through pull requests. Direct pushes to `master` are reserved for emergencies. Before committing or opening a PR, check the current branch and make sure it is a fresh, purpose-specific branch for the current work, not an old branch that has already merged or belongs to another PR. When in doubt, refresh `origin/master` and create a new branch from it before committing. Pull requests must pass the required `required / quality gate` check from the PR Quality Gate workflow before merge. That aggregate job depends on visible lint, unit/component test, coverage, production build, and Playwright E2E jobs, then posts the PR report and fails if any upstream job did not succeed. GitHub-native secret scanning and push protection are the secret leak controls for this repo; do not add a third-party secret scanner unless the workflow is intentionally revised.
 
 GitHub Issues are used for task tracking. Before implementation, check for an existing issue or create/draft one unless the change is truly tiny. Use `Refs #N` or `Closes #N` in commit messages when useful.
 
@@ -214,6 +214,12 @@ Treat the workflow itself as improvable. If a task reveals unclear issue criteri
 **Bug fixes must include a regression test.** The test documents the invariant and prevents the same issue from reappearing silently.
 
 Tests are co-located in `__tests__/` folders. Use `vi.useFakeTimers()` / `vi.advanceTimersByTime()` for timer-dependent logic. Use `renderHook` from RTL for hook tests.
+
+### Coverage
+
+`npm run test:coverage` enforces global Vitest thresholds of 90% lines, 90% statements, 90% functions, and 80% branches. The branch threshold is lower because UI and parser code naturally accumulates defensive and platform-specific branches, but new branch-heavy logic should still include focused tests for its meaningful paths instead of relying on the global total.
+
+Coverage excludes static collection JSON and generated route-tree code. These files are validated through data/schema or router-generation workflows rather than executable coverage, and counting them would make the coverage signal noisier. Do not exclude low-coverage files only to raise totals when they contain real behavior; add focused tests or document why the file is a thin runtime wrapper.
 
 ### Unit Test Standard
 
