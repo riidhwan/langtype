@@ -17,13 +17,15 @@ export function useUrlSync({
 }: UseUrlSyncProps) {
     const currentIndexRef = useRef(currentIndex)
     currentIndexRef.current = currentIndex
+    const appliedInitialQuestionIdRef = useRef<string | undefined>(undefined)
 
     // 1. Sync Logic: Game State (currentIndex) -> URL (onQuestionChange)
     useEffect(() => {
         const currentId = challenges[currentIndex]?.id
         if (initialQuestionId) {
             const initialIndex = challenges.findIndex((c) => c.id === initialQuestionId)
-            if (initialIndex !== -1 && initialIndex !== currentIndex) return
+            const isWaitingForInitialQuestion = appliedInitialQuestionIdRef.current !== initialQuestionId
+            if (isWaitingForInitialQuestion && initialIndex !== -1 && initialIndex !== currentIndex) return
         }
         if (currentId && currentId !== initialQuestionId && onQuestionChange) {
             onQuestionChange(currentId)
@@ -42,6 +44,7 @@ export function useUrlSync({
             if (idx !== -1 && idx !== currentIndexRef.current) {
                 setCurrentIndex(idx)
             }
+            appliedInitialQuestionIdRef.current = initialQuestionId
         }
     }, [initialQuestionId, challenges, setCurrentIndex])
 }

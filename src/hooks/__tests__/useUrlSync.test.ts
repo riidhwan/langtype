@@ -93,6 +93,24 @@ describe('useUrlSync', () => {
         expect(onQuestionChange).not.toHaveBeenCalled()
     })
 
+    it('writes the new questionId after advancing away from an initialQuestionId', () => {
+        const onQuestionChange = vi.fn()
+
+        const { rerender } = renderHook(({ index }) => useUrlSync({
+            currentIndex: index,
+            challenges,
+            initialQuestionId: '1',
+            setCurrentIndex: vi.fn(),
+            onQuestionChange,
+        }), {
+            initialProps: { index: 0 }
+        })
+
+        rerender({ index: 1 })
+
+        expect(onQuestionChange).toHaveBeenCalledWith('2')
+    })
+
     it('does not resync from the URL when only currentIndex changes', () => {
         const setCurrentIndex = vi.fn()
 
