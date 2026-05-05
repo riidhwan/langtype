@@ -2,6 +2,7 @@ import fs from 'node:fs'
 
 const MARKER = '<!-- langtype-ci-report -->'
 const MAX_FAILURES = 10
+const ARTIFACTS_DIR = process.env.CI_ARTIFACTS_DIR ?? 'artifacts'
 
 const env = process.env
 
@@ -37,7 +38,7 @@ function getContext() {
     const issueNumber = event.pull_request?.number
 
     if (!issueNumber) {
-        throw new Error('CI report comments require a pull_request event payload.')
+        throw new Error('PR Quality Gate report comments require a pull_request event payload.')
     }
 
     return {
@@ -57,7 +58,7 @@ function buildComment(context) {
     const runUrl = `${context.serverUrl}/${context.repository}/actions/runs/${context.runId}`
     const lines = [
         MARKER,
-        '## CI test report',
+        '## PR Quality Gate report',
         '',
         '| Check | Result | Details |',
         '| --- | --- | --- |',
@@ -78,7 +79,10 @@ function buildComment(context) {
 }
 
 function parseVitest() {
-    const xml = readText('reports/vitest/junit.xml')
+    const xml = readFirstText([
+        'reports/vitest/junit.xml',
+        `${ARTIFACTS_DIR}/vitest-junit-report/junit.xml`,
+    ])
 
     if (!xml) {
         return { summary: 'No JUnit report found.', failures: [] }
@@ -108,10 +112,13 @@ function parseVitest() {
 }
 
 function parseCoverage() {
-    const raw = readText('coverage/coverage-summary.json')
+    const raw = readFirstText([
+        'coverage/coverage-summary.json',
+        `${ARTIFACTS_DIR}/vitest-coverage-report/coverage-summary.json`,
+    ])
 
     if (!raw) {
-        return { summary: 'No coverage summary found.' }
+        return { summary: 'No coverage summary found.', rows: [] }
     }
 
     const report = JSON.parse(raw)
@@ -128,7 +135,10 @@ function parseCoverage() {
 }
 
 function parsePlaywright() {
-    const raw = readText('reports/playwright/results.json')
+    const raw = readFirstText([
+        'reports/playwright/results.json',
+        `${ARTIFACTS_DIR}/playwright-json-report/results.json`,
+    ])
 
     if (!raw) {
         return { summary: 'No Playwright JSON report found.', failures: [] }
@@ -268,6 +278,15 @@ function escapeCell(value) {
 function readText(path) {
     if (!path || !fs.existsSync(path)) return ''
     return fs.readFileSync(path, 'utf8')
+}
+
+function readFirstText(paths) {
+    for (const path of paths) {
+        const text = readText(path)
+        if (text) return text
+    }
+
+    return ''
 }
 
 function readNumericAttribute(attrs, name) {
