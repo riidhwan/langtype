@@ -49,6 +49,21 @@ npm run test:coverage
 npm run test:e2e
 ```
 
+## Development Workflow
+
+Routine changes are developed on topic branches and reviewed through pull requests into `master`. Direct pushes to `master` are reserved for emergencies.
+
+Before opening a PR, run the relevant local verification commands. The required PR check runs the full baseline:
+
+```bash
+npm run lint
+npm test -- --run
+npm run build
+npm run test:e2e
+```
+
+GitHub Actions publishes Vitest and Playwright reports as PR artifacts. GitHub-native secret scanning and push protection are the expected secret leak controls; third-party secret scanning workflows are not part of the v1 PR gate.
+
 ## Project Structure
 
 This project follows a **Layer-First** architecture:
@@ -111,7 +126,7 @@ For any non-trivial change, Claude must enter plan mode: explore the codebase, w
 
 Non-trivial manual code changes made outside this workflow are heavily discouraged. They bypass the planning cycle, skip doc updates, and drift from established patterns — breaking the contract between the code and the docs.
 
-Commits must also be made by Claude, not manually. This ensures the commit message accurately reflects what actually changed, following the Conventional Commits standard enforced by the project.
+Commits must also be made by Claude, not manually. This ensures the commit message accurately reflects what actually changed, following the Conventional Commits standard enforced by the project. Routine work should be pushed to a topic branch and merged through a pull request after required checks pass.
 
 ### Track work with GitHub Issues
 

@@ -166,6 +166,8 @@ export function CollectionPage() {
 
 Conventional Commits — `feat:`, `fix:`, `refactor:`, `style:`, `docs:`, `chore:`. Never run `git commit` or `git push` unless explicitly asked. When the user explicitly asks Codex to commit and push, treat that as approval that the pre-commit review gate is satisfied unless the user says otherwise.
 
+Routine development happens on topic branches and merges to `master` through pull requests. Direct pushes to `master` are reserved for emergencies. Pull requests must pass the required CI check before merge; the baseline check runs lint, unit/component tests, production build, and Playwright E2E tests. GitHub-native secret scanning and push protection are the secret leak controls for this repo; do not add a third-party secret scanner unless the workflow is intentionally revised.
+
 GitHub Issues are used for task tracking. Before implementation, check for an existing issue or create/draft one unless the change is truly tiny. Use `Refs #N` or `Closes #N` in commit messages when useful.
 
 Large changes are work that spans multiple features, broad refactors, risky behaviour changes, persistence/data-flow changes, or thousands of lines of code. Use one parent issue for the end goal and child issues for independently shippable slices. Each child issue must leave `main` buildable, testable, deployable, and safe for normal users.
