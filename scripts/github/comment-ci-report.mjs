@@ -52,6 +52,7 @@ function getContext() {
 
 function buildComment(context) {
     const vitest = parseVitest()
+    const coverage = parseCoverage()
     const playwright = parsePlaywright()
     const runUrl = `${context.serverUrl}/${context.repository}/actions/runs/${context.runId}`
     const lines = [
@@ -62,12 +63,14 @@ function buildComment(context) {
         '| --- | --- | --- |',
         `| Lint | ${formatOutcome(env.LINT_OUTCOME)} | \`npm run lint\` |`,
         `| Unit/component tests | ${formatOutcome(env.UNIT_OUTCOME)} | ${escapeCell(vitest.summary)} |`,
+        `| Coverage | ${formatOutcome(env.COVERAGE_OUTCOME)} | ${escapeCell(coverage.summary)}; see table below |`,
         `| Production build | ${formatOutcome(env.BUILD_OUTCOME)} | \`npm run build\` |`,
         `| End-to-end tests | ${formatOutcome(env.E2E_OUTCOME)} | ${escapeCell(playwright.summary)} |`,
         '',
         `[Workflow run and artifacts](${runUrl})`,
     ]
 
+    addCoverageTable(lines, coverage)
     addFailures(lines, 'Vitest failures', vitest.failures)
     addFailures(lines, 'Playwright failures', playwright.failures)
 
@@ -101,6 +104,26 @@ function parseVitest() {
     return {
         summary: `${totals.tests} tests, ${totals.failures + totals.errors} failed, ${totals.skipped} skipped`,
         failures,
+    }
+}
+
+function parseCoverage() {
+    const raw = readText('coverage/coverage-summary.json')
+
+    if (!raw) {
+        return { summary: 'No coverage summary found.' }
+    }
+
+    const report = JSON.parse(raw)
+    const { total } = report
+
+    if (!total) {
+        return { summary: 'Coverage summary did not include totals.', rows: [] }
+    }
+
+    return {
+        summary: formatCoverageSummary(total),
+        rows: buildCoverageRows(report),
     }
 }
 
@@ -174,12 +197,68 @@ function addFailures(lines, title, failures) {
     lines.push('', '</details>')
 }
 
+function addCoverageTable(lines, coverage) {
+    if (coverage.rows.length === 0) return
+
+    lines.push(
+        '',
+        '<details open><summary>Coverage by file</summary>',
+        '',
+        '| File | Statements | Branches | Functions | Lines |',
+        '| --- | ---: | ---: | ---: | ---: |',
+    )
+    lines.push(...coverage.rows.map((row) => {
+        return `| ${escapeCell(row.file)} | ${row.statements} | ${row.branches} | ${row.functions} | ${row.lines} |`
+    }))
+    lines.push('', '</details>')
+}
+
+function buildCoverageRows(report) {
+    const rows = Object.entries(report)
+        .map(([file, metrics]) => ({ file, metrics }))
+        .filter(({ file }) => file !== 'total')
+        .sort((left, right) => left.file.localeCompare(right.file))
+        .map(({ file, metrics }) => formatCoverageRow(file, metrics))
+
+    return [
+        formatCoverageRow('Total', report.total),
+        ...rows,
+    ]
+}
+
+function formatCoverageRow(file, metrics) {
+    return {
+        file: normalizeCoveragePath(file),
+        statements: formatPercent(metrics.statements?.pct),
+        branches: formatPercent(metrics.branches?.pct),
+        functions: formatPercent(metrics.functions?.pct),
+        lines: formatPercent(metrics.lines?.pct),
+    }
+}
+
+function formatCoverageSummary(total) {
+    return [
+        `lines ${formatPercent(total.lines?.pct)}`,
+        `statements ${formatPercent(total.statements?.pct)}`,
+        `functions ${formatPercent(total.functions?.pct)}`,
+        `branches ${formatPercent(total.branches?.pct)}`,
+    ].join(', ')
+}
+
 function formatOutcome(outcome) {
     if (outcome === 'success') return 'pass'
     if (outcome === 'failure') return 'fail'
     if (outcome === 'cancelled') return 'cancelled'
     if (outcome === 'skipped') return 'skipped'
     return 'not run'
+}
+
+function formatPercent(value) {
+    return typeof value === 'number' ? `${value.toFixed(2)}%` : 'n/a'
+}
+
+function normalizeCoveragePath(file) {
+    return file.replace(`${process.cwd()}/`, '')
 }
 
 function escapeCell(value) {
