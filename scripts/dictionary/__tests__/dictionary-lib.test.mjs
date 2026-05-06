@@ -34,15 +34,19 @@ describe('dictionary artifact tooling', () => {
         const envFile = path.join(outDir, '.env')
         const previousBucket = process.env.R2_DICTIONARY_BUCKET
         const previousAccount = process.env.R2_ACCOUNT_ID
+        const previousSecret = process.env.R2_SECRET_ACCESS_KEY
         try {
             process.env.R2_DICTIONARY_BUCKET = 'existing-bucket'
             delete process.env.R2_ACCOUNT_ID
-            await writeFile(envFile, 'R2_DICTIONARY_BUCKET=file-bucket\nR2_ACCOUNT_ID="abc123"\n')
+            delete process.env.R2_SECRET_ACCESS_KEY
+            await writeFile(envFile, 'R2_DICTIONARY_BUCKET=file-bucket\nR2_ACCOUNT_ID="abc123"\nR2_SECRET_ACCESS_KEY=\'quoted-secret\'\n')
 
             await expect(loadDotenv(envFile)).resolves.toBe(true)
+            await expect(loadDotenv(path.join(outDir, 'missing.env'))).resolves.toBe(false)
 
             expect(process.env.R2_DICTIONARY_BUCKET).toBe('existing-bucket')
             expect(process.env.R2_ACCOUNT_ID).toBe('abc123')
+            expect(process.env.R2_SECRET_ACCESS_KEY).toBe('quoted-secret')
         } finally {
             if (previousBucket === undefined) {
                 delete process.env.R2_DICTIONARY_BUCKET
@@ -53,6 +57,11 @@ describe('dictionary artifact tooling', () => {
                 delete process.env.R2_ACCOUNT_ID
             } else {
                 process.env.R2_ACCOUNT_ID = previousAccount
+            }
+            if (previousSecret === undefined) {
+                delete process.env.R2_SECRET_ACCESS_KEY
+            } else {
+                process.env.R2_SECRET_ACCESS_KEY = previousSecret
             }
             await rm(outDir, { recursive: true, force: true })
         }
@@ -198,6 +207,50 @@ describe('dictionary artifact tooling', () => {
         }
     })
 
+    it('validation reports missing search and entries directories', async () => {
+        const versionDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-missing-dirs-'))
+        try {
+            await writeFile(path.join(versionDir, 'manifest.json'), '{"searchIndexPath":"search-index.json"}\n')
+            await writeFile(path.join(versionDir, 'build-stats.json'), '{"sourceSha256":"abc"}\n')
+            await writeFile(path.join(versionDir, 'search-index.json'), '{}\n')
+
+            const validation = await validateDictionaryArtifacts({ versionDir })
+
+            expect(validation.ok).toBe(false)
+            expect(validation.problems).toEqual(expect.arrayContaining([
+                'Missing search directory',
+                'Missing entries directory',
+            ]))
+        } finally {
+            await rm(versionDir, { recursive: true, force: true })
+        }
+    })
+
+    it('validation catches malformed and invalid entry chunks', async () => {
+        const versionDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-bad-entries-'))
+        try {
+            await mkdir(path.join(versionDir, 'search'))
+            await mkdir(path.join(versionDir, 'entries'))
+            await writeFile(path.join(versionDir, 'manifest.json'), '{"searchIndexPath":"search-index.json"}\n')
+            await writeFile(path.join(versionDir, 'build-stats.json'), '{"sourceSha256":"abc"}\n')
+            await writeFile(path.join(versionDir, 'search-index.json'), '{"p6172":["ar.json"]}\n')
+            await writeFile(path.join(versionDir, 'search', 'ar.json'), '[{"normalized":"arb"}]\n')
+            await writeFile(path.join(versionDir, 'entries', 'malformed.json'), '{')
+            await writeFile(path.join(versionDir, 'entries', 'invalid.json'), '[]\n')
+
+            const validation = await validateDictionaryArtifacts({ versionDir })
+
+            expect(validation.ok).toBe(false)
+            expect(validation.problems).toEqual(expect.arrayContaining([
+                'entries/malformed.json is malformed JSON',
+                'entries/malformed.json must contain entries',
+                'entries/invalid.json must contain entries',
+            ]))
+        } finally {
+            await rm(versionDir, { recursive: true, force: true })
+        }
+    })
+
     it('validation requires a search index', async () => {
         const versionDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-missing-index-'))
         try {
@@ -260,6 +313,127 @@ describe('dictionary artifact tooling', () => {
         }
     })
 
+    it('refuses to upload over an existing manifest unless forced', async () => {
+        const outDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-existing-r2-'))
+        try {
+            const result = await buildDictionaryArtifacts({
+                source: fixture,
+                version: 'v2026-05-01',
+                outDir,
+                entryBucketCount: 8,
+            })
+            const calls = []
+            const fetcher = async (url, init) => {
+                calls.push({ url: String(url), init })
+                return r2Response({ ok: true, status: 200 })
+            }
+
+            await expect(uploadDictionaryArtifacts({
+                versionDir: result.versionDir,
+                bucket: 'dictionary-bucket',
+                accountId: 'abc123',
+                accessKeyId: 'access-key',
+                secretAccessKey: 'secret-key',
+                fetcher,
+            })).rejects.toThrow('Refusing upload: dictionary/v2026-05-01/manifest.json already exists. Pass --force to overwrite.')
+
+            expect(calls).toHaveLength(1)
+            expect(calls[0].init.method).toBe('HEAD')
+        } finally {
+            await rm(outDir, { recursive: true, force: true })
+        }
+    })
+
+    it('uploads without checking the manifest when force is true', async () => {
+        const outDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-force-r2-'))
+        try {
+            const result = await buildDictionaryArtifacts({
+                source: fixture,
+                version: 'v2026-05-01',
+                outDir,
+                entryBucketCount: 8,
+            })
+            const calls = []
+            const fetcher = async (url, init) => {
+                calls.push({ url: String(url), init })
+                return r2Response({ ok: true, status: 200 })
+            }
+
+            const uploadLines = await uploadDictionaryArtifacts({
+                versionDir: result.versionDir,
+                bucket: 'dictionary-bucket',
+                accountId: 'abc123',
+                accessKeyId: 'access-key',
+                secretAccessKey: 'secret-key',
+                fetcher,
+                force: true,
+                uploadConcurrency: 1,
+            })
+
+            expect(calls.every((call) => call.init.method === 'PUT')).toBe(true)
+            expect(uploadLines.some((line) => line.includes('/manifest.json'))).toBe(true)
+        } finally {
+            await rm(outDir, { recursive: true, force: true })
+        }
+    })
+
+    it('surfaces non-404 manifest existence check failures', async () => {
+        const outDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-head-fail-r2-'))
+        try {
+            const result = await buildDictionaryArtifacts({
+                source: fixture,
+                version: 'v2026-05-01',
+                outDir,
+                entryBucketCount: 8,
+            })
+            const fetcher = async () => ({
+                ...r2Response({ ok: false, status: 503, body: 'temporarily unavailable' }),
+            })
+
+            await expect(uploadDictionaryArtifacts({
+                versionDir: result.versionDir,
+                bucket: 'dictionary-bucket',
+                accountId: 'abc123',
+                accessKeyId: 'access-key',
+                secretAccessKey: 'secret-key',
+                fetcher,
+            })).rejects.toThrow('R2 object existence check failed: 503 temporarily unavailable')
+        } finally {
+            await rm(outDir, { recursive: true, force: true })
+        }
+    })
+
+    it('surfaces failed upload object keys and statuses', async () => {
+        const outDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-put-fail-r2-'))
+        try {
+            const result = await buildDictionaryArtifacts({
+                source: fixture,
+                version: 'v2026-05-01',
+                outDir,
+                entryBucketCount: 8,
+            })
+            const fetcher = async (_url, init) => ({
+                ...r2Response({
+                    ok: false,
+                    status: init.method === 'HEAD' ? 404 : 403,
+                    body: init.method === 'HEAD' ? '' : 'denied',
+                }),
+            })
+
+            await expect(uploadDictionaryArtifacts({
+                versionDir: result.versionDir,
+                bucket: 'dictionary-bucket',
+                accountId: 'abc123',
+                accessKeyId: 'access-key',
+                secretAccessKey: 'secret-key',
+                fetcher,
+                uploadConcurrency: 1,
+            })).rejects.toThrow(/R2 upload failed for dictionary\/v2026-05-01\/.+: 403 denied/)
+        } finally {
+            await rm(outDir, { recursive: true, force: true })
+        }
+    })
+
     it('uploads with signed R2 S3 API requests', async () => {
         const outDir = await mkdtemp(path.join(tmpdir(), 'langtype-dict-r2-'))
         try {
@@ -309,4 +483,12 @@ async function findSearchRow(versionDir, encodedPrefix, normalized) {
         if (row) return row
     }
     return null
+}
+
+function r2Response({ ok, status, body = '' }) {
+    return {
+        ok,
+        status,
+        text: async () => body,
+    }
 }
