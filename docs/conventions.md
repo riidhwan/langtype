@@ -389,6 +389,10 @@ Maintenance:
 Key gotchas:
 - `reuseExistingServer: !process.env.CI` — kill the dev server before running tests after code changes, or Playwright reuses the stale one.
 - `@playwright/test` is the test runner; `playwright` is the browser library — they are separate packages.
+- For normal-mode practice retry/reinsertion tests, prefer `?mode=normal` over a `questionId` deep link. `useUrlSync` treats `questionId` as authoritative and can pull the game back to the deep-linked card after auto-advance.
+- For deterministic practice order, mock `Math.random` in `page.addInitScript` and account for all random calls consumed by initial shuffling before retry reinsertion.
+- The Netzwerk plural collections provide stable two-gap practice fixtures and match the existing E2E browser input path.
+- Validate carefully before using Playwright fake clocks in practice-flow E2E tests; timer control can change input/submission behavior.
 
 E2E audit checklist:
 
