@@ -67,6 +67,8 @@
     "picomatch": "^4.0.4",
     "rollup": "^4.59.0",
     "undici": "^7.24.0",
-    "readdirp": "^5.0.0"
+    "readdirp": "^5.0.0",
+    "flatted@^3.2.9": "^3.4.2",
+    "minimatch@^3.1.2": "^3.1.5"
   }
 }
