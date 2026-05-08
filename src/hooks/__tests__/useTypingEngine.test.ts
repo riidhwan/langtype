@@ -69,6 +69,17 @@ describe('useTypingEngine', () => {
         expect(result.current.status).toBe('typing')
     })
 
+    it('can submit an explicit input value before parent state catches up', () => {
+        const { result } = renderHook(() => useTypingEngine(sentences))
+
+        act(() => {
+            result.current.submit('Hello')
+        })
+
+        expect(result.current.status).toBe('completed')
+        expect(result.current.input).toBe('Hello')
+    })
+
     it('locks input when completed', () => {
         const { result } = renderHook(() => useTypingEngine(sentences))
 

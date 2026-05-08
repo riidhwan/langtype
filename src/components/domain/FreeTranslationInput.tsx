@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { KeyboardEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
 import { cn } from '@/lib/utils'
 import type { TranslationInputStatus } from './visualTranslationInputHelpers'
 import { buildFullAnswer, buildSegments } from './visualTranslationInputHelpers'
@@ -7,7 +7,7 @@ import { buildFullAnswer, buildSegments } from './visualTranslationInputHelpers'
 interface Props {
     value: string
     onChange: (value: string) => void
-    onSubmit?: () => void
+    onSubmit?: (value?: string) => void
     targetText: string
     preFilledIndices?: Set<number>
     status: TranslationInputStatus
@@ -30,24 +30,37 @@ export function FreeTranslationInput({
 
     const [gapValues, setGapValues] = useState<string[]>(() => Array(gapCount).fill(''))
     const [activeGapIndex, setActiveGapIndex] = useState(0)
+    const gapValuesRef = useRef(gapValues)
+    const previousTargetTextRef = useRef<string | null>(null)
 
     useEffect(() => {
-        setGapValues(Array(gapCount).fill(''))
+        const nextGapValues = Array(gapCount).fill('')
+        gapValuesRef.current = nextGapValues
+        setGapValues(nextGapValues)
         setActiveGapIndex(0)
-    }, [gapCount, segments])
+    }, [gapCount, targetText])
 
     useEffect(() => {
         if (status === 'typing') {
+            const targetTextChanged = previousTargetTextRef.current !== targetText
+            previousTargetTextRef.current = targetText
+            const activeElement = document.activeElement
+            const hasFocusedGap = gapInputRefs.current.some((element) => element === activeElement)
+            if (!targetTextChanged && hasFocusedGap) return
+
             gapInputRefs.current[0]?.focus()
         }
     }, [targetText, status])
 
-    const handleContainerClick = () => {
+    const handleContainerClick = (event: MouseEvent<HTMLDivElement>) => {
+        if (event.target instanceof HTMLInputElement) return
+
         gapInputRefs.current[activeGapIndex]?.focus()
     }
 
     const handleGapChange = (gapIndex: number, newValue: string) => {
-        const updated = gapValues.map((value, index) => index === gapIndex ? newValue : value)
+        const updated = gapValuesRef.current.map((value, index) => index === gapIndex ? newValue : value)
+        gapValuesRef.current = updated
         setGapValues(updated)
         onChange(buildFullAnswer(segments, updated))
     }
@@ -61,7 +74,7 @@ export function FreeTranslationInput({
             setActiveGapIndex(nextIndex)
             gapInputRefs.current[nextIndex]?.focus()
         } else {
-            onSubmit?.()
+            onSubmit?.(buildFullAnswer(segments, gapValuesRef.current))
         }
     }
 
@@ -111,7 +124,8 @@ export function FreeTranslationInput({
                             data-gap-state={gapState}
                             value={gapValue}
                             onChange={(event) => handleGapChange(currentGapIndex, event.target.value)}
-                            onKeyDown={(event) => handleGapKeyDown(currentGapIndex, event)}
+                            onKeyDownCapture={(event) => handleGapKeyDown(currentGapIndex, event)}
+                            onClick={() => setActiveGapIndex(currentGapIndex)}
                             onFocus={() => setActiveGapIndex(currentGapIndex)}
                             disabled={status !== 'typing'}
                             autoComplete="off"

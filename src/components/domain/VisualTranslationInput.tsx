@@ -5,7 +5,7 @@ import type { TranslationInputStatus } from './visualTranslationInputHelpers'
 interface Props {
     value: string
     onChange: (value: string) => void
-    onSubmit?: () => void
+    onSubmit?: (value?: string) => void
     targetText: string
     preFilledIndices?: Set<number>
     status?: TranslationInputStatus
