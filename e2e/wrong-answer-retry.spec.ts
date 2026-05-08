@@ -19,9 +19,13 @@ async function answerCurrentCard(page: Page, article: string, plural: string) {
     const articleGap = page.getByRole('textbox', { name: 'Translation gap 1' })
     const pluralGap = page.getByRole('textbox', { name: 'Translation gap 2' })
 
+    await expect(articleGap).toBeVisible()
     await articleGap.fill(article)
+    await expect(articleGap).toHaveValue(article)
     await articleGap.press('Enter')
+    await expect(pluralGap).toBeFocused()
     await pluralGap.fill(plural)
+    await expect(pluralGap).toHaveValue(plural)
     await pluralGap.press('Enter')
 }
 
