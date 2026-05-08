@@ -54,15 +54,16 @@ export function useTypingEngine(sentences: string[], initialIndex: number = 0) {
         setInput(value)
     }
 
-    const submit = () => {
+    const submit = (submittedInput = input) => {
         if (status === 'completed' || status === 'submitted') return
 
-        const isFlexMatch = isFlexibleMatch(input, currentSentence, preFilledIndices)
+        const isFlexMatch = isFlexibleMatch(submittedInput, currentSentence, preFilledIndices)
 
         if (isFlexMatch) {
             setInput(currentSentence) // Fill in any trailing punctuation
             setStatus('completed')
         } else {
+            setInput(submittedInput)
             setStatus('submitted')
         }
 

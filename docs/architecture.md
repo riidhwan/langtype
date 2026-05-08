@@ -95,7 +95,7 @@ The collection practice route (`/collections/$id`) loads bundled collection ids 
 - `prefilled` segments render as static muted text (the pre-filled hints from parentheses)
 - `gap` segments render as a growing underline input — character count is hidden
 
-Because `autoMatchSpacing` would incorrectly consume gap characters that match pre-filled text between gaps, free input mode bypasses it entirely: each gap has its own internal state (`gapValues`), and `buildFullAnswer` assembles them with the pre-filled segments at the correct positions before calling `setInputDirect`.
+Because `autoMatchSpacing` would incorrectly consume gap characters that match pre-filled text between gaps, free input mode bypasses it entirely: each gap has its own internal state (`gapValues`), and `buildFullAnswer` assembles them with the pre-filled segments at the correct positions before calling `setInputDirect`. On submit, free input passes the assembled answer directly to `useTypingEngine.submit()` so an immediate Enter keypress cannot race a pending parent-state update.
 
 ## Zustand Store (`src/store/useSRSStore.ts`)
 

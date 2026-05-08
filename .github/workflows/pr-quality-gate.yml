@@ -155,6 +155,10 @@ jobs:
       - name: End-to-end tests
         run: npm run test:e2e
 
+      - name: Enforce Playwright report status
+        if: always()
+        run: node scripts/github/assert-playwright-report.mjs reports/playwright/results.json
+
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
