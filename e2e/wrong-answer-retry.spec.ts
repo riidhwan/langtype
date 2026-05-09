@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
 const NORMAL_RETRY_URL = '/collections/netzwerk_neu_a1_k1_nomen_plural?mode=normal'
+const SRS_RETRY_URL = '/collections/netzwerk_neu_a1_k1_nomen_plural?mode=srs'
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
@@ -50,4 +51,32 @@ test('wrong answer in normal mode keeps the session alive and retries the card',
     await answerCurrentCard(page, 'der', 'Vornamen')
 
     await expect(page.getByText(/correct/i)).toBeVisible()
+})
+
+test('wrong answer in SRS mode records failure and retries the card in the active session', async ({ page }) => {
+    await page.goto(SRS_RETRY_URL)
+
+    await expect(page.getByText('First Name', { exact: true })).toBeVisible()
+    await expect(page.getByText('25 cards remaining')).toBeVisible()
+
+    await answerCurrentCard(page, 'wrong', 'wrong')
+
+    await expect(page.getByText(/incorrect/i)).toBeVisible()
+    await expect(page.getByText('Correct: der Vorname, die Vornamen')).toBeVisible()
+
+    await expect(page.getByText('Last Name', { exact: true })).toBeVisible({ timeout: 7000 })
+    await expect(page.getByText('25 cards remaining')).toBeVisible()
+
+    await answerCurrentCard(page, 'der', 'Nachnamen')
+    await expect(page.getByText(/correct/i)).toBeVisible()
+    await page.getByRole('button', { name: '1d' }).click()
+    await expect(page.getByText('Review in 1d')).toBeVisible()
+
+    await expect(page.getByText('First Name', { exact: true })).toBeVisible({ timeout: 7000 })
+    await expect(page.getByText('24 cards remaining')).toBeVisible()
+
+    await answerCurrentCard(page, 'der', 'Vornamen')
+
+    await expect(page.getByText(/correct/i)).toBeVisible()
+    await expect(page.getByText('Review again in:')).toBeVisible()
 })
