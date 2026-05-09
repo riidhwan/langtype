@@ -105,7 +105,7 @@ Persisted to IndexedDB via `idb-keyval` under the key `langtype-srs-v1`. Only `c
 |---|---|---|
 | `cards` | `Record<"colId:chalId", SRSCard>` | Per-card SRS state, keyed `collectionId:challengeId` |
 | `lastPlayedAt` | `Record<colId, ms>` | Timestamp of last play per collection, used for home-page sort |
-| `_hasHydrated` | `boolean` | Set to `true` after IndexedDB rehydration; gates sort order and due counts to prevent flicker |
+| `_hasHydrated` | `boolean` | Set to `true` after IndexedDB rehydration; gates sort order, due counts, and direct SRS session startup to prevent stale empty-store decisions |
 
 **`SRSCard` fields**: `interval` (days), `repetitions` (consecutive correct), `easeFactor` (starts 2.5, min 1.3), `nextReviewAt` (ms; 0 = new card), `lastReviewedAt` (ms; 0 = never reviewed).
 

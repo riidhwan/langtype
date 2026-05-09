@@ -65,6 +65,7 @@ export function CollectionGamePage({
 }: Props) {
     const { questionId, mode, view } = search
     const cards = useSRSStore((s) => s.cards)
+    const srsHasHydrated = useSRSStore((s) => s._hasHydrated)
     const recordPlay = useSRSStore((s) => s.recordPlay)
     const customCollection = useCustomCollectionsStore((s) => (
         loaderData.kind === 'custom' ? s.collections[loaderData.id] : undefined
@@ -90,6 +91,7 @@ export function CollectionGamePage({
         mode,
         allChallenges,
         cards,
+        srsHasHydrated,
     })
 
     useEffect(() => {
@@ -157,6 +159,14 @@ export function CollectionGamePage({
                     onSelectSRS={onStartSRS}
                     onViewProgress={onGoToProgress}
                 />
+            </main>
+        )
+    }
+
+    if (mode === 'srs' && !srsHasHydrated) {
+        return (
+            <main className="relative flex min-h-screen flex-col items-center justify-center px-4 bg-background text-sm text-muted-foreground">
+                Loading SRS...
             </main>
         )
     }
