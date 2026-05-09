@@ -36,3 +36,29 @@ test('custom collection remains playable after a page reload', async ({ page }) 
     await answer.press('Enter')
     await expect(page.getByText(/correct/i)).toBeVisible()
 })
+
+test('incomplete custom collection draft is saved locally but hidden from home', async ({ page }) => {
+    const title = `Draft e2e collection ${Date.now()}`
+
+    await page.goto('/')
+    await page.getByRole('link', { name: 'Create collection' }).click()
+
+    await expect(page.getByRole('heading', { name: 'Custom collection' })).toBeVisible()
+    const collectionId = new URL(page.url()).pathname.match(/\/custom-collections\/([^/]+)\/edit/)?.[1]
+    expect(collectionId).toMatch(/^custom_/)
+
+    await page.getByLabel('title').fill(title)
+    await page.getByRole('button', { name: 'Add' }).click()
+    await page.getByLabel('prompt').fill('Draft-only prompt')
+    await expect(page.getByText('Draft saved locally. Add a title and at least one answer to practice.')).toBeVisible()
+
+    await page.getByRole('link', { name: 'Home' }).click()
+    await expect(page.getByRole('link', { name: `${title} Custom` })).toHaveCount(0)
+
+    await page.goto(`/custom-collections/${collectionId}/edit`)
+    await expect(page.getByRole('heading', { name: 'Custom collection' })).toBeVisible()
+    await expect(page.getByLabel('title')).toHaveValue(title)
+    await expect(page.getByLabel('prompt')).toHaveValue('Draft-only prompt')
+    await expect(page.getByLabel('answer')).toHaveValue('')
+    await expect(page.getByText('Draft saved locally. Add a title and at least one answer to practice.')).toBeVisible()
+})
