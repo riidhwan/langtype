@@ -129,8 +129,9 @@ const recordReview = useSRSStore((s) => s.recordReview)
 ## Route Files
 
 ```typescript
+// src/routes/collections.$id.tsx
 export const Route = createFileRoute('/collections/$id')({
-    component: CollectionPage,
+    component: CollectionRoute,
     loader: async ({ params }) => {
         const collection = await getCollection(params.id)
         if (!collection) throw notFound()
@@ -139,17 +140,32 @@ export const Route = createFileRoute('/collections/$id')({
     validateSearch: (search: Record<string, unknown>) => { ... },
 })
 
-export function CollectionPage() {
+function CollectionRoute() {
     const collection = Route.useLoaderData()
     const { mode, view } = Route.useSearch()
     const navigate = useNavigate({ from: Route.fullPath })
+
+    return (
+        <CollectionPage
+            collection={collection}
+            mode={mode}
+            view={view}
+            onBack={() => navigate({ search: () => ({}) })}
+        />
+    )
+}
+
+// src/components/features/CollectionPage.tsx
+export function CollectionPage({ collection, mode, view, onBack }: Props) {
 ```
 
 - Loader throws `notFound()` for missing resources — never returns `null`
 - `validateSearch` type-guards all URL params; default to `undefined` for missing ones
-- Component is a named export so tests can render it directly
-- Use `Route.useLoaderData()` and `Route.useSearch()`, not the generic hooks
-- Keep route files thin: routing setup, loaders, search param validation, and page-level composition only. Move non-trivial client state into hooks, typed UI into `components/domain` or `components/features`, and pure transforms into `src/lib`.
+- Route files export only `Route`; do not export page components, helpers, or types from `src/routes/*`
+- Route components may be unexported thin adapters that call `Route.useLoaderData()` / `Route.useSearch()` and pass typed props to page components
+- Testable page components live outside `src/routes`, usually in `components/features`; tests render those exported components directly
+- Test route wiring separately when needed by importing `Route` and asserting loader/search/params behavior through `Route.options`
+- Keep route files thin: routing setup, loaders, params/search validation, and adapter composition only. Move client state into hooks, typed UI into `components/domain` or `components/features`, and pure transforms into `src/lib`.
 
 ## Naming
 

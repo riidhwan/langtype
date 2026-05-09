@@ -5,8 +5,13 @@ import type { Collection } from '@/types/challenge'
 import type { SRSCard } from '@/types/srs'
 import type { MockInstance } from 'vitest'
 import type { CustomCollection } from '@/store/useCustomCollectionsStore'
+import type { CollectionSearchState } from '@/components/features/CollectionGamePage'
 
 const mockNavigate = vi.fn()
+const mockStartNormal = vi.fn()
+const mockStartSRS = vi.fn()
+const mockGoToProgress = vi.fn()
+const mockQuestionChange = vi.fn()
 let randomSpy: MockInstance
 const mockSRSState = vi.hoisted(() => ({
     cards: {} as Record<string, SRSCard>,
@@ -24,17 +29,11 @@ const mockCustomCollectionsState = vi.hoisted(() => ({
 
 vi.mock('@tanstack/react-router', async (importOriginal) => {
     const actual = await importOriginal<typeof import('@tanstack/react-router')>()
-    const mockUseLoaderData = vi.fn()
     return {
         ...actual,
         Link: ({ children, to, className }: { children: ReactNode; to: string; className?: string }) => (
             <a href={to} className={className}>{children}</a>
         ),
-        createFileRoute: () => () => ({
-            useLoaderData: mockUseLoaderData,
-            useSearch: vi.fn(() => ({ questionId: undefined, mode: 'normal' })),
-        }),
-        _mockUseLoaderData: mockUseLoaderData,
         useNavigate: () => mockNavigate,
     }
 })
@@ -53,7 +52,7 @@ vi.mock('@/store/useCustomCollectionsStore', async (importOriginal) => {
     }
 })
 
-import { CollectionGamePage, Route } from '../collections.$id'
+import { CollectionGamePage } from '@/components/features/CollectionGamePage'
 
 const mockCollection: Collection = {
     id: 'test',
@@ -74,6 +73,26 @@ const customLoaderData = (id: string) => ({
     kind: 'custom' as const,
     id,
 })
+
+function renderPage({
+    loaderData = bundledLoaderData(mockCollection),
+    search = { questionId: undefined, mode: 'normal' as const },
+}: {
+    loaderData?: ReturnType<typeof bundledLoaderData> | ReturnType<typeof customLoaderData>
+    search?: CollectionSearchState
+} = {}) {
+    return render(
+        <CollectionGamePage
+            loaderData={loaderData}
+            search={search}
+            onGoToPicker={mockNavigate}
+            onStartNormal={mockStartNormal}
+            onStartSRS={mockStartSRS}
+            onGoToProgress={mockGoToProgress}
+            onQuestionChange={mockQuestionChange}
+        />
+    )
+}
 
 function reviewedCard(collectionId: string, challengeId: string): SRSCard {
     return {
@@ -96,8 +115,6 @@ describe('CollectionGamePage', () => {
         mockSRSState._hasHydrated = true
         mockCustomCollectionsState.collections = {}
         mockCustomCollectionsState._hasHydrated = true
-        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData(mockCollection))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'normal' })
     })
 
     afterEach(() => {
@@ -106,9 +123,7 @@ describe('CollectionGamePage', () => {
     })
 
     it('renders the mode picker when no mode is selected', () => {
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
-
-        render(<CollectionGamePage />)
+        renderPage({ search: { questionId: undefined, mode: undefined } })
 
         expect(screen.getByRole('heading', { name: 'Test' })).toBeInTheDocument()
         expect(screen.getByRole('button', { name: /practice all/i })).toBeInTheDocument()
@@ -116,7 +131,7 @@ describe('CollectionGamePage', () => {
     })
 
     it('renders the game when mode=normal', () => {
-        render(<CollectionGamePage />)
+        renderPage()
 
         expect(screen.getByText('Hello')).toBeInTheDocument()
         expect(screen.getByRole('textbox', { name: 'Translation answer' })).toBeInTheDocument()
@@ -124,13 +139,12 @@ describe('CollectionGamePage', () => {
     })
 
     it('renders the SRS all-done screen when mode=srs and no cards are due', () => {
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
         mockSRSState.cards = {
             'test:1': reviewedCard('test', '1'),
             'test:2': reviewedCard('test', '2'),
         }
 
-        render(<CollectionGamePage />)
+        renderPage({ search: { questionId: undefined, mode: 'srs' } })
 
         expect(screen.getByRole('heading', { name: 'All caught up!' })).toBeInTheDocument()
         expect(screen.getByText(/Next cards due in/i)).toBeInTheDocument()
@@ -138,9 +152,7 @@ describe('CollectionGamePage', () => {
     })
 
     it('renders the game when mode=srs and cards are due', () => {
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-
-        render(<CollectionGamePage />)
+        renderPage({ search: { questionId: undefined, mode: 'srs' } })
 
         expect(screen.getByText('Hello')).toBeInTheDocument()
         expect(screen.getByText('1 card remaining')).toBeInTheDocument()
@@ -148,7 +160,7 @@ describe('CollectionGamePage', () => {
     })
 
     it('navigates when the real game advances to the next question', () => {
-        render(<CollectionGamePage />)
+        renderPage()
 
         const input = screen.getByRole('textbox', { name: 'Translation answer' })
         fireEvent.change(input, { target: { value: 'Hallo' } })
@@ -158,23 +170,17 @@ describe('CollectionGamePage', () => {
             vi.advanceTimersByTime(5100)
         })
 
-        expect(mockNavigate).toHaveBeenCalledWith(
-            expect.objectContaining({ replace: true })
-        )
-
-        const callArg = mockNavigate.mock.calls.at(-1)?.[0]
-        const updatedSearch = callArg.search({ mode: 'normal' })
-        expect(updatedSearch).toMatchObject({ questionId: 2, mode: 'normal' })
+        expect(mockQuestionChange).toHaveBeenCalledWith('2')
     })
 
     it('navigates to picker when the real SRS game finishes', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
-            ...mockCollection,
-            challenges: [{ id: '1', original: 'Hello', translation: 'Hallo' }],
-        }))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-
-        render(<CollectionGamePage />)
+        renderPage({
+            loaderData: bundledLoaderData({
+                ...mockCollection,
+                challenges: [{ id: '1', original: 'Hello', translation: 'Hallo' }],
+            }),
+            search: { questionId: undefined, mode: 'srs' },
+        })
 
         const input = screen.getByRole('textbox', { name: 'Translation answer' })
         fireEvent.change(input, { target: { value: 'Hallo' } })
@@ -185,17 +191,11 @@ describe('CollectionGamePage', () => {
             vi.advanceTimersByTime(2100)
         })
 
-        expect(mockNavigate).toHaveBeenCalledWith(
-            expect.objectContaining({ search: expect.any(Function) })
-        )
-        const callArg = mockNavigate.mock.calls.at(-1)?.[0]
-        expect(callArg.search({})).toEqual({})
+        expect(mockNavigate).toHaveBeenCalled()
     })
 
     it('passes initialQuestionId from URL to TypingGame', () => {
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: '2', mode: 'srs' })
-
-        render(<CollectionGamePage />)
+        renderPage({ search: { questionId: '2', mode: 'srs' } })
 
         expect(screen.getByText('World')).toBeInTheDocument()
         expect(screen.queryByText('Hello')).not.toBeInTheDocument()
@@ -219,13 +219,13 @@ describe('CollectionGamePage', () => {
                 { id: 'ch_mooolutc_843ims', original: 'The child plays with its toy.', translation: '(Das Kind spielt mit )seinem( Spielzeug.)' },
             ],
         }
-        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData(importedCollection))
-        vi.mocked(Route.useSearch).mockReturnValue({
-            questionId: 'ch_mooolutc_843imj',
-            mode: 'srs',
+        renderPage({
+            loaderData: bundledLoaderData(importedCollection),
+            search: {
+                questionId: 'ch_mooolutc_843imj',
+                mode: 'srs',
+            },
         })
-
-        render(<CollectionGamePage />)
 
         expect(screen.getByText('This is my dog.')).toBeInTheDocument()
         expect(screen.getByText('Das ist')).toBeInTheDocument()
@@ -234,19 +234,18 @@ describe('CollectionGamePage', () => {
     })
 
     it('shows a loading state for custom routes while custom collection storage hydrates', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_ready'))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
         mockCustomCollectionsState._hasHydrated = false
 
-        render(<CollectionGamePage />)
+        renderPage({
+            loaderData: customLoaderData('custom_ready'),
+            search: { questionId: undefined, mode: undefined },
+        })
 
         expect(screen.getByText('Loading collection...')).toBeInTheDocument()
         expect(screen.queryByRole('heading', { name: 'Collection not found' })).not.toBeInTheDocument()
     })
 
     it('renders the mode picker for a hydrated valid custom collection route', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_ready'))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
         mockCustomCollectionsState.collections = {
             custom_ready: {
                 id: 'custom_ready',
@@ -262,7 +261,10 @@ describe('CollectionGamePage', () => {
             },
         }
 
-        render(<CollectionGamePage />)
+        renderPage({
+            loaderData: customLoaderData('custom_ready'),
+            search: { questionId: undefined, mode: undefined },
+        })
 
         expect(screen.getByRole('heading', { name: 'Ready custom' })).toBeInTheDocument()
         expect(screen.getByRole('button', { name: /practice all/i })).toBeInTheDocument()
@@ -270,10 +272,10 @@ describe('CollectionGamePage', () => {
     })
 
     it('renders a route-local not-found state for a missing hydrated custom collection route', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(customLoaderData('custom_missing'))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: undefined })
-
-        render(<CollectionGamePage />)
+        renderPage({
+            loaderData: customLoaderData('custom_missing'),
+            search: { questionId: undefined, mode: undefined },
+        })
 
         expect(screen.getByRole('heading', { name: 'Collection not found' })).toBeInTheDocument()
         expect(screen.getByText('This custom collection is not saved or is not playable on this device.')).toBeInTheDocument()
@@ -281,24 +283,25 @@ describe('CollectionGamePage', () => {
     })
 
     it('passes no initialQuestionId when questionId is absent', () => {
-        render(<CollectionGamePage />)
+        renderPage()
 
         expect(screen.getByText('Hello')).toBeInTheDocument()
     })
 
     it('snapshots due SRS challenges when the session starts', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
-            ...mockCollection,
-            challenges: [
-                { id: '1', translation: 'one' },
-                { id: '2', translation: 'two' },
-                { id: '3', translation: 'three' },
-            ],
-        }))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
         mockSRSState.cards = { 'test:2': reviewedCard('test', '2') }
 
-        render(<CollectionGamePage />)
+        renderPage({
+            loaderData: bundledLoaderData({
+                ...mockCollection,
+                challenges: [
+                    { id: '1', translation: 'one' },
+                    { id: '2', translation: 'two' },
+                    { id: '3', translation: 'three' },
+                ],
+            }),
+            search: { questionId: undefined, mode: 'srs' },
+        })
 
         expect(screen.getByText(/Hello|Test/)).toBeInTheDocument()
         expect(screen.queryByText('World')).not.toBeInTheDocument()
@@ -306,31 +309,39 @@ describe('CollectionGamePage', () => {
     })
 
     it('keeps the active SRS challenge snapshot when cards change mid-session', () => {
-        vi.mocked(Route.useLoaderData).mockReturnValue(bundledLoaderData({
-            ...mockCollection,
-            challenges: [
-                { id: '1', translation: 'one' },
-                { id: '2', translation: 'two' },
-                { id: '3', translation: 'three' },
-            ],
-        }))
-        vi.mocked(Route.useSearch).mockReturnValue({ questionId: undefined, mode: 'srs' })
-
-        const { rerender } = render(<CollectionGamePage />)
+        const page = (
+            <CollectionGamePage
+                loaderData={bundledLoaderData({
+                    ...mockCollection,
+                    challenges: [
+                        { id: '1', translation: 'one' },
+                        { id: '2', translation: 'two' },
+                        { id: '3', translation: 'three' },
+                    ],
+                })}
+                search={{ questionId: undefined, mode: 'srs' }}
+                onGoToPicker={mockNavigate}
+                onStartNormal={mockStartNormal}
+                onStartSRS={mockStartSRS}
+                onGoToProgress={mockGoToProgress}
+                onQuestionChange={mockQuestionChange}
+            />
+        )
+        const { rerender } = render(page)
 
         mockSRSState.cards = {
             'test:1': reviewedCard('test', '1'),
             'test:2': reviewedCard('test', '2'),
             'test:3': reviewedCard('test', '3'),
         }
-        rerender(<CollectionGamePage />)
+        rerender(page)
 
         expect(screen.getByText('2 cards remaining')).toBeInTheDocument()
         expect(screen.queryByRole('heading', { name: 'All caught up!' })).not.toBeInTheDocument()
     })
 
     it('records collection play when a session mode is active', () => {
-        render(<CollectionGamePage />)
+        renderPage()
 
         expect(mockSRSState.recordPlay).toHaveBeenCalledWith('test')
     })

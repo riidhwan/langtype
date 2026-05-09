@@ -1,10 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { DictionaryBrowser } from '@/components/features/DictionaryBrowser'
+import { DictionaryPage } from '@/components/features/DictionaryPage'
 
 export const Route = createFileRoute('/dictionary')({
     component: DictionaryPage,
 })
-
-export function DictionaryPage() {
-    return <DictionaryBrowser />
-}
