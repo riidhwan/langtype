@@ -11,6 +11,7 @@ interface UseSessionChallengesProps {
     mode: CollectionMode
     allChallenges: Challenge[]
     cards: Record<string, SRSCard>
+    srsHasHydrated: boolean
 }
 
 export function useSessionChallenges({
@@ -18,13 +19,15 @@ export function useSessionChallenges({
     mode,
     allChallenges,
     cards,
+    srsHasHydrated,
 }: UseSessionChallengesProps) {
     const cardsRef = useRef(cards)
-    const sessionRef = useRef({ collectionId, mode, allChallenges })
+    const srsHydrationKey = mode === 'srs' ? srsHasHydrated : true
+    const sessionRef = useRef({ collectionId, mode, allChallenges, srsHydrationKey })
     cardsRef.current = cards
 
     const [challenges, setChallenges] = useState(() =>
-        buildSessionChallenges(collectionId, mode, allChallenges, cards)
+        buildSessionChallenges(collectionId, mode, allChallenges, cards, srsHasHydrated)
     )
 
     useEffect(() => {
@@ -32,14 +35,15 @@ export function useSessionChallenges({
         if (
             previousSession.collectionId === collectionId &&
             previousSession.mode === mode &&
-            previousSession.allChallenges === allChallenges
+            previousSession.allChallenges === allChallenges &&
+            previousSession.srsHydrationKey === srsHydrationKey
         ) {
             return
         }
 
-        sessionRef.current = { collectionId, mode, allChallenges }
-        setChallenges(buildSessionChallenges(collectionId, mode, allChallenges, cardsRef.current))
-    }, [collectionId, mode, allChallenges])
+        sessionRef.current = { collectionId, mode, allChallenges, srsHydrationKey }
+        setChallenges(buildSessionChallenges(collectionId, mode, allChallenges, cardsRef.current, srsHasHydrated))
+    }, [collectionId, mode, allChallenges, srsHasHydrated, srsHydrationKey])
 
     return challenges
 }
@@ -49,7 +53,10 @@ function buildSessionChallenges(
     mode: CollectionMode,
     allChallenges: Challenge[],
     cards: Record<string, SRSCard>,
+    srsHasHydrated: boolean,
 ) {
+    if (mode === 'srs' && !srsHasHydrated) return []
+
     if (mode === 'srs') {
         const dueIds = getDueChallengeIds(collectionId, allChallenges.map((c) => c.id), cards)
         return shuffleArray(allChallenges.filter((c) => dueIds.includes(c.id)))

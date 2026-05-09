@@ -32,6 +32,7 @@ describe('useSessionChallenges', () => {
                 mode: 'srs',
                 allChallenges: challenges,
                 cards: { 'test:2': reviewedCard('test', '2') },
+                srsHasHydrated: true,
             })
         )
 
@@ -46,6 +47,7 @@ describe('useSessionChallenges', () => {
                     mode: 'srs',
                     allChallenges: challenges,
                     cards,
+                    srsHasHydrated: true,
                 }),
             {
                 initialProps: {
@@ -67,6 +69,29 @@ describe('useSessionChallenges', () => {
         expect(result.current).toHaveLength(3)
     })
 
+    it('does not replace a normal session when SRS hydration completes', () => {
+        const { result, rerender } = renderHook(
+            ({ srsHasHydrated }: { srsHasHydrated: boolean }) =>
+                useSessionChallenges({
+                    collectionId: 'test',
+                    mode: 'normal',
+                    allChallenges: challenges,
+                    cards: {},
+                    srsHasHydrated,
+                }),
+            {
+                initialProps: {
+                    srsHasHydrated: false,
+                },
+            }
+        )
+        const initialChallenges = result.current
+
+        rerender({ srsHasHydrated: true })
+
+        expect(result.current).toBe(initialChallenges)
+    })
+
     it('starts a fresh snapshot when the mode changes', () => {
         const { result, rerender } = renderHook(
             ({ mode }: { mode: SessionMode }) =>
@@ -77,6 +102,7 @@ describe('useSessionChallenges', () => {
                     cards: {
                         'test:2': reviewedCard('test', '2'),
                     },
+                    srsHasHydrated: true,
                 }),
             {
                 initialProps: {
@@ -90,5 +116,34 @@ describe('useSessionChallenges', () => {
         rerender({ mode: 'srs' })
 
         expect(result.current.map((challenge) => challenge.id).sort()).toEqual(['1', '3'])
+    })
+
+    it('waits for SRS hydration before snapshotting a direct SRS session', () => {
+        const futureCards = {
+            'test:1': reviewedCard('test', '1'),
+            'test:2': reviewedCard('test', '2'),
+            'test:3': reviewedCard('test', '3'),
+        }
+        const { result, rerender } = renderHook(
+            ({ srsHasHydrated }: { srsHasHydrated: boolean }) =>
+                useSessionChallenges({
+                    collectionId: 'test',
+                    mode: 'srs',
+                    allChallenges: challenges,
+                    cards: futureCards,
+                    srsHasHydrated,
+                }),
+            {
+                initialProps: {
+                    srsHasHydrated: false,
+                },
+            }
+        )
+
+        expect(result.current).toHaveLength(0)
+
+        rerender({ srsHasHydrated: true })
+
+        expect(result.current).toHaveLength(0)
     })
 })

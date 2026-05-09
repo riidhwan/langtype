@@ -159,6 +159,16 @@ describe('CollectionGamePage', () => {
         expect(screen.queryByRole('heading', { name: 'All caught up!' })).not.toBeInTheDocument()
     })
 
+    it('waits for SRS hydration before rendering a direct SRS session', () => {
+        mockSRSState._hasHydrated = false
+
+        renderPage({ search: { questionId: undefined, mode: 'srs' } })
+
+        expect(screen.getByText('Loading SRS...')).toBeInTheDocument()
+        expect(screen.queryByRole('heading', { name: 'All caught up!' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('textbox', { name: 'Translation answer' })).not.toBeInTheDocument()
+    })
+
     it('navigates when the real game advances to the next question', () => {
         renderPage()
 
