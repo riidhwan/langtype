@@ -22,6 +22,7 @@ test('deleting a custom collection removes it from home and practice access', as
     await expect(page.getByText('1 challenge ready')).toBeVisible()
 
     await page.getByRole('link', { name: 'Home' }).click()
+    await page.reload()
     await page.getByRole('button', { name: 'Custom' }).click()
     await expect(page.getByRole('link', { name: `${title} Custom` })).toBeVisible()
 

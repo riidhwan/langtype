@@ -23,7 +23,7 @@ vi.mock('@/services/dictionaryService', () => ({
     getDictionaryEntry: mockGetDictionaryEntry,
 }))
 
-import { DictionaryPage } from '../dictionary'
+import { DictionaryPage } from '@/components/features/DictionaryPage'
 
 const searchItem: DictionarySearchItem = {
     id: 'arbeiten-id',

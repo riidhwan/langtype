@@ -18,8 +18,6 @@ vi.mock('idb-keyval', () => ({
     del: idb.del,
 }))
 
-const mockUseLoaderData = vi.hoisted(() => vi.fn())
-
 interface MockLinkProps {
     children: ReactNode
     className?: string
@@ -46,13 +44,12 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
                 </a>
             )
         },
-        createFileRoute: () => () => ({ useLoaderData: mockUseLoaderData }),
     }
 })
 
 import { useCustomCollectionsStore } from '@/store/useCustomCollectionsStore'
 import { useSRSStore } from '@/store/useSRSStore'
-import { Home } from '../index'
+import { HomePage } from '@/components/features/HomePage'
 
 // --- Helpers ---
 
@@ -91,11 +88,10 @@ describe('Home — tag filtering', () => {
             collections: {},
             _hasHydrated: true,
         })
-        mockUseLoaderData.mockReturnValue({ collections })
     })
 
     it('renders the custom collection creation entry point', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         expect(screen.getByRole('link', { name: 'Create collection' })).toHaveAttribute(
             'href',
             '/custom-collections/new',
@@ -117,7 +113,7 @@ describe('Home — tag filtering', () => {
             },
         })
 
-        render(<Home />)
+        render(<HomePage collections={collections} />)
 
         expect(screen.getByText('My German Set')).toBeInTheDocument()
         expect(screen.getAllByText('Custom').length).toBeGreaterThan(0)
@@ -140,19 +136,18 @@ describe('Home — tag filtering', () => {
             },
         })
 
-        render(<Home />)
+        render(<HomePage collections={collections} />)
 
         expect(screen.queryByText('Incomplete set')).not.toBeInTheDocument()
     })
 
     it('does not render tag pills when no collections have tags', () => {
-        mockUseLoaderData.mockReturnValue({ collections: [col('a', 'Alpha'), col('b', 'Beta')] })
-        render(<Home />)
+        render(<HomePage collections={[col('a', 'Alpha'), col('b', 'Beta')]} />)
         expect(screen.queryByRole('button', { name: 'X' })).not.toBeInTheDocument()
     })
 
     it('renders unique tag pills in encounter order', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         // Alpha introduces X then Y; Beta re-introduces X (deduped)
         const xBtn = screen.getByRole('button', { name: 'X' })
         const yBtn = screen.getByRole('button', { name: 'Y' })
@@ -163,7 +158,7 @@ describe('Home — tag filtering', () => {
     })
 
     it('filters collections to those with the selected tag', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         fireEvent.click(screen.getByRole('button', { name: 'Y' }))
         expect(screen.getByText('Alpha')).toBeInTheDocument()        // has Y
         expect(screen.queryByText('Beta')).not.toBeInTheDocument()   // only has X
@@ -171,13 +166,13 @@ describe('Home — tag filtering', () => {
     })
 
     it('hides untagged collections when a tag is active', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         fireEvent.click(screen.getByRole('button', { name: 'X' }))
         expect(screen.queryByText('Gamma')).not.toBeInTheDocument()
     })
 
     it('shows all collections after clicking the active tag again', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         fireEvent.click(screen.getByRole('button', { name: 'X' }))
         fireEvent.click(screen.getByRole('button', { name: 'X' })) // deselect
         expect(screen.getByText('Alpha')).toBeInTheDocument()
@@ -186,7 +181,7 @@ describe('Home — tag filtering', () => {
     })
 
     it('applies tag filter AND search together', () => {
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         fireEvent.click(screen.getByRole('button', { name: 'X' }))
         fireEvent.change(screen.getByPlaceholderText('Search collections…'), {
             target: { value: 'Alpha' },
@@ -203,7 +198,7 @@ describe('Home — tag filtering', () => {
             },
         })
 
-        render(<Home />)
+        render(<HomePage collections={collections} />)
         fireEvent.click(screen.getByRole('button', { name: 'Due (1)' }))
 
         expect(screen.getByText('Alpha')).toBeInTheDocument()
