@@ -73,3 +73,30 @@ test('waits for a correct-answer interval choice before advancing', async ({ pag
     await expect(page.getByText('First Name', { exact: true })).toBeVisible({ timeout: 4000 })
     await expect(page.getByText('24 cards remaining')).toBeVisible()
 })
+
+test('ASAP interval reinserts the correct card into the active SRS session', async ({ page }) => {
+    await page.goto(`${COLLECTION_URL}?mode=srs`)
+
+    await expect(page.getByRole('heading', { name: COLLECTION_TITLE })).toBeVisible()
+    await expect(page.getByText('Name', { exact: true })).toBeVisible()
+    await expect(page.getByText('25 cards remaining')).toBeVisible()
+
+    await answerCurrentCard(page, 'der', 'Namen')
+
+    await expect(page.getByText(/correct/i)).toBeVisible()
+    await page.evaluate(() => {
+        Math.random = () => 0
+    })
+    await page.getByRole('button', { name: 'ASAP' }).click()
+    await expect(page.getByText('Review in ASAP')).toBeVisible()
+    await expect(page.getByText('First Name', { exact: true })).toBeVisible({ timeout: 4000 })
+    await expect(page.getByText('25 cards remaining')).toBeVisible()
+
+    await answerCurrentCard(page, 'der', 'Vornamen')
+
+    await expect(page.getByText(/correct/i)).toBeVisible()
+    await page.getByRole('button', { name: '1d' }).click()
+    await expect(page.getByText('Review in 1d')).toBeVisible()
+    await expect(page.getByText('Name', { exact: true })).toBeVisible({ timeout: 4000 })
+    await expect(page.getByText('24 cards remaining')).toBeVisible()
+})
